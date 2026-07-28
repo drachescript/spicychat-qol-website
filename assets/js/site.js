@@ -79,7 +79,7 @@
         cache: 'no-store'
       });
 
-      if (!response.ok) throw new Error(`Update metadata returned ${response.status}`);
+      if (!response.ok) throw new Error(`Update file returned ${response.status}`);
 
       const data = await response.json();
       const extension = data.extension || {};
@@ -89,6 +89,13 @@
       setText('[data-extension-status]', formatStatus(extension.status || 'stable'));
       setHref('[data-extension-store]', extension.webStoreUrl);
       setHref('[data-extension-repo]', extension.repositoryUrl);
+      setHref('[data-android-repo]', android.repositoryUrl);
+
+      setText('[data-update-available]', android.available ? 'Yes' : 'No');
+      setText(
+        '[data-android-version-small]',
+        android.available ? (android.versionName || `Build ${android.versionCode || ''}`) : 'Not released'
+      );
 
       if (android.available && android.apkUrl) {
         setText('[data-android-version]', android.versionName || `Build ${android.versionCode || ''}`);
@@ -110,10 +117,10 @@
         }
       } else {
         setText('[data-android-version]', android.versionName || 'Coming soon');
-        setText('[data-android-status]', formatStatus(android.status || 'not released'));
+        setText('[data-android-status]', formatStatus(android.status || 'in development'));
       }
     } catch (error) {
-      console.warn('Could not load update metadata:', error);
+      console.warn('Could not load update file:', error);
       setText('[data-extension-version]', 'Check Web Store');
       setText('[data-android-version]', 'Coming soon');
     }

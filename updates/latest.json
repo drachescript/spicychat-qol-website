@@ -15,10 +15,10 @@
     "versionCode": 0,
     "minimumSupportedVersionCode": 0,
     "mandatory": false,
-    "status": "coming-soon",
+    "status": "in-development",
     "apkUrl": "",
     "releaseUrl": "",
-    "repositoryUrl": "",
+    "repositoryUrl": "https://github.com/drachescript/spicychat-qol-android",
     "sha256": "",
     "publishedAt": "",
     "updateMessage": "The first public Android build has not been released yet."
