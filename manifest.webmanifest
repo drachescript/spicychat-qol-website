@@ -1,0 +1,16 @@
+{
+  "name": "SpicyChat QoL",
+  "short_name": "SpicyChat QoL",
+  "description": "Unofficial quality-of-life tools for SpicyChat.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c080a",
+  "theme_color": "#12090d",
+  "icons": [
+    {
+      "src": "/assets/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+Contact: https://github.com/drachescript/spicychat-qol-extention/issues
+Canonical: https://spicychatqol.drache.uk/.well-known/security.txt
+Preferred-Languages: en
