@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d080a">
+<meta name="description" content="Current SpicyChat QoL development and compatibility status.">
+<link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="stylesheet" href="/assets/css/style.css">
+<title>Status · SpicyChat QoL</title>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="SpicyChat QoL home">
+      <img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon">
+      <span><strong>SpicyChat QoL</strong><small>unofficial SpicyChat QoL tools</small></span>
+    </a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
+    <nav class="site-nav" data-nav aria-label="Main navigation">
+      <a href="/features/">Features</a>
+      <a href="/extension/">Stable</a>
+      <a href="/devextention/">Dev</a>
+      <a href="/android/">Android</a>
+      <a href="/changelog/">Changelog</a>
+      <a href="/status/">Status</a>
+      <a href="/support/">Support</a>
+      <a class="nav-discord" href="/discord/">Discord</a>
+    </nav>
+  </div>
+</header>
+<div class="global-notice-wrap" data-global-notice hidden></div>
+
+<main id="main">
+<section class="page-hero"><div class="container"><span class="eyebrow">Project status</span><h1>What I am working on rn.</h1><p>Last manual status update: August 13, 2026.</p></div></section>
+<section class="section tight-top"><div class="container status-stack">
+<article class="status-card hot"><div class="status-head"><span class="badge warn">Active</span><h2>v0.2 preparations</h2></div><p>Full preparations for v0.2 are underway. I am getting the public release/source/docs into a state I am actually happy with.</p><ul><li>posting the full/current source to GitHub</li><li>cleaning up and updating the main/stable extension</li><li>cleaning up settings, docs and feature descriptions</li><li>making fresh installs easier to understand/configure</li><li>finishing compatibility/testing for current dev features</li></ul><p><strong>Target:</strong> main extension refresh + full extension GitHub within about a week from Aug 13 (around Aug 20 or earlier). The dev build keeps getting v0.1.8.x patches until I am ready.</p></article>
+<article class="status-card"><div class="status-head"><span class="badge warn">Dev</span><h2>Current dev build</h2></div><p>Current local/dev manifest: <strong>v<span data-dev-version>0.1.8.70</span></strong>.</p><p>Recent prep work includes settings search, Minimal/Recommended setup presets, safe diagnostic info copying, NEW/UPDATED markers and install/update notices.</p><a class="text-link" href="/changelog/">See exact build history →</a></article>
+<article class="status-card"><div class="status-head"><span class="badge quiet">Android</span><h2>Android app</h2></div><p>Still in development/testing. Login/session persistence, navigation injection, mobile controls, backups and update handling are the main areas being worked through.</p><a class="text-link" href="/android/">Android details →</a></article>
+<article class="status-card"><div class="status-head"><span class="badge good">Ready</span><h2>Discord/support</h2></div><p>The QoL Discord is ready, and the original SpicyChat community thread is also available for support/feedback.</p><a class="text-link" href="/support/">Support options →</a></article>
+</div></section>
+<section class="section section-muted"><div class="container"><div class="section-heading"><span class="eyebrow">Compatibility alert system</span><h2>For when SpicyChat changes something.</h2><p>The site has a small status file that can show a global warning across every page. Normally it stays hidden; if a SpicyChat update breaks something, I can turn it on without doing a whole extension release.</p></div></div></section>
+</main>
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div>
+      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>unofficial community project</small></span></a>
+      <p>SpicyChat is aware of the project, but SpicyChat QoL is still independent and unofficial.</p>
+    </div>
+    <div class="footer-links">
+      <a href="/support/">Support</a>
+      <a href="/discord/">Discord</a>
+      <a href="/credits/">Credits</a>
+      <a href="/privacy.html">Privacy</a>
+    </div>
+  </div>
+  <div class="container footer-bottom"><span>© <span data-year></span> SpicyChat QoL</span></div>
+</footer>
+<script src="/assets/js/markdown.js" defer></script>
+<script src="/assets/js/content-source.js" defer></script>
+<script src="/assets/js/site.js" defer></script>
+
+
+</body>
+</html>

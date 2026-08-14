@@ -1,0 +1,16 @@
+{
+  "updated": "2026-08-13",
+  "announcement": {
+    "enabled": true,
+    "label": "v0.2 prep",
+    "title": "The main extension + full extension GitHub are getting their public refresh soon.",
+    "text": "Current target is within about a week from August 13, 2026 (around August 20 or earlier). The dev build will keep getting v0.1.8.x updates while I finish cleanup/testing, and v0.2 itself only goes live when I am happy with it.",
+    "href": "/status/"
+  },
+  "incident": {
+    "enabled": false,
+    "title": "",
+    "text": "",
+    "href": "/status/"
+  }
+}

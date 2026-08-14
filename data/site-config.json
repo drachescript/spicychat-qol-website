@@ -1,0 +1,15 @@
+{
+  "siteName": "SpicyChat QoL",
+  "siteUrl": "https://spicychatqol.drache.uk",
+  "extensionRepo": "https://github.com/drachescript/spicychat-qol-extention",
+  "extensionRepoRaw": "https://raw.githubusercontent.com/drachescript/spicychat-qol-extention/main",
+  "androidRepo": "https://github.com/drachescript/spicychat-qol-android",
+  "androidRepoRaw": "https://raw.githubusercontent.com/drachescript/spicychat-qol-android/main",
+  "stableStore": "https://chromewebstore.google.com/detail/dragonscript-spicychat-qo/hjnipnpdfegilehicfkholhbomigfabl",
+  "devStore": "https://chrome.google.com/webstore/detail/jdbhnaohfjnmkfpfddnjilmpaemkmabh",
+  "stableVersion": "0.1.5",
+  "discordInvite": "https://discord.gg/XTMdWvuVSU",
+  "spicyChatThread": "https://discord.com/channels/1108377954389594236/1535324675524137121",
+  "spicyChatDiscord": "https://discord.com/invite/spicychatai",
+  "privacy": "https://docs.google.com/document/d/1sXusv78vQ_B5xawQNiEowY1meEz7XWXR4l4hCL8LbNU/edit?usp=sharing"
+}

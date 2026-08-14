@@ -1,0 +1,97 @@
+{
+  "manifest_version": 3,
+  "name": "DragonScript - SpicyChat QoL",
+  "version": "0.1.8.70",
+  "description": "Quality of life filters and UI cleanup for SpicyChat.",
+  "permissions": [
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://spicychat.ai/*",
+    "https://www.spicychat.ai/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://spicychat.ai/*",
+        "https://www.spicychat.ai/*"
+      ],
+      "js": [
+        "content/generation-metadata-loader.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://spicychat.ai/*",
+        "https://www.spicychat.ai/*"
+      ],
+      "js": [
+        "content/core.js",
+        "content/compatibility.js",
+        "content/auto-afk.js",
+        "content/dom.js",
+        "content/quick-panel.js",
+        "content/opened-chats.js",
+        "content/tags-nsfw.js",
+        "content/premium-notifications.js",
+        "content/top-bar.js",
+        "content/chat-topbar.js",
+        "content/model-selector.js",
+        "content/generation-profiles.js",
+        "content/ad-banners.js",
+        "content/language-filter.js",
+        "content/creator-favorites.js",
+        "content/favorite-bots.js",
+        "content/later-bots.js",
+        "content/cards.js",
+        "content/bot-blocking.js",
+        "content/chat-tags.js",
+        "content/chat-ui.js",
+        "content/auto-voice.js",
+        "content/bot-editor-snippets.js",
+        "content/message-options.js",
+        "content/memory-manager.js",
+        "content/composer-control.js",
+        "content/delete-guard.js",
+        "content/failed-message-helper.js",
+        "content/performance-mode.js",
+        "content/scroll-to-top.js",
+        "content/sidebar.js",
+        "content/chat-list.js",
+        "content/saved-chat-actions.js",
+        "content/list-fill.js",
+        "content/personas.js",
+        "content/lorebook-entries.js",
+        "content/chat-export.js",
+        "content/ooc.js",
+        "content/generation-metadata.js",
+        "content/main.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "action": {
+    "default_title": "SpicyChat QoL",
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content/generation-metadata-bridge.js"
+      ],
+      "matches": [
+        "https://spicychat.ai/*",
+        "https://www.spicychat.ai/*"
+      ]
+    }
+  ]
+}

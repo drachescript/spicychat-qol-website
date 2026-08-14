@@ -1,19 +1,63 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#12090d">
-  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <title>Page not found · SpicyChat QoL</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d080a">
+<meta name="description" content="Page not found.">
+<link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="stylesheet" href="/assets/css/style.css">
+<title>404 · SpicyChat QoL</title>
 </head>
-<body class="error-page">
-  <main class="error-card">
-    <span class="error-code">404</span>
-    <h1>That page is not here.</h1>
-    <p>The link may be outdated, or the page may have moved.</p>
-    <a class="button button-primary" href="/">Return home</a>
-  </main>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="SpicyChat QoL home">
+      <img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon">
+      <span><strong>SpicyChat QoL</strong><small>unofficial SpicyChat QoL tools</small></span>
+    </a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
+    <nav class="site-nav" data-nav aria-label="Main navigation">
+      <a href="/features/">Features</a>
+      <a href="/extension/">Stable</a>
+      <a href="/devextention/">Dev</a>
+      <a href="/android/">Android</a>
+      <a href="/changelog/">Changelog</a>
+      <a href="/status/">Status</a>
+      <a href="/support/">Support</a>
+      <a class="nav-discord" href="/discord/">Discord</a>
+    </nav>
+  </div>
+</header>
+<div class="global-notice-wrap" data-global-notice hidden></div>
+
+<main id="main">
+<section class="redirect-page"><div class="redirect-card"><span class="eyebrow">404</span><h1>That page isn't here.</h1><p>Could be an old link or I moved something around.</p><a class="button primary" href="/">Back home</a></div></section>
+</main>
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div>
+      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>unofficial community project</small></span></a>
+      <p>SpicyChat is aware of the project, but SpicyChat QoL is still independent and unofficial.</p>
+    </div>
+    <div class="footer-links">
+      <a href="/support/">Support</a>
+      <a href="/discord/">Discord</a>
+      <a href="/credits/">Credits</a>
+      <a href="/privacy.html">Privacy</a>
+    </div>
+  </div>
+  <div class="container footer-bottom"><span>© <span data-year></span> SpicyChat QoL</span></div>
+</footer>
+<script src="/assets/js/markdown.js" defer></script>
+<script src="/assets/js/content-source.js" defer></script>
+<script src="/assets/js/site.js" defer></script>
+
+
 </body>
 </html>

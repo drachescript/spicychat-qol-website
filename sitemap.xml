@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://spicychatqol.drache.uk/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://spicychatqol.drache.uk/privacy.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
+<url><loc>https://spicychatqol.drache.uk/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/features/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/extension/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/devextention/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/android/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/android/changelog/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/changelog/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/status/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/support/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/discord/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/credits/</loc></url>
+<url><loc>https://spicychatqol.drache.uk/privacy.html</loc></url>
 </urlset>
