@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0d080a">
-<meta name="description" content="Every SpicyChat QoL extension changelog version.">
+<meta name="description" content="Every SpicyChat QoL development changelog version, loaded from the DEV GitHub root when available.">
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
@@ -19,11 +19,12 @@
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="SpicyChat QoL home">
       <img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon">
-      <span><strong>SpicyChat QoL</strong><small>unofficial SpicyChat QoL tools</small></span>
+      <span><strong>SpicyChat QoL</strong><small>independent community QoL tools</small></span>
     </a>
     <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
     <nav class="site-nav" data-nav aria-label="Main navigation">
       <a href="/features/">Features</a>
+      <a href="/demo/">Demo</a>
       <a href="/extension/">Stable</a>
       <a href="/devextention/">Dev</a>
       <a href="/android/">Android</a>
@@ -35,18 +36,19 @@
   </div>
 </header>
 <div class="global-notice-wrap" data-global-notice hidden></div>
-
 <main id="main">
-<section class="page-hero"><div class="container"><span class="eyebrow">Extension changelog</span><h1>Every extension build.</h1><p>Each exact version gets its own entry here. The page reads the root <code>CHANGELOG.md</code> from GitHub when available.</p></div></section>
-<section class="section tight-top"><div class="container"><div class="changelog-tools"><input type="search" placeholder="Filter versions or changes…" aria-label="Filter changelog" data-changelog-search><a class="button secondary small" href="/android/changelog/">Android changelog</a></div><div class="source-state" data-source-state="changelog">Loading extension changelog…</div><div class="release-list" data-changelog-content></div></div></section>
+<section class="page-hero"><div class="container"><span class="eyebrow">Extension changelog</span><h1>Every exact DEV version.</h1><p>The full changelog is read from the DEV root <code>CHANGELOG.md</code>. Until that file is uploaded, this page shows the last bundled full-source snapshot instead of pretending the fallback is newer than it is.</p><div class="distribution-inline"><span>Chrome DEV <strong>v<span data-chrome-dev-version>0.1.8.70</span></strong></span><span>Firefox DEV <strong>v<span data-firefox-dev-version>0.1.9.45</span></strong></span></div></div></section>
+<section class="section tight-top"><div class="container"><div class="changelog-tools"><input type="search" placeholder="Filter versions or changes…" aria-label="Filter extension changelog" data-changelog-search><a class="button secondary small" href="/android/changelog/">Android changelog</a></div><div class="source-state" data-source-state="changelog">Loading DEV changelog…</div><div class="fallback-warning"><strong>Fallback note:</strong> if the source line says “bundled site snapshot”, the detailed entries currently stop at the bundled <span data-demo-snapshot-version>0.1.8.70</span> source snapshot. Public store badges above are tracked separately.</div><div class="release-list" data-changelog-content></div></div></section>
 </main>
 <footer class="site-footer">
   <div class="container footer-main">
     <div>
-      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>unofficial community project</small></span></a>
-      <p>SpicyChat is aware of the project, but SpicyChat QoL is still independent and unofficial.</p>
+      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a>
+      <p>SpicyChat has acknowledged the project, but SpicyChat QoL is still independent, unofficial, and not endorsed by SpicyChat.</p>
     </div>
     <div class="footer-links">
+      <a href="/features/">Features</a>
+      <a href="/demo/">Demo</a>
       <a href="/support/">Support</a>
       <a href="/discord/">Discord</a>
       <a href="/credits/">Credits</a>
@@ -58,7 +60,6 @@
 <script src="/assets/js/markdown.js" defer></script>
 <script src="/assets/js/content-source.js" defer></script>
 <script src="/assets/js/site.js" defer></script>
-
 
 </body>
 </html>

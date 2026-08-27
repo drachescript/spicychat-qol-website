@@ -1,14 +1,15 @@
 {
-  "updated": "2026-08-13",
+  "updated": "2026-08-27",
   "announcement": {
     "enabled": true,
-    "label": "v0.2 prep",
-    "title": "The main extension + full extension GitHub are getting their public refresh soon.",
-    "text": "Current target is within about a week from August 13, 2026 (around August 20 or earlier). The dev build will keep getting v0.1.8.x updates while I finish cleanup/testing, and v0.2 itself only goes live when I am happy with it.",
+    "label": "DEV / v0.2",
+    "title": "DEV is moving fast while the full v0.2 source refresh is still being prepared.",
+    "text": "Firefox DEV is already on the 0.1.9.x line, Chrome DEV is its separately published store build, and the Stable + DEV GitHub repositories are ready for their full root files. Features, changelogs and the website demo will read those root files automatically once they are uploaded.",
     "href": "/status/"
   },
   "incident": {
     "enabled": false,
+    "label": "Compatibility issue",
     "title": "",
     "text": "",
     "href": "/status/"

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0d080a">
-<meta name="description" content="SpicyChat QoL Android app status, GitHub and update information.">
+<meta name="description" content="SpicyChat QoL Android app development, update architecture and changelog.">
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
@@ -19,11 +19,12 @@
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="SpicyChat QoL home">
       <img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon">
-      <span><strong>SpicyChat QoL</strong><small>unofficial SpicyChat QoL tools</small></span>
+      <span><strong>SpicyChat QoL</strong><small>independent community QoL tools</small></span>
     </a>
     <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
     <nav class="site-nav" data-nav aria-label="Main navigation">
       <a href="/features/">Features</a>
+      <a href="/demo/">Demo</a>
       <a href="/extension/">Stable</a>
       <a href="/devextention/">Dev</a>
       <a href="/android/">Android</a>
@@ -35,19 +36,20 @@
   </div>
 </header>
 <div class="global-notice-wrap" data-global-notice hidden></div>
-
 <main id="main">
-<section class="page-hero product-hero android-hero"><div class="container"><span class="badge quiet">In development / testing</span><h1>SpicyChat QoL Android</h1><p>A standalone SpicyChat wrapper with SpicyChat QoL integrated so most of the same tools can work without installing a browser extension.</p><div class="hero-meta-row"><span>Version <strong data-android-version>In development</strong></span><span>Updates <strong>Website / GitHub check</strong></span></div><div class="button-row"><a class="button primary" href="https://github.com/drachescript/spicychat-qol-android" target="_blank" rel="noopener">Android GitHub</a><a class="button secondary" href="/android/changelog/">Android changelog</a></div></div></section>
-<section class="section tight-top"><div class="container"><div class="section-heading"><span class="eyebrow">Android status</span><h2>Current app notes.</h2><p>The website tries the Android GitHub root first. While that content is not public/ready yet, this falls back to the Android notes kept with the extension repo.</p></div><div class="source-state" data-source-state="android">Loading Android project info…</div><div class="markdown-article" data-android-readme></div></div></section>
-<section class="section section-muted"><div class="container two-col"><article class="plain-card"><h2>Update plan</h2><p>The app will check a small endpoint on this site. The Cloudflare Worker included with the website can read the Android GitHub release/version data and return the newest APK info.</p><p>Normal Android install confirmation still applies.</p></article><article class="plain-card"><h2>Download safety</h2><p>Once public, only use the APK linked from this website or the official Android GitHub repository.</p><p>The same app ID/signing certificate needs to stay consistent so new versions install as updates.</p></article></div></section>
+<section class="page-hero product-hero"><div class="container"><div class="android-mark hero-android-mark">A</div><span class="eyebrow">Android app</span><h1>SpicyChat QoL Android</h1><p>A standalone WebView app with QoL integrated so most of the same tools can work without installing a separate browser extension.</p><div class="hero-meta-row"><span>Version <strong data-android-version>In development</strong></span><span>Release <strong>Not public yet</strong></span></div><div class="button-row"><a class="button primary" href="https://github.com/drachescript/spicychat-qol-android" target="_blank" rel="noopener">Android GitHub</a><a class="button secondary" href="/android/changelog/">Android changelog</a></div></div></section>
+<section class="section tight-top"><div class="container"><div class="section-heading"><span class="eyebrow">Android status</span><h2>Current app notes.</h2><p data-repo-state="android">Checking Android GitHub root files…</p><p>The site prefers the Android repo root and falls back to bundled development notes until proper root docs/releases are available.</p></div><div class="source-state" data-source-state="android">Loading Android project info…</div><div class="markdown-article" data-android-readme></div></div></section>
+<section class="section section-muted"><div class="container two-col"><article class="plain-card"><h2>Update architecture</h2><p>The public app can check this site’s Worker for current Android release metadata. The Worker can read a tiny root update file or the latest GitHub Release and return the current APK/release information.</p><p>The actual APK install/update remains an Android user-approved action.</p></article><article class="plain-card"><h2>Release safety</h2><p>Once public, the website and Android GitHub will be the maintained download sources. The same app ID and signing certificate must stay consistent for future APKs to install as updates.</p></article></div></section>
 </main>
 <footer class="site-footer">
   <div class="container footer-main">
     <div>
-      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>unofficial community project</small></span></a>
-      <p>SpicyChat is aware of the project, but SpicyChat QoL is still independent and unofficial.</p>
+      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a>
+      <p>SpicyChat has acknowledged the project, but SpicyChat QoL is still independent, unofficial, and not endorsed by SpicyChat.</p>
     </div>
     <div class="footer-links">
+      <a href="/features/">Features</a>
+      <a href="/demo/">Demo</a>
       <a href="/support/">Support</a>
       <a href="/discord/">Discord</a>
       <a href="/credits/">Credits</a>
@@ -59,7 +61,6 @@
 <script src="/assets/js/markdown.js" defer></script>
 <script src="/assets/js/content-source.js" defer></script>
 <script src="/assets/js/site.js" defer></script>
-
 
 </body>
 </html>

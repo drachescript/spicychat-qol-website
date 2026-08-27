@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SpicyChat QoL</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>SpicyChat QoL</h1>
+        <p id="versionText">Version loading...</p>
+      </div>
+    </header>
+
+    <section id="firstRunNotice" class="first-run-notice" hidden>
+      <div>
+        <strong>Please configure SpicyChat QoL</strong>
+        <p>The main switch is on, but optional features start off. Pick what you want below or use one of the Quick setup presets.</p>
+      </div>
+      <div class="button-row">
+        <button id="startFirstRunSetup" type="button">Start configuring</button>
+        <button id="dismissFirstRunNotice" type="button">Dismiss</button>
+      </div>
+    </section>
+
+    <section class="settings-search-card" aria-label="Search settings">
+      <div class="settings-search-head">
+        <div>
+          <strong>Find a setting</strong>
+        </div>
+        <span class="hint">Searches every Settings tab.</span>
+      </div>
+      <input id="settingsSearch" type="search" placeholder="Try memory, Later, voice, scroll, persona..." autocomplete="off">
+      <div id="settingsSearchResults" class="settings-search-results" hidden></div>
+    </section>
+
+    <nav class="tabs" aria-label="Options tabs">
+      <button class="tab-button active" type="button" data-tab="general">General</button>
+      <button class="tab-button" type="button" data-tab="mini-panel">Mini Panel</button>
+      <button class="tab-button" type="button" data-tab="chat-list">Chat List</button>
+      <button class="tab-button" type="button" data-tab="chat-ui">Chat UI</button>
+      <button class="tab-button" type="button" data-tab="bot-tools">Bot Tools</button>
+      <button class="tab-button" type="button" data-tab="sidebar">Sidebar</button>
+      <button class="tab-button" type="button" data-tab="topbar">Top Bar</button>
+      <button class="tab-button" type="button" data-tab="saved">Saved Lists</button>
+      <button class="tab-button" type="button" data-tab="blocking">Blocking</button>
+      <button class="tab-button" type="button" data-tab="data">Data / Backup</button>
+      <button class="tab-button" type="button" data-tab="changelog">Changelog <span id="changelogUpdateBadge" class="tab-update-badge" hidden></span></button>
+      <button class="tab-button" type="button" data-tab="help">Help</button>
+    </nav>
+
+    <div class="tab-page active" data-page="general">
+      <section class="card">
+        <h2>Main</h2>
+        <label class="row"><input type="checkbox" id="enabled"><span>Enable QoL features on SpicyChat</span></label>
+      </section>
+
+      <section class="card" id="quickSetupCard">
+        <h2>Quick setup</h2>
+        <p class="hint">Optional features stay off on a fresh install until you enable them yourself. These presets are just a faster starting point and can be changed afterwards.</p>
+        <div class="button-row">
+          <button type="button" id="applyMinimalPreset">Apply minimal</button>
+          <button type="button" id="applyRecommendedPreset">Apply recommended</button>
+          <button type="button" id="disableOptionalFeatures">Turn optional features off</button>
+        </div>
+        <p class="hint" id="presetStatus"></p>
+      </section>
+
+      <section class="card" id="compatibilityCard">
+        <h2>S.AI Toolkit compatibility</h2>
+        <label class="row"><input type="checkbox" id="saiToolkitCompatibility"><span>Let QoL step back from overlapping S.AI Toolkit features when Toolkit is detected</span></label>
+        <p class="hint">This only affects features both extensions provide. QoL-only tools keep working normally.</p>
+        <p class="hint" id="saiToolkitStatus">S.AI Toolkit has not been detected on a SpicyChat page yet.</p>
+      </section>
+
+      <section class="card">
+        <h2>Extension popup</h2>
+        <p class="hint">Choose what the small browser-extension popup shows.</p>
+        <label class="row"><input type="checkbox" id="popupShowOpenedCount"><span>Show opened chat count</span></label>
+        <label class="row"><input type="checkbox" id="popupShowBlockedCount"><span>Show blocked bot count</span></label>
+        <label class="row"><input type="checkbox" id="popupShowStorageDetails"><span>Show extra saved-list and storage details</span></label>
+      </section>
+
+      <section class="card">
+        <h2>Inactive tab cleanup (Auto-AFK)</h2>
+        <label class="row"><input type="checkbox" id="autoAfkEnabled"><span>Enable automatic cleanup for inactive SpicyChat tabs</span></label>
+        <label>AFK after (hours)
+          <input type="number" id="autoAfkHours" min="1" max="720" step="1" value="12">
+        </label>
+        <h3>Applies to</h3>
+        <label class="row"><input type="checkbox" id="autoAfkChats"><span>Chat pages (/chat/*)</span></label>
+        <label class="row"><input type="checkbox" id="autoAfkHome"><span>SpicyChat Home</span></label>
+        <label class="row"><input type="checkbox" id="autoAfkProfiles"><span>Character / profile pages</span></label>
+        <h3>When the timer expires</h3>
+        <label class="row"><input type="radio" name="autoAfkAction" id="autoAfkActionDiscard" value="discard"><span>Unload tab and keep it open</span></label>
+        <label class="row"><input type="radio" name="autoAfkAction" id="autoAfkActionClose" value="close"><span>Close tab</span></label>
+        <label class="row"><input type="checkbox" id="autoAfkProtectActive"><span>Never unload or close the currently active tab</span></label>
+        <label class="row"><input type="checkbox" id="autoAfkResetOnActivate"><span>Reset the timer when the tab is opened or selected</span></label>
+        <p class="hint">Unload uses the browser's normal tab discard behavior, so the tab stays in the tab bar and reloads when you return to it.</p>
+        <div class="button-row">
+          <button type="button" id="autoAfkCheckNow">Run cleanup check now</button>
+        </div>
+        <p class="hint" id="autoAfkStatus">No cleanup check recorded yet.</p>
+      </section>
+
+      <section class="card">
+        <h2>SpicyChat NSFW switch</h2>
+        <p class="hint">NSFW toggle on/off for the main page control. Unrelated to the NSFW tag.</p>
+        <label>
+          NSFW switch mode
+          <select id="globalNsfwMode">
+            <option value="ignore">ignore / do nothing</option>
+            <option value="on">force on</option>
+            <option value="off">force off</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Tag defaults</h2>
+        <label class="row"><input type="checkbox" id="autoTags"><span>Automatically include/exclude tags</span></label>
+        <label class="row"><input type="checkbox" id="showTagTemplateButton"><span>Show Copy button beside Narrow by tag Reset to apply this saved template</span></label>
+        <p class="hint">Exact spelling matters. Leave empty unless you really want tags preselected. The in-page Copy button applies this saved include/exclude template on demand.</p>
+        <label>Include tags, one per line<textarea id="includeTags" spellcheck="false" placeholder="English&#10;Fantasy"></textarea></label>
+        <label>Exclude tags, one per line<textarea id="excludeTags" spellcheck="false" placeholder="Low Quality"></textarea></label>
+      </section>
+
+      <section class="card">
+        <h2>Premium and notifications</h2>
+        <label class="row"><input type="checkbox" id="hidePremium"><span>Hide Get Premium / subscribe UI</span></label>
+        <label class="row"><input type="checkbox" id="hideFloatingPremiumPopups"><span>Hide floating premium/context limit popups</span></label>
+        <label class="row"><input type="checkbox" id="hideAdvertBanners"><span>Hide advert/promo banners like Unlock More Memory, Custom Voices, Create Lorebook, and Annual Premium</span></label>
+        <label class="row"><input type="checkbox" id="expandModelSelectorDescriptions"><span>Expand all model descriptions in Available models</span></label>
+        <label class="row"><input type="checkbox" id="hideModelUpgradeButtons"><span>Hide locked-model Upgrade buttons and block locked-model upgrade prompts</span></label>
+        <label class="row"><input type="checkbox" id="hideNotifications"><span>Hide notifications button/badge on SpicyChat</span></label>
+        <label class="row"><input type="checkbox" id="hideTabNotificationBadge"><span>Hide unread notification badge from the browser tab</span></label>
+        <label class="row"><input type="checkbox" id="autoReadNotifications"><span>Clear new product-update notifications in background tabs</span></label>
+        <p class="hint">Auto-read is experimental. If it opens something weird, turn it back off.</p>
+      </section>
+    </div>
+
+    <div class="tab-page" data-page="mini-panel">
+      <section class="card">
+        <h2>Mini panel</h2>
+        <label class="row"><input type="checkbox" id="showQuickPanel"><span>Show SpicyChat QoL mini panel</span></label>
+        <label>Mini panel position
+          <select id="quickPanelPlacement">
+            <option value="bottom-right">bottom-right</option>
+            <option value="bottom-left">bottom-left</option>
+            <option value="top-right">top-right (under header)</option>
+            <option value="top-left">top-left (beside sidebar)</option>
+            <option value="sidebar-below-blocked-creators">sidebar below Blocked Creators</option>
+            <option value="custom">custom / dragged</option>
+          </select>
+        </label>
+        <label class="row"><input type="checkbox" id="quickPanelDraggable"><span>Allow dragging the mini panel</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelDefaultClosed"><span>Open the mini panel collapsed on each new page</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelEnabledByDefaultInTab"><span>Enable the mini panel by default in each new tab</span></label>
+      </section>
+
+      <section class="card">
+        <h2>Panel size</h2>
+        <label>Panel width in pixels
+          <input type="number" id="quickPanelWidth" min="200" max="440" step="10" value="280">
+        </label>
+        <label>Text and control size in percent
+          <input type="number" id="quickPanelUiScale" min="80" max="125" step="5" value="100">
+        </label>
+        <label>Maximum panel height as a percent of the screen
+          <input type="number" id="quickPanelMaxHeightPercent" min="25" max="95" step="5" value="80">
+        </label>
+        <label class="row"><input type="checkbox" id="quickPanelAutoCollapseOverlap"><span>Automatically collapse the panel when it would cover chat messages</span></label>
+        <p class="hint">Maximum height is only a limit. The panel still shrinks to the controls currently shown.</p>
+      </section>
+
+      <section class="card">
+        <h2>Panel items</h2>
+        <p class="hint">These control what appears inside the mini panel. Auto voice and Auto * can be toggled directly from the panel; other tools still use their normal feature settings.</p>
+        <label class="row"><input type="checkbox" id="quickPanelShowStatus"><span>Show status line</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelStatusShowOpened"><span>Show opened chat count in the mini panel</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelStatusShowBlocked"><span>Show blocked bot count in the mini panel</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowFeatureSummary"><span>Show a short summary of enabled QoL features for the current page</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowOptions"><span>Show Options button</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowFillNow"><span>Show Fill now on bot listings</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowChatSearch"><span>Show chat search on /chats</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowChatSort"><span>Show chat sorting on /chats</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowScanVisible"><span>Show Scan visible on /chats</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowLoadAll"><span>Show Load all / Stop loading on /chats</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowOoc"><span>Show OOC message tools in chats</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowAutoVoice"><span>Show Auto voice control in chats</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowAutoAsterisk"><span>Show Auto * control in chats</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowPersona"><span>Show persona switch in chats</span></label>
+        <label class="row"><input type="checkbox" id="quickPanelShowExport"><span>Show Export chat in chats</span></label>
+      </section>
+
+      <section class="card">
+        <h2>Layout preview</h2>
+        <p class="hint">Test the panel against simulated chat, chat-list, and bot-listing pages. Drag the preview panel to set the default custom position. Actual SpicyChat tabs remember their own dragged position separately.</p>
+        <label>Preview page
+          <select id="miniPanelPreviewMode">
+            <option value="chat">Chat</option>
+            <option value="chats">Chat list</option>
+            <option value="listing">Bot listing</option>
+          </select>
+        </label>
+        <input type="hidden" id="quickPanelCustomXPercent" value="70">
+        <input type="hidden" id="quickPanelCustomYPercent" value="12">
+
+        <div id="miniPanelPreview" class="mini-panel-preview" aria-label="Mini panel layout preview">
+          <div class="mini-panel-preview-topbar">
+            <span class="mini-panel-preview-avatar"></span>
+            <span>User</span>
+          </div>
+
+          <div id="miniPanelPreviewChatScene" class="mini-panel-preview-scene mini-panel-preview-chat-scene">
+            <div class="mini-panel-preview-chat">
+              <div class="mini-panel-preview-message bot">
+                <strong>Character</strong>
+                <span>This is a simulated message so you can see whether the panel covers the chat.</span>
+              </div>
+              <div class="mini-panel-preview-message user">
+                <strong>User</strong>
+                <span>This is the user message area.</span>
+              </div>
+            </div>
+
+            <div class="mini-panel-preview-composer">
+              <input type="text" value="Message..." aria-label="Simulated message field" readonly>
+              <button type="button">Send</button>
+            </div>
+          </div>
+
+          <div id="miniPanelPreviewChatsScene" class="mini-panel-preview-scene mini-panel-preview-chats-scene" hidden>
+            <div class="mini-panel-preview-page-heading">Chats</div>
+            <div class="mini-panel-preview-chat-row"><span class="mini-panel-preview-thumb"></span><div><strong>Recent character</strong><small>42 messages · just now</small></div></div>
+            <div class="mini-panel-preview-chat-row"><span class="mini-panel-preview-thumb"></span><div><strong>Slow-burn story</strong><small>118 messages · yesterday</small></div></div>
+            <div class="mini-panel-preview-chat-row"><span class="mini-panel-preview-thumb"></span><div><strong>Adventure group</strong><small>16 messages · 3 days ago</small></div></div>
+          </div>
+
+          <div id="miniPanelPreviewListingScene" class="mini-panel-preview-scene mini-panel-preview-listing-scene" hidden>
+            <div class="mini-panel-preview-page-heading">Discover chatbots</div>
+            <div class="mini-panel-preview-card-grid">
+              <div class="mini-panel-preview-bot-card"><span></span><strong>Character One</strong><small>Short description and tags</small></div>
+              <div class="mini-panel-preview-bot-card"><span></span><strong>Character Two</strong><small>Longer card description</small></div>
+              <div class="mini-panel-preview-bot-card"><span></span><strong>Character Three</strong><small>Another listing result</small></div>
+              <div class="mini-panel-preview-bot-card"><span></span><strong>Character Four</strong><small>Saved for later</small></div>
+            </div>
+          </div>
+
+          <div id="miniPanelPreviewPanel" class="mini-panel-preview-panel">
+            <div class="mini-panel-preview-head">
+              <strong>SpicyChat QoL</strong>
+              <button type="button" id="miniPanelPreviewToggle" aria-label="Collapse preview panel">-</button>
+            </div>
+            <div id="miniPanelPreviewBody" class="mini-panel-preview-body">
+              <div id="miniPanelPreviewStatus" class="mini-panel-preview-status">350 opened stored. 3 personas saved.</div>
+              <button type="button" id="miniPanelPreviewOptions">Options</button>
+              <button type="button" id="miniPanelPreviewFill">Fill now</button>
+              <input id="miniPanelPreviewSearch" type="text" value="Search chats..." readonly>
+              <select id="miniPanelPreviewSort" tabindex="-1"><option>Last messaged / default</option></select>
+              <div id="miniPanelPreviewChatButtons" class="mini-panel-preview-row">
+                <button type="button" id="miniPanelPreviewScan">Scan visible</button>
+                <button type="button" id="miniPanelPreviewLoad">Load all</button>
+              </div>
+              <div id="miniPanelPreviewOoc" class="mini-panel-preview-group">
+                <span>OOC message</span>
+                <div class="mini-panel-preview-row"><select tabindex="-1"><option>Never control {user}</option></select><button type="button">Insert</button></div>
+              </div>
+              <button type="button" id="miniPanelPreviewAutoVoice">Auto voice: Off</button>
+              <button type="button" id="miniPanelPreviewAutoAsterisk">Auto *: Off</button>
+              <div id="miniPanelPreviewPersona" class="mini-panel-preview-group">
+                <span>Persona switch</span>
+                <div class="mini-panel-preview-pills"><b>1</b><b>2</b><b>3</b></div>
+                <div class="mini-panel-preview-row"><select tabindex="-1"><option>1. User</option></select><button type="button">Switch</button></div>
+              </div>
+              <button type="button" id="miniPanelPreviewExport">Export chat</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="tab-page" data-page="topbar">
+      <section class="card">
+        <h2>Top bar cleanup</h2>
+        <p class="hint">Controls the right side of the SpicyChat top bar: language, notifications, theme, and the avatar name area.</p>
+        <label class="row"><input type="checkbox" id="hideTopBarLanguage"><span>Hide language selector / EN button</span></label>
+        <label class="row"><input type="checkbox" id="hideTopBarNotifications"><span>Hide notification bell</span></label>
+        <label class="row"><input type="checkbox" id="hideTopBarTheme"><span>Hide theme switcher</span></label>
+      </section>
+
+      <section class="card">
+        <h2>Avatar name</h2>
+        <p class="hint">Controls the text next to your avatar, like True Supporter, Get a Taste, or a custom name.</p>
+        <label>
+          Display mode
+          <select id="topBarProfilePillMode">
+            <option value="normal">Keep normal SpicyChat text</option>
+            <option value="persona">Show current/default persona name</option>
+            <option value="custom">Show custom text</option>
+            <option value="hide">Hide the avatar name area</option>
+          </select>
+        </label>
+        <label class="row"><input type="checkbox" id="topBarProfilePillPersonaPrefix"><span>Prefix persona display with "Persona:"</span></label>
+        <label>Custom name text<input id="topBarProfilePillCustomText" type="text" placeholder="Example: User"></label>
+        <p class="hint">Persona mode uses the active/saved persona when the extension can detect it. If it cannot detect one, it falls back to Default.</p>
+      </section>
+    </div>
+
+
+    <div class="tab-page" data-page="chat-list">
+      <section class="card">
+        <h2>Chat list tools</h2>
+        <label class="row"><input type="checkbox" id="showChatListTools"><span>Show chat scan/search/sort tools on /chat and /chats</span></label>
+        <label class="row"><input type="checkbox" id="showSavedChatQuickActions"><span>Show Change Title, Clone, and Remove quick actions on saved conversations</span></label>
+        <label>
+          Default chat sort
+          <select id="chatListSortMode">
+            <option value="default">default / newest</option>
+            <option value="messages-asc">fewest messages first</option>
+            <option value="alpha-asc">alphabetical A-Z</option>
+            <option value="alpha-desc">alphabetical Z-A</option>
+          </select>
+        </label>
+        <p class="hint">Search uses the whole visible chat row, so it can match the bot name, persona name, description and visible message text.</p>
+      </section>
+
+      <section class="card">
+        <h2>Opened chats</h2>
+        <label class="row"><input type="checkbox" id="trackOpenedChats"><span>Track chats I open</span></label>
+        <label class="row"><input type="checkbox" id="importOpenedFromChatsPage"><span>When I visit /chat or /chats, import those as opened</span></label>
+        <label class="row"><input type="checkbox" id="hideOpenedChats"><span>Hide opened chats from recommendations/listings</span></label>
+        <label class="row"><input type="checkbox" id="compactAfterHiding"><span>Compact card grids after hiding cards</span></label>
+      </section>
+
+      <section class="card">
+        <h2>Favorite protection</h2>
+        <label class="row"><input type="checkbox" id="neverHideFavorites"><span>Never hide anything on the Favorites page</span></label>
+        <label class="row"><input type="checkbox" id="protectFavoritesFromBlocking"><span>Do not block favorites from card buttons</span></label>
+      </section>
+
+    </div>
+
+
+
+    <div class="tab-page" data-page="saved">
+      <section class="card">
+        <h2>Opened chats</h2>
+        <p class="hint">Bots logged by opened-chat tracking. This is useful for checking what QoL will hide when opened-chat hiding is enabled.</p>
+        <div class="bot-manager-toolbar">
+          <input id="openedBotSearch" type="search" placeholder="Search opened chats">
+          <select id="openedBotSortMode">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="name-asc">Name A-Z</option>
+            <option value="name-desc">Name Z-A</option>
+          </select>
+          <span id="openedBotManagerSummary" class="manager-count">0 saved</span>
+        </div>
+        <div id="openedBotManager" class="bot-manager-list"></div>
+        <div class="bot-manager-pager">
+          <button id="openedBotShowMore" type="button">Show 20 more</button>
+          <button id="openedBotShowLess" type="button">Show first 20</button>
+          <button id="openedBotCollapse" type="button">Expand all</button>
+        </div>
+        <div class="button-row"><button id="clearOpened" type="button">Clear opened chats</button><span id="openedCount" class="count"></span></div>
+      </section>
+      <section class="card">
+        <h2>Favorite bots</h2>
+        <p class="hint">QoL remembers favorite bots it sees when you visit SpicyChat's Favorites page.</p>
+        <label class="row"><input type="checkbox" id="trackFavoriteBots"><span>Remember favorite bots seen on the Favorites page</span></label>
+        <div class="bot-manager-toolbar">
+          <input id="favoriteBotSearch" type="search" placeholder="Search favorite bots">
+          <select id="favoriteBotSortMode">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="name-asc">Name A-Z</option>
+            <option value="name-desc">Name Z-A</option>
+          </select>
+          <span id="favoriteBotManagerSummary" class="manager-count">0 saved</span>
+        </div>
+        <div id="favoriteBotManager" class="bot-manager-list"></div>
+        <div class="bot-manager-pager">
+          <button id="favoriteBotShowMore" type="button">Show 20 more</button>
+          <button id="favoriteBotShowLess" type="button">Show first 20</button>
+          <button id="favoriteBotCollapse" type="button">Expand all</button>
+        </div>
+        <div class="button-row"><a class="button-link" href="https://spicychat.ai/favorite-bots" target="_blank" rel="noopener noreferrer">Open SpicyChat Favorites</a></div>
+      </section>
+
+      <section class="card">
+        <h2>Favorite creators</h2>
+        <p class="hint">Adds a small star next to creator links. Favorite creators can be protected from hiding.</p>
+        <label class="row"><input type="checkbox" id="showCreatorFavoriteButtons"><span>Show favorite creator star buttons</span></label>
+        <label class="row"><input type="checkbox" id="protectFavoriteCreatorsFromFiltering"><span>Keep cards from favorite creators visible</span></label>
+        <div class="manager-add-row">
+          <input id="favoriteCreatorAddHandle" type="text" placeholder="Creator handle or /creator/link">
+          <input id="favoriteCreatorAddName" type="text" placeholder="Optional name">
+          <button id="addFavoriteCreator" type="button">Add favorite creator</button>
+        </div>
+        <div class="bot-manager-toolbar">
+          <span id="favoriteCreatorManagerSummary" class="manager-count">0 saved</span>
+        </div>
+        <div id="favoriteCreatorManager" class="bot-manager-list"></div>
+        <div class="bot-manager-pager">
+          <button id="favoriteCreatorShowMore" type="button">Show 20 more</button>
+          <button id="favoriteCreatorShowLess" type="button">Show first 20</button>
+          <button id="favoriteCreatorCollapse" type="button">Expand all</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Later bots</h2>
+        <p class="hint">Save bots you might want to try later without opening the chat.</p>
+        <label class="row"><input type="checkbox" id="showLaterBotButtons"><span>Show Later button beside card favorite buttons</span></label>
+        <label class="row"><input type="checkbox" id="protectLaterBotsFromFiltering"><span>Keep Later bots visible when other filters match</span></label>
+        <label class="row"><input type="checkbox" id="hideLaterBotsFromListings"><span>Hide bots after saving them for Later</span></label>
+        <div class="bot-manager-toolbar">
+          <input id="laterBotSearch" type="search" placeholder="Search saved Later bots">
+          <select id="laterBotSortMode">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="name-asc">Name A-Z</option>
+            <option value="name-desc">Name Z-A</option>
+          </select>
+          <span id="laterBotManagerSummary" class="manager-count">0 saved</span>
+        </div>
+        <div id="laterBotManager" class="bot-manager-list"></div>
+        <div class="bot-manager-pager">
+          <button id="laterBotShowMore" type="button">Show 20 more</button>
+          <button id="laterBotShowLess" type="button">Show first 20</button>
+          <button id="laterBotCollapse" type="button">Expand all</button>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="tab-page" data-page="chat-ui">
+      <section class="card">
+        <h2>Chat top bar</h2>
+        <p class="hint">Small cleanup tools for the bot title area on chat pages.</p>
+        <label class="row"><input type="checkbox" id="showChatTopBarTools"><span>Enable chat top bar tools</span></label>
+        <label class="row"><input type="checkbox" id="chatTopBarInlineCreator"><span>Keep the creator star on the creator line</span></label>
+        <label class="row"><input type="checkbox" id="hideChatTopBarRatingButton"><span>Hide the rating button in the chat header</span></label>
+        <label class="row"><input type="checkbox" id="hideChatTopBarModelButton"><span>Hide the model button in the chat header</span></label>
+        <label class="row"><input type="checkbox" id="hideChatTopBarContextDot"><span>Hide the memory/context dot</span></label>
+        <label class="row"><input type="checkbox" id="hideChatDropdownVoiceUpsell"><span>Hide Unlock Custom Voices in the chat menu</span></label>
+        <label class="row"><input type="checkbox" id="hideChatDropdownMemoryItem"><span>Hide Enable/Disable Memory in the chat menu</span></label>
+      </section>
+
+      <section class="card">
+        <h2>Memory manager</h2>
+        <label class="row"><input type="checkbox" id="enableBulkMemoryManager"><span>Add multi-select tools to SpicyChat Memories</span></label>
+        <p class="hint">Adds checkboxes plus Select all, Select unpinned, Invert, Clear, Pin selected, and Delete selected. Select unpinned checks SpicyChat's own pin state; bulk pin/delete use SpicyChat's own memory actions one at a time.</p>
+      </section>
+
+      <section class="card">
+        <h2>Generation profiles</h2>
+        <label class="row"><input type="checkbox" id="enableGenerationProfiles"><span>Show profile controls in Generation Settings</span></label>
+        <p class="hint">Save and restore the current model and generation sliders from SpicyChat's Generation Settings window. Profiles are included in normal settings backup/import.</p>
+        <p class="hint">Stored profiles: <span id="generationProfileCount">0 saved</span>.</p>
+      </section>
+
+      <section class="card">
+        <h2>Timestamps and generation details</h2>
+        <label class="row"><input type="checkbox" id="showGenerationMetadata"><span>Show message timestamps and generation details</span></label>
+        <label class="row"><input type="checkbox" id="showMessageTimestamps"><span>Show message timestamps</span></label>
+        <label class="row"><input type="checkbox" id="messageTimestamp24Hour"><span>Use 24-hour time</span></label>
+        <label class="row"><input type="checkbox" id="messageTimestampDateFirst"><span>Show date before time</span></label>
+        <label class="row"><input type="checkbox" id="messageTimestampShowSeconds"><span>Show seconds</span></label>
+        <label class="row"><input type="checkbox" id="showGenerationModel"><span>Show requested model and actual engine when available</span></label>
+        <label class="row"><input type="checkbox" id="showGenerationElapsed"><span>Show generation time for new replies</span></label>
+        <label class="row"><input type="checkbox" id="showGenerationSettings"><span>Show captured generation slider values</span></label>
+        <label class="row"><input type="checkbox" id="compactGenerationMetadata"><span>Keep the details on one compact line</span></label>
+        <p class="hint">Existing messages can show timestamps, model, and saved generation settings when SpicyChat provides them. Generation time is only available for replies created while this feature is enabled.</p>
+      </section>
+
+      <section class="card">
+        <h2>Composer and draft helpers</h2>
+        <label class="row"><input type="checkbox" id="hideChatPlusButton"><span>Hide plus button in chat input</span></label>
+        <label class="row"><input type="checkbox" id="hideChatImageButton"><span>Hide image generation button</span></label>
+        <label class="row"><input type="checkbox" id="replaceChatImageWithOocButton"><span>Show OOC button in the chat input</span></label>
+        <p class="hint">The OOC button inserts the preset currently selected in the mini panel. If Hide image generation button is enabled, OOC uses that button's slot; otherwise Image stays visible and OOC appears beside it.</p>
+        <label class="row"><input type="checkbox" id="showAsteriskButton"><span>Show dedicated * button in the chat input</span></label>
+        <p class="hint">Select text and press * to wrap it in asterisks for actions. With no selection, it inserts ** and puts the cursor between them. This is intended to stay usable on touch/mobile too.</p>
+        <label class="row"><input type="checkbox" id="autoPairAsterisks"><span>Automatically add the matching * when typing an asterisk</span></label>
+        <p class="hint">Auto * turns a typed * into ** with the cursor between them, so you can type the action without manually adding the closing asterisk.</p>
+        <label class="row"><input type="checkbox" id="hideChatVoiceButton"><span>Hide voice recording button</span></label>
+        <label class="row"><input type="checkbox" id="hideUnlockCustomVoices"><span>Hide "Unlock Custom Voices" option</span></label>
+        <label class="row"><input type="checkbox" id="allowTypingWhileAiResponding"><span>Keep the message box usable while the AI is responding</span></label>
+        <label class="row"><input type="checkbox" id="keepChatPositionWhileTyping"><span>Keep my current chat position while typing</span></label>
+        <label class="row"><input type="checkbox" id="protectDraftDuringMessageRemoval"><span>Keep typed draft text when using Remove Messages</span></label>
+        <label class="row"><input type="checkbox" id="failedMessageHelper"><span>Save sent drafts for Resubmit errors</span></label>
+        <p class="hint">The send button may still wait for SpicyChat to finish, but this lets you keep drafting your next message.</p>
+      </section>
+
+      <section class="card">
+        <h2>Scroll navigation</h2>
+        <label class="row"><input type="checkbox" id="showScrollToTopButton"><span>Show floating scroll-to-top button on long SpicyChat pages</span></label>
+        <label class="row"><input type="checkbox" id="showScrollToBottomButton"><span>Show floating scroll-to-bottom button on long SpicyChat pages</span></label>
+        <p class="hint">The arrows only appear when there is somewhere useful to jump. If both are enabled, they stack together. Home/listing/profile pages use a smaller faded bubble so it stays out of the way, especially on mobile.</p>
+      </section>
+
+      <section class="card">
+        <h2>Performance</h2>
+        <label class="row"><input type="checkbox" id="chatPerformanceMode"><span>Use lighter rendering on long chat pages</span></label>
+        <label class="row"><input type="checkbox" id="pauseQolInHiddenTabs"><span>Pause most QoL checks while this tab is not focused</span></label>
+        <p class="hint">QoL automatically prioritizes blocking/opened filtering and direct chat controls before cosmetic cleanup. Long-chat mode keeps far-away messages lighter using viewport-aware rendering; the hidden-tab option further reduces work in background tabs.</p>
+      </section>
+
+      <section class="card">
+        <h2>Message options</h2>
+        <p class="hint">Adds small quick-action icons to chat messages, using SpicyChat's own Copy/Edit/Report actions.</p>
+        <label class="row"><input type="checkbox" id="showMessageQuickActions"><span>Show small Copy/Edit/Report icons on messages</span></label>
+        <label class="row"><input type="checkbox" id="hideOriginalMessageDropdown"><span>Hide the original three-dot message button when quick icons are active</span></label>
+        <label class="row"><input type="checkbox" id="messageQuickActionCopy"><span>Show Copy icon</span></label>
+        <label class="row"><input type="checkbox" id="messageQuickActionEdit"><span>Show Edit icon</span></label>
+        <label class="row"><input type="checkbox" id="messageQuickActionReport"><span>Show Report icon on AI messages</span></label>
+        
+      </section>
+
+      <section class="card">
+        <h2>Chat export</h2>
+        <label class="row"><input type="checkbox" id="showChatExportButton"><span>Show Export chat button on chat pages</span></label>
+        <label class="row"><input type="checkbox" id="chatExportLoadPreviousMessages"><span>Load older messages before exporting</span></label>
+        <label class="row"><input type="checkbox" id="chatExportIncludeBotInfo"><span>Include visible bot info</span></label>
+        <label class="row"><input type="checkbox" id="chatExportIncludeOocDirectives"><span>Include OOC and directive notes</span></label>
+        <p class="hint">Exports are cleaner now: messages are grouped by speaker, and bot info stays separate from the chat.</p>
+      </section>
+
+      <section class="card">
+        <h2>OOC presets</h2>
+        <label class="row"><input type="checkbox" id="showOocTools"><span>Show OOC insert tools on chat pages</span></label>
+        <div class="ooc-manager">
+          <div class="ooc-manager-head">
+            <div>
+              <h3>Presets</h3>
+              <p class="hint">Give each preset a short name. The mini panel uses that name in the dropdown.</p>
+            </div>
+            <button id="addOocTemplate" type="button">+ Add OOC</button>
+          </div>
+          <div id="oocTemplateList" class="ooc-template-list"></div>
+        </div>
+        <p class="hint">You can use {user}, {persona}, {bot}, and {character}.</p>
+      </section>
+
+      <section class="card">
+        <h2>Persona helpers</h2>
+        <label class="row"><input type="checkbox" id="savePersonasFromPages"><span>Save personas when the extension sees the persona list</span></label>
+        <label class="row"><input type="checkbox" id="expandPersonaDescriptions"><span>Show expand buttons for persona descriptions on My Personas</span></label>
+        <label class="row"><input type="checkbox" id="showPersonaQuickSwitch"><span>Show persona quick-switch in the mini panel</span></label>
+        <label class="row"><input type="checkbox" id="autoAcceptPersonaChange"><span>Automatically press Yes on the Change Persona warning</span></label>
+        <label>Max persona quick buttons<input type="number" id="personaQuickSwitchLimit" min="1" max="12" step="1"></label>
+        <p class="hint">Saved personas: <span id="personaCount">0 stored</span>. The quick-switch uses saved personas from /personas or the Change Persona picker.</p>
+      </section>
+    </div>
+
+
+    <div class="tab-page" data-page="bot-tools">
+      <section class="card">
+        <h2>Creation helpers</h2>
+        <label class="row"><input type="checkbox" id="botEditorAutoOpenAdvanced"><span>Always open the Advanced chatbot section</span></label>
+        <label class="row"><input type="checkbox" id="lorebookAutoStartNew"><span>Automatically click Start New when opening Create Lorebook</span></label>
+        <label class="row"><input type="checkbox" id="showLorebookEntryExpandButtons"><span>Show expand buttons for Lorebook entry text</span></label>
+        <label>Default visibility for new chatbots
+          <select id="botEditorDefaultVisibility">
+            <option value="ignore">Leave SpicyChat default</option>
+            <option value="public">Public</option>
+            <option value="unlisted">Unlisted</option>
+          </select>
+        </label>
+        <label class="row"><input type="checkbox" id="autoAgreeCreationGuidelines"><span>Automatically tick the Community Guidelines agreement on chatbot and Lorebook creation pages</span></label>
+        <p class="hint">The visibility helper only sets the initial choice on /chatbot/create. You can still change it manually before saving.</p>
+        <p class="hint">The Lorebook Start New helper only acts on the chooser at /lorebook/create and leaves Import alone. Lorebook entry expand buttons only change how entry text is displayed locally; clicking the entry itself still opens SpicyChat's normal editor.</p>
+        <p class="hint">The guidelines helper only targets the agreement checkbox on /chatbot/create and /lorebook/create.</p>
+      </section>
+
+      <section class="card">
+        <h2>Chatbot shortcuts</h2>
+        <label class="row"><input type="checkbox" id="chatTopBarAddLaterButton"><span>Show a Later button beside the bot name in chats</span></label>
+        <label class="row"><input type="checkbox" id="closeChatTabAfterSavingLater"><span>Close the current chat tab after saving the bot for Later</span></label>
+        <label class="row"><input type="checkbox" id="showPerCharacterChatHistory"><span>Show a Chats button beside the bot name for this character's saved chat history</span></label>
+        <label class="row"><input type="checkbox" id="showQuickNewChatButton"><span>Show a + button beside the bot name to start another chat with the same character</span></label>
+        <p class="hint">Chats opens SpicyChat's own View Saved Chats screen for the current character. + uses SpicyChat's normal Start New Chat action, so the current conversation is saved normally.</p>
+        <p class="hint">The Later close-tab option only closes when a bot is added to Later. Removing it from Later keeps the chat open.</p>
+      </section>
+
+      <section class="card">
+        <h2>Bot editor snippets</h2>
+        <p class="hint">Adds small insert buttons above longer fields while creating or editing a chatbot. Text is inserted at the current cursor position.</p>
+        <label class="row"><input type="checkbox" id="botEditorShowCharButton"><span>Show {{char}} button</span></label>
+        <label class="row"><input type="checkbox" id="botEditorShowUserButton"><span>Show {{user}} button</span></label>
+        <label class="row"><input type="checkbox" id="botEditorShowContinueButton"><span>Show CONTINUE button</span></label>
+        <label class="row"><input type="checkbox" id="botEditorShowNoControlButton"><span>Show a no-control personality-rule button</span></label>
+        <label class="row"><input type="checkbox" id="botEditorShowCustomSnippets"><span>Show custom snippet buttons</span></label>
+        <div class="ooc-manager">
+          <div class="ooc-manager-head">
+            <div>
+              <h3>Custom snippets</h3>
+              <p class="hint">Useful for reusable personality, scenario, greeting, or formatting text.</p>
+            </div>
+            <button id="addBotEditorSnippet" type="button">+ Add snippet</button>
+          </div>
+          <div id="botEditorSnippetList" class="ooc-template-list"></div>
+        </div>
+        <p class="hint">Persistent OOC-style rules belong in Personality or Scenario. The normal OOC tool only inserts into the user side of a chat.</p>
+      </section>
+
+      <section class="card">
+        <h2>Bot tags in chats</h2>
+        <label class="row"><input type="checkbox" id="showChatTagLinks"><span>Make the bot's tags clickable on chat pages</span></label>
+        <label class="row"><input type="checkbox" id="showChatTagAddButtons"><span>Show + buttons to add tags to the saved Narrow by tag list</span></label>
+        <p class="hint">Clicking a tag opens the Home page with that tag included. The + button adds it without replacing tags already saved in your include list.</p>
+      </section>
+    </div>
+
+    <div class="tab-page" data-page="sidebar">
+      <section class="card">
+        <h2>Sidebar cleanup</h2>
+        <p class="hint">Sign In is always kept visible. Sign Out only hides if you turn on that exact option.</p>
+
+        <h3>Top</h3>
+        <label class="row"><input type="checkbox" id="hideSidebarLogo"><span>Hide logo</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarHome"><span>Hide Home</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarChats"><span>Hide Chats</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarPersonas"><span>Hide My Personas</span></label>
+
+        <h3>Create</h3>
+        <label class="row"><input type="checkbox" id="hideSidebarCreateMenu"><span>Hide Create dropdown button</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarCreateChatbot"><span>Hide Create - Chatbot</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarCreateLorebook"><span>Hide Create - Lorebook</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarCreateGroup"><span>Hide Create - Group</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarCreateVoice"><span>Hide Create - Voice</span></label>
+
+        <h3>My Creations</h3>
+        <label class="row"><input type="checkbox" id="hideSidebarMyCreationsMenu"><span>Hide My Creations dropdown button</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarMyChatbots"><span>Hide My Creations - Chatbots</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarMyLorebooks"><span>Hide My Creations - Lorebooks</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarMyGroups"><span>Hide My Creations - Groups</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarMyVoices"><span>Hide My Creations - Voices</span></label>
+
+        <h3>Other sidebar buttons</h3>
+        <label class="row"><input type="checkbox" id="hideSidebarFavorites"><span>Hide Favorites</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarRecommendations"><span>Hide Recommendations</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarLeaderboard"><span>Hide Leaderboard</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarBlockedCreators"><span>Hide Blocked Creators</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarSubscribe"><span>Hide Subscribe</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarHelp"><span>Hide Help</span></label>
+
+        <h3>Footer</h3>
+        <label class="row"><input type="checkbox" id="hideSidebarSocialLinks"><span>Hide social links/icons</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarFooterLinks"><span>Hide footer links: Terms, Privacy, Refunds, Support, etc.</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarAppDownload"><span>Hide app download button</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarWebVersion"><span>Hide web version text</span></label>
+        <label class="row"><input type="checkbox" id="hideSidebarSignOut"><span>Hide Sign Out button</span></label>
+      </section>
+    </div>
+
+    <div class="tab-page" data-page="blocking">
+      <section class="card">
+        <h2>Card filters</h2>
+        <label class="row"><input type="checkbox" id="blockCards"><span>Block character cards by text</span></label>
+        <label class="row"><input type="checkbox" id="hideHomeForYouCards"><span>Hide cards tagged "For You" on the Home page only</span></label>
+        <label class="row"><input type="checkbox" id="expandLongCardDescriptions"><span>Expand longer card descriptions</span></label>
+        <label class="row"><input type="checkbox" id="hideGroupChats"><span>Hide group chats / multiple participant bots</span></label>
+        <label class="row"><input type="checkbox" id="replaceCardProfileWithBlockButton"><span>Replace card profile/info button with a block X</span></label>
+        <label>Blocked tags, one per line<textarea id="blockedTags" spellcheck="false" placeholder="Low Quality&#10;Anime"></textarea></label>
+        <label>Blocked words in name/description, one per line<textarea id="blockedWords" spellcheck="false" placeholder="high school&#10;step sister"></textarea></label>
+        <label>Blocked creators, one per line<textarea id="blockedCreators" spellcheck="false" placeholder="@creatorname"></textarea></label>
+        <label>
+          Hidden card mode
+          <select id="hiddenCardMode">
+            <option value="hide">hide completely</option>
+            <option value="dim">dim instead of hiding</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Listing refill</h2>
+        <p class="hint">Can click Load More after hiding cards so the page has enough visible results.</p>
+        <label class="row"><input type="checkbox" id="autoFillListings"><span>Auto-fill listings after hiding cards</span></label>
+        <label>Target visible cards<input id="autoFillTargetCards" type="number" min="1" max="200" step="1"></label>
+        <label>Max Load More clicks per page<input id="autoFillMaxClicks" type="number" min="1" max="30" step="1"></label>
+        <p class="hint">Works on listing/recommendation/search pages with a visible Load More button. The mini panel also has a manual Fill now button.</p>
+      </section>
+
+      <section class="card">
+        <h2>Language filter</h2>
+        <p class="hint">Conservative mode only hides a card when it is very clearly another language. Pick the languages you want to allow. If nothing is selected, this filter does nothing.</p>
+        <label class="row"><input type="checkbox" id="enableLanguageFilter"><span>Hide cards that are clearly not in my allowed languages</span></label>
+        <div class="language-grid">
+          <label class="row"><input type="checkbox" class="allowed-language" value="en"><span>English</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="de"><span>German</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="ja"><span>Japanese</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="ko"><span>Korean</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="zh"><span>Chinese</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="ru"><span>Russian / Cyrillic</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="ar"><span>Arabic</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="he"><span>Hebrew</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="th"><span>Thai</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="hi"><span>Hindi / Devanagari</span></label>
+          <label class="row"><input type="checkbox" class="allowed-language" value="el"><span>Greek</span></label>
+        </div>
+        <input id="languageFilterMode" type="hidden" value="conservative">
+      </section>
+
+      <section class="card">
+        <h2>Text normalization</h2>
+        <p class="hint">Normalizes fancy Unicode text for matching/search/language checks only. It does not change how SpicyChat displays cards.</p>
+        <label class="row"><input type="checkbox" id="textNormalizationEnabled"><span>Use text normalization for filters, search, and language detection</span></label>
+        <label class="row"><input type="checkbox" id="normalizeFancyUnicode"><span>Convert fancy Unicode letters/numbers to normal text</span></label>
+        <label class="row"><input type="checkbox" id="normalizePunctuation"><span>Normalize curly quotes, long dashes, dots, and similar punctuation</span></label>
+        <label class="row"><input type="checkbox" id="normalizeInvisibleCharacters"><span>Remove invisible/zero-width characters while matching</span></label>
+        <label class="row"><input type="checkbox" id="normalizeDecorativeSymbols"><span>Ignore emoji/decorative symbols while matching</span></label>
+        <label>Preview input<input id="textNormalizationPreviewInput" type="text" value="[YOUR BEST FRIENDS GRANDMA]"></label>
+        <div class="normalization-preview">
+          <span>Normalized:</span>
+          <code id="textNormalizationPreviewOutput"></code>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Blocked bots</h2>
+        <p class="hint">Bots here are hidden from listings. Profiles still stay normal if you open the profile page directly.</p>
+        <div class="manager-add-row">
+          <input id="blockedAddId" type="text" placeholder="Bot/chat ID">
+          <input id="blockedAddName" type="text" placeholder="Optional name">
+          <button id="addBlockedBot" type="button">Add blocked</button>
+        </div>
+        <div class="bot-manager-toolbar">
+          <input id="blockedBotSearch" type="search" placeholder="Search blocked bots by name or ID">
+          <label class="manager-sort-label">
+            Sort
+            <select id="blockedBotSortMode">
+              <option value="newest">newest first</option>
+              <option value="oldest">oldest first</option>
+              <option value="name-asc">name A-Z</option>
+              <option value="name-desc">name Z-A</option>
+            </select>
+          </label>
+          <span id="blockedBotManagerSummary" class="manager-count">0 saved</span>
+        </div>
+        <div id="blockedBotManager" class="bot-manager-list"></div>
+        <div class="bot-manager-pager">
+          <button id="blockedBotShowMore" type="button">Show 20 more</button>
+          <button id="blockedBotShowLess" type="button">Show first 20</button>
+          <button id="blockedBotCollapse" type="button">Expand all</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Not interested</h2>
+        <p class="hint">Softer than blocking. Useful for hiding recommendations without treating it as a full block.</p>
+        <div class="manager-add-row">
+          <input id="notInterestedAddId" type="text" placeholder="Bot/chat ID">
+          <input id="notInterestedAddName" type="text" placeholder="Optional name">
+          <button id="addNotInterestedBot" type="button">Add not interested</button>
+        </div>
+        <div class="bot-manager-toolbar">
+          <input id="notInterestedBotSearch" type="search" placeholder="Search Not Interested bots by name or ID">
+          <span id="notInterestedBotManagerSummary" class="manager-count">0 saved</span>
+        </div>
+        <div id="notInterestedBotManager" class="bot-manager-list"></div>
+        <div class="bot-manager-pager">
+          <button id="notInterestedBotShowMore" type="button">Show 20 more</button>
+          <button id="notInterestedBotShowLess" type="button">Show first 20</button>
+          <button id="notInterestedBotCollapse" type="button">Expand all</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="tab-page" data-page="data">
+      <section class="card" id="backupRestoreCard">
+        <h2>Backup and restore</h2>
+        <p class="hint">Export everything or only the part you need. Imports are previewed first so you can choose whether to merge with what you already have or replace the categories included in the backup.</p>
+        <label>
+          Export scope
+          <select id="exportScope">
+            <option value="all">everything</option>
+            <option value="settings">settings only</option>
+            <option value="opened">opened chats only</option>
+            <option value="blocked">blocked bots only</option>
+            <option value="notInterested">not interested only</option>
+            <option value="favoriteCreators">favorite creators only</option>
+            <option value="favoriteBots">favorite bots only</option>
+            <option value="laterBots">Later bots only</option>
+            <option value="personas">personas only</option>
+            <option value="ooc">OOC presets only</option>
+          </select>
+        </label>
+        <div class="button-row">
+          <button id="exportSettings" type="button">Export to box</button>
+          <button id="previewImport" type="button">Preview import</button>
+        </div>
+        <textarea id="settingsJson" spellcheck="false" placeholder="Exported/imported JSON appears here"></textarea>
+        <div id="importPreview" class="import-preview" hidden>
+          <div>
+            <strong>Import preview</strong>
+            <p class="hint" id="importPreviewSummary"></p>
+          </div>
+          <div id="importPreviewCounts" class="import-preview-counts"></div>
+          <div class="import-mode">
+            <label class="row"><input type="radio" name="importMode" value="merge" checked><span>Merge with current data and remove duplicates</span></label>
+            <label class="row"><input type="radio" name="importMode" value="replace"><span>Replace only the categories included in this backup</span></label>
+          </div>
+          <div class="button-row">
+            <button id="importSettings" type="button">Import now</button>
+            <button id="cancelImportPreview" type="button">Cancel</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="storageCard">
+        <h2>Local storage</h2>
+        <p class="hint">Shows what QoL has saved in this browser. Cleanup removes duplicate IDs and orphaned metadata; it does not delete valid saved bots, chats, personas, or presets.</p>
+        <div id="storageUsage" class="storage-usage">Loading storage details...</div>
+        <div class="button-row">
+          <button id="refreshStorageUsage" type="button">Refresh</button>
+          <button id="cleanLocalData" type="button">Clean local data</button>
+        </div>
+        <p class="hint" id="cleanupStatus"></p>
+      </section>
+
+      <section class="card">
+        <h2>Debug</h2>
+        <label class="row"><input type="checkbox" id="debug"><span>Debug badges for dimmed cards</span></label>
+      </section>
+    </div>
+
+    <div class="tab-page" data-page="changelog">
+      <section class="card">
+        <h2>Changelog</h2>
+        <p id="settingsUpdateSummary" class="hint" hidden></p>
+        <div class="button-row"><button id="markUpdatesSeen" type="button">Mark new/updated settings as seen</button></div>
+        <div id="changelogContent" class="changelog-list">Loading changelog...</div>
+      </section>
+    </div>
+
+    <div class="tab-page" data-page="help">
+      <section class="card help-card">
+        <h2>Need help?</h2>
+        <p>If something broke, SpicyChat changed something, or the extension is doing something weird, open an issue on GitHub.</p>
+        <a class="help-link" href="https://github.com/drachescript/spicychat-qol-extention/issues/new?labels=bug" target="_blank" rel="noopener noreferrer"><span><strong>Report a bug</strong><small>Something is broken or not working right.</small></span><span class="help-arrow">&gt;</span></a>
+        <a class="help-link" href="https://github.com/drachescript/spicychat-qol-extention/issues/new?labels=enhancement" target="_blank" rel="noopener noreferrer"><span><strong>Suggest something</strong><small>Got another QoL idea or something annoying that should be fixed?</small></span><span class="help-arrow">&gt;</span></a>
+        <a class="help-link" href="https://github.com/drachescript/spicychat-qol-extention" target="_blank" rel="noopener noreferrer"><span><strong>Open GitHub</strong><small>Source code, releases, issues and updates.</small></span><span class="help-arrow">&gt;</span></a>
+      </section>
+
+
+      <section class="card" id="diagnosticsCard">
+        <h2>Quick diagnostics</h2>
+        <p class="hint">Copies the extension version, browser, enabled feature names, storage counts, Toolkit detection status, and a sanitized SpicyChat page type. It does not copy chat text, memories, personas, blocked words, or other saved content.</p>
+        <div class="button-row"><button id="copyDiagnostics" type="button">Copy diagnostic info</button></div>
+        <p class="hint" id="diagnosticsStatus"></p>
+      </section>
+
+      <section class="card">
+        <h2>Credits</h2>
+        <p class="hint">Generation profile support includes GPL-3.0 code adapted from S.AI Toolkit by OnyxMizuna.</p>
+        <a class="help-link" href="https://github.com/OnyxMizuna/SAI-Toolkit" target="_blank" rel="noopener noreferrer"><span><strong>S.AI Toolkit</strong><small>Original project and source code.</small></span><span class="help-arrow">&gt;</span></a>
+      </section>
+
+      <section class="card">
+        <h2>Before reporting an issue</h2>
+        <p class="hint">Please mention what page you were on, what you expected to happen, and what actually happened.</p>
+        <p class="hint">A screenshot and the SpicyChat HTML for the broken element helps a lot too.</p>
+      </section>
+    </div>
+
+    <footer id="settingsFooter">
+      <button id="save" type="button">Save settings</button>
+      <span id="status"></span>
+    </footer>
+  </main>
+
+  <div id="settingsToast" class="settings-toast" hidden>
+    <span id="settingsToastText"></span>
+    <button id="settingsToastUndo" type="button">Undo</button>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

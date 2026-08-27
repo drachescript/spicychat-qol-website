@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0d080a">
-<meta name="description" content="SpicyChat QoL - extra quality-of-life settings and tools for SpicyChat.">
+<meta name="description" content="SpicyChat QoL - configurable quality-of-life tools for SpicyChat, with stable, development and Android builds.">
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
@@ -19,11 +19,12 @@
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="SpicyChat QoL home">
       <img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon">
-      <span><strong>SpicyChat QoL</strong><small>unofficial SpicyChat QoL tools</small></span>
+      <span><strong>SpicyChat QoL</strong><small>independent community QoL tools</small></span>
     </a>
     <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
     <nav class="site-nav" data-nav aria-label="Main navigation">
       <a href="/features/">Features</a>
+      <a href="/demo/">Demo</a>
       <a href="/extension/">Stable</a>
       <a href="/devextention/">Dev</a>
       <a href="/android/">Android</a>
@@ -35,33 +36,34 @@
   </div>
 </header>
 <div class="global-notice-wrap" data-global-notice hidden></div>
-
 <main id="main">
 <section class="hero home-hero">
   <div class="hero-glow"></div>
   <div class="container hero-content">
     <img src="/assets/brand/extension-icon.jpg" class="hero-icon" alt="SpicyChat QoL icon">
-    <span class="eyebrow">Browser extension + Android app</span>
+    <span class="eyebrow">Browser extension + Android project</span>
     <h1>SpicyChat QoL</h1>
-    <p class="hero-lead">Extra settings, chat tools, bot filtering, persona/OOC helpers, UI cleanup and a bunch of smaller things I wanted while using SpicyChat.</p>
+    <p class="hero-lead">Extra settings, chat tools, bot filtering, organization, persona/OOC helpers, creation helpers, UI cleanup and a lot of smaller things I wanted while using SpicyChat.</p>
     <div class="button-row center">
       <a class="button primary" href="https://chromewebstore.google.com/detail/dragonscript-spicychat-qo/hjnipnpdfegilehicfkholhbomigfabl" target="_blank" rel="noopener">Install stable</a>
-      <a class="button secondary" href="/devextention/">Dev extension</a>
+      <a class="button secondary" href="/devextention/">Development builds</a>
+      <a class="button secondary" href="/demo/">Try the demo</a>
       <a class="button secondary" href="/android/">Android</a>
     </div>
-    <div class="version-strip">
-      <a href="/extension/"><small>Stable</small><strong>v<span data-stable-version>0.1.5</span></strong><em>recommended</em></a>
-      <a href="/devextention/"><small>Dev</small><strong>v<span data-dev-version>0.1.8.70</span></strong><em>testing</em></a>
-      <a href="/android/"><small>Android</small><strong data-android-version>In development</strong><em>APK later</em></a>
+    <div class="version-strip version-strip-four">
+      <a href="/extension/"><small>Stable</small><strong>v<span data-stable-version>0.1.5</span></strong><em>Chrome / Chromium</em></a>
+      <a href="/devextention/#chrome"><small>Chrome DEV</small><strong>v<span data-chrome-dev-version>0.1.8.70</span></strong><em>testing</em></a>
+      <a href="/devextention/#firefox"><small>Firefox DEV</small><strong>v<span data-firefox-dev-version>0.1.9.45</span></strong><em>desktop + Android</em></a>
+      <a href="/android/"><small>Android app</small><strong data-android-version>In development</strong><em>standalone APK later</em></a>
     </div>
   </div>
 </section>
 
 <section class="section tight-top" id="overview">
   <div class="container">
-    <div class="section-heading"><span class="eyebrow">Overview</span><h2>The important stuff.</h2><p>This list is pulled from the extension GitHub README when the full repo is public. Until then the site uses the current bundled copy.</p></div>
+    <div class="section-heading"><span class="eyebrow">Overview</span><h2>The bigger features.</h2><p>This overview is generated from the DEV root <code>features.md</code>. Right now the full DEV repository files are still being prepared, so the site uses a bundled snapshot and will switch to GitHub automatically when those root files are uploaded.</p></div>
     <div class="overview-grid" data-home-features><div class="loading-card">Loading current feature overview…</div></div>
-    <div class="section-actions"><a class="text-link" href="/features/">See every feature →</a></div>
+    <div class="section-actions"><a class="text-link" href="/features/">See the full Stable / DEV / Planned feature lists →</a></div>
   </div>
 </section>
 
@@ -69,19 +71,19 @@
   <div class="container product-grid">
     <article class="product-card recommended">
       <div class="product-top"><img src="/assets/brand/extension-icon.jpg" alt=""><div><span class="badge good">Recommended</span><h2>Stable extension</h2></div></div>
-      <p>The normal Web Store build. Best if you just want the extension to work and update through your browser.</p>
+      <p>The normal Chrome Web Store build. Best if you want the currently stable public extension and automatic browser updates.</p>
       <div class="mini-version">Current stable: <strong>v<span data-stable-version>0.1.5</span></strong></div>
-      <div class="button-row"><a class="button primary" href="/extension/">Stable info</a><a class="button secondary" href="https://chromewebstore.google.com/detail/dragonscript-spicychat-qo/hjnipnpdfegilehicfkholhbomigfabl" target="_blank" rel="noopener">Web Store</a></div>
+      <div class="button-row"><a class="button primary" href="/extension/">Stable info</a><a class="button secondary" href="https://chromewebstore.google.com/detail/dragonscript-spicychat-qo/hjnipnpdfegilehicfkholhbomigfabl" target="_blank" rel="noopener">Chrome Web Store</a></div>
     </article>
     <article class="product-card">
-      <div class="product-top"><img src="/assets/brand/extension-icon.jpg" alt=""><div><span class="badge warn">Testing</span><h2>Dev extension</h2></div></div>
-      <p>Gets working test features first and can be ahead of stable. Feedback is useful here because this is what I am actively preparing for v0.2.</p>
-      <div class="mini-version">Current dev build: <strong>v<span data-dev-version>0.1.8.70</span></strong></div>
-      <div class="button-row"><a class="button primary" href="/devextention/">Dev info</a><a class="button secondary" href="https://chrome.google.com/webstore/detail/jdbhnaohfjnmkfpfddnjilmpaemkmabh" target="_blank" rel="noopener">Install dev</a></div>
+      <div class="product-top"><img src="/assets/brand/extension-icon.jpg" alt=""><div><span class="badge warn">Testing</span><h2>DEV extension</h2></div></div>
+      <p>The actively developed build. Chrome and Firefox are separate distribution channels, so their public version numbers do not have to match.</p>
+      <div class="mini-version"><span>Chrome <strong>v<span data-chrome-dev-version>0.1.8.70</span></strong></span><span>Firefox <strong>v<span data-firefox-dev-version>0.1.9.45</span></strong></span></div>
+      <div class="button-row"><a class="button primary" href="/devextention/">DEV info</a><a class="button secondary" href="/demo/">Interactive demo</a></div>
     </article>
     <article class="product-card">
       <div class="product-top"><div class="android-mark">A</div><div><span class="badge quiet">In development</span><h2>Android app</h2></div></div>
-      <p>A standalone SpicyChat wrapper with SpicyChat QoL integrated, so the same kind of tools can work without a browser extension.</p>
+      <p>A standalone SpicyChat WebView app with QoL integrated so most extension-style tools can work without installing a browser extension.</p>
       <div class="mini-version">Status: <strong data-android-version>In development</strong></div>
       <div class="button-row"><a class="button primary" href="/android/">Android info</a><a class="button secondary" href="https://github.com/drachescript/spicychat-qol-android" target="_blank" rel="noopener">Android GitHub</a></div>
     </article>
@@ -91,35 +93,45 @@
 <section class="section">
   <div class="container split-callouts">
     <article class="callout">
-      <span class="eyebrow">Current status</span>
-      <h2>v0.2 prep is properly underway :D</h2>
-      <p>I am cleaning up the stable build, docs/settings and compatibility, making fresh installs easier, and getting the full/current extension source ready for GitHub.</p>
-      <p class="muted">Current target: main extension refresh + full extension GitHub within about a week from Aug 13, 2026 (around Aug 20 or earlier). v0.2 still waits until I am happy with testing.</p>
-      <a class="text-link" href="/status/">More project status →</a>
+      <span class="eyebrow">Project status</span>
+      <h2>DEV is already well into 0.1.9.x.</h2>
+      <p>Firefox DEV is on the 0.1.9.x line, Chrome DEV is its separately published store build, and the Stable + DEV GitHub repositories are now in place for the full root source/docs upload.</p>
+      <p class="muted">The website is wired to read <code>features.md</code>, <code>CHANGELOG.md</code>, settings files and other supported root files from those repositories as soon as they exist.</p>
+      <a class="text-link" href="/status/">Current project status →</a>
     </article>
     <article class="callout">
-      <span class="eyebrow">Need help?</span>
-      <h2>Discord + the SpicyChat thread.</h2>
-      <p>You can use the SpicyChat QoL Discord for help/bug reports, or the existing thread inside the official SpicyChat Discord.</p>
-      <div class="button-row"><a class="button primary" href="/discord/">QoL Discord</a><a class="button secondary" href="/support/">All support options</a></div>
+      <span class="eyebrow">Demo</span>
+      <h2>Try the settings without touching SpicyChat.</h2>
+      <p>The demo runs a local copy of the extension settings beside a completely fake Yui chat. It uses dummy messages and local browser storage only.</p>
+      <p class="muted">No SpicyChat login, cookies, API, real chats or account data are used.</p>
+      <div class="button-row"><a class="button primary" href="/demo/">Open demo</a><a class="button secondary" href="/features/">Browse features</a></div>
     </article>
   </div>
 </section>
 
 <section class="section section-muted">
+  <div class="container support-strip">
+    <div><span class="eyebrow">Support + feedback</span><h2>QoL Discord is ready.</h2><p>Use the QoL Discord for support, suggestions, known issues, announcements, downloads and tester feedback. The existing QoL thread in the official SpicyChat Discord is also still a valid place to report something.</p></div>
+    <div class="button-row"><a class="button primary" href="/discord/">Join QoL Discord</a><a class="button secondary" href="/support/">Support options</a></div>
+  </div>
+</section>
+
+<section class="section">
   <div class="container relation-card">
-    <div><span class="eyebrow">SpicyChat</span><h2>Does SpicyChat know about this?</h2></div>
-    <p>Yep. SpicyChat has acknowledged that I/the project exist and they do not currently mind it, similar to S.AI Toolkit. That does <strong>not</strong> make SpicyChat QoL official or endorsed though.</p>
+    <div><span class="eyebrow">SpicyChat</span><h2>Does SpicyChat know about it?</h2></div>
+    <p>Yep. SpicyChat has acknowledged that I/the project exist and they currently do not mind it, similar to S.AI Toolkit. That still does <strong>not</strong> make SpicyChat QoL official, affiliated with SpicyChat, or endorsed by them.</p>
   </div>
 </section>
 </main>
 <footer class="site-footer">
   <div class="container footer-main">
     <div>
-      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>unofficial community project</small></span></a>
-      <p>SpicyChat is aware of the project, but SpicyChat QoL is still independent and unofficial.</p>
+      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a>
+      <p>SpicyChat has acknowledged the project, but SpicyChat QoL is still independent, unofficial, and not endorsed by SpicyChat.</p>
     </div>
     <div class="footer-links">
+      <a href="/features/">Features</a>
+      <a href="/demo/">Demo</a>
       <a href="/support/">Support</a>
       <a href="/discord/">Discord</a>
       <a href="/credits/">Credits</a>
@@ -131,7 +143,6 @@
 <script src="/assets/js/markdown.js" defer></script>
 <script src="/assets/js/content-source.js" defer></script>
 <script src="/assets/js/site.js" defer></script>
-
 
 </body>
 </html>

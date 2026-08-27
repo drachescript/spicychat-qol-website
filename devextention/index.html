@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0d080a">
-<meta name="description" content="SpicyChat QoL development/testing extension information.">
+<meta name="description" content="SpicyChat QoL development builds for Chrome, Firefox desktop and Firefox Android.">
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="stylesheet" href="/assets/css/style.css">
-<title>Dev extension · SpicyChat QoL</title>
+<title>DEV extension · SpicyChat QoL</title>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -19,11 +19,12 @@
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="SpicyChat QoL home">
       <img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon">
-      <span><strong>SpicyChat QoL</strong><small>unofficial SpicyChat QoL tools</small></span>
+      <span><strong>SpicyChat QoL</strong><small>independent community QoL tools</small></span>
     </a>
     <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
     <nav class="site-nav" data-nav aria-label="Main navigation">
       <a href="/features/">Features</a>
+      <a href="/demo/">Demo</a>
       <a href="/extension/">Stable</a>
       <a href="/devextention/">Dev</a>
       <a href="/android/">Android</a>
@@ -35,19 +36,23 @@
   </div>
 </header>
 <div class="global-notice-wrap" data-global-notice hidden></div>
-
 <main id="main">
-<section class="page-hero product-hero"><div class="container"><span class="badge warn">Testing build</span><h1>Dev extension</h1><p>This is where working test features land first. It is the build I am actively using to finish v0.2 prep, so it can change a lot faster than stable.</p><div class="hero-meta-row"><span>Current dev build <strong>v<span data-dev-version>0.1.8.70</span></strong></span><span>Stable <strong>v<span data-stable-version>0.1.5</span></strong></span></div><div class="button-row"><a class="button primary" href="https://chrome.google.com/webstore/detail/jdbhnaohfjnmkfpfddnjilmpaemkmabh" target="_blank" rel="noopener">Install dev build</a><a class="button secondary" href="/changelog/">Dev changelog</a></div></div></section>
-<section class="section tight-top"><div class="container two-col"><article class="plain-card"><h2>What “dev” means here</h2><p>It is not a random broken nightly. I put features in the dev listing once they are working enough to actually test, but there can still be bugs or compatibility problems.</p><p>If something breaks, reporting it in the QoL Discord or SpicyChat thread helps a lot.</p><a class="text-link" href="/support/">Report something →</a></article><article class="plain-card"><h2>Current v0.2 prep</h2><ul class="clean-list"><li>settings + docs cleanup</li><li>fresh-install/setup improvements</li><li>compatibility testing</li><li>main/stable extension refresh</li><li>full/current source going public</li></ul><a class="text-link" href="/status/">Full status →</a></article></div></section>
-<section class="section section-muted"><div class="container"><div class="section-heading"><span class="eyebrow">Current features</span><h2>Dev uses the full current feature set.</h2><p>The detailed list below is loaded from the same root <code>features.md</code> used by the full Features page.</p></div><div class="markdown-sections compact" data-features-content data-feature-limit="4"></div><div class="section-actions"><a class="text-link" href="/features/">See all feature groups →</a></div></div></section>
+<section class="page-hero product-hero"><div class="container"><img src="/assets/brand/extension-icon.jpg" class="hero-icon small-icon" alt="SpicyChat QoL icon"><span class="eyebrow">Development extension</span><h1>The actively developed build.</h1><p>New features and fixes land here before Stable. Chrome and Firefox are separately published, so it is normal for their current public versions to be different.</p><div class="button-row"><a class="button primary" href="/demo/">Try the DEV settings demo</a><a class="button secondary" href="/features/">DEV features</a><a class="button secondary" href="/changelog/">DEV changelog</a></div></div></section>
+<section class="section tight-top"><div class="container distribution-grid">
+  <article class="distribution-card" id="chrome"><div class="distribution-head"><img src="/assets/brand/extension-icon.jpg" alt=""><div><span class="badge warn">Chrome DEV</span><h2>v<span data-chrome-dev-version>0.1.8.70</span></h2></div></div><p>The Chrome Web Store development/testing listing. It receives submitted DEV releases, but not every tiny local development change is uploaded as a store version.</p><a class="button primary" href="https://chromewebstore.google.com/detail/dragonscript-spicychat-qo/jdbhnaohfjnmkfpfddnjilmpaemkmabh" target="_blank" rel="noopener">Open Chrome DEV</a></article>
+  <article class="distribution-card" id="firefox"><div class="distribution-head"><div class="firefox-mark">Fx</div><div><span class="badge warn">Firefox DEV</span><h2>v<span data-firefox-dev-version>0.1.9.45</span></h2></div></div><p>The public experimental Firefox build. It works on Firefox desktop and is also listed as available for Firefox Android.</p><p class="source-note">Version source: <span data-firefox-dev-source>checking Mozilla…</span></p><a class="button primary" href="https://addons.mozilla.org/en-US/firefox/addon/dragonscript-spicychat-qol-dev/" target="_blank" rel="noopener">Open Firefox DEV</a></article>
+</div></section>
+<section class="section section-muted"><div class="container two-col"><article class="plain-card"><span class="eyebrow">DEV GitHub</span><h2>The repository is ready.</h2><p data-repo-state="dev">Checking DEV GitHub root files…</p><p>The website is wired for root <code>features.md</code>, <code>CHANGELOG.md</code>, <code>options.html</code>, <code>options.css</code>, <code>options.js</code> and <code>manifest.json</code>.</p><a class="text-link" href="https://github.com/drachescript/spicychat-qol-dev" target="_blank" rel="noopener">Open DEV GitHub →</a></article><article class="plain-card"><span class="eyebrow">Testing</span><h2>Bugs are expected sometimes.</h2><p>DEV is the modern/current QoL experience, but it is still active testing. If something regresses, the useful thing is a reproducible report with browser, build/version, page, expected result, actual result and diagnostics when relevant.</p><a class="text-link" href="/support/">How to report it →</a></article></div></section>
 </main>
 <footer class="site-footer">
   <div class="container footer-main">
     <div>
-      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>unofficial community project</small></span></a>
-      <p>SpicyChat is aware of the project, but SpicyChat QoL is still independent and unofficial.</p>
+      <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a>
+      <p>SpicyChat has acknowledged the project, but SpicyChat QoL is still independent, unofficial, and not endorsed by SpicyChat.</p>
     </div>
     <div class="footer-links">
+      <a href="/features/">Features</a>
+      <a href="/demo/">Demo</a>
       <a href="/support/">Support</a>
       <a href="/discord/">Discord</a>
       <a href="/credits/">Credits</a>
@@ -59,7 +64,6 @@
 <script src="/assets/js/markdown.js" defer></script>
 <script src="/assets/js/content-source.js" defer></script>
 <script src="/assets/js/site.js" defer></script>
-
 
 </body>
 </html>

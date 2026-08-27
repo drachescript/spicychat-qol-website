@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d080a">
+<meta name="description" content="Interactive SpicyChat QoL settings and safe dummy chat demo.">
+<link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="stylesheet" href="/assets/css/style.css">
+<title>Demo · SpicyChat QoL</title>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="SpicyChat QoL home">
+      <img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon">
+      <span><strong>SpicyChat QoL</strong><small>independent community QoL tools</small></span>
+    </a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
+    <nav class="site-nav" data-nav aria-label="Main navigation">
+      <a href="/features/">Features</a>
+      <a href="/demo/">Demo</a>
+      <a href="/extension/">Stable</a>
+      <a href="/devextention/">Dev</a>
+      <a href="/android/">Android</a>
+      <a href="/changelog/">Changelog</a>
+      <a href="/status/">Status</a>
+      <a href="/support/">Support</a>
+      <a class="nav-discord" href="/discord/">Discord</a>
+    </nav>
+  </div>
+</header>
+<div class="global-notice-wrap" data-global-notice hidden></div>
+
+<main id="main">
+<section class="page-hero demo-hero"><div class="container"><span class="eyebrow">Interactive demo</span><h1>Mess with QoL without touching your account.</h1><p>This runs the extension settings UI in a sandboxed demo beside a fake Yui chat. The messages are dummy preset text; it does not connect to SpicyChat or load any real conversation.</p><div class="demo-safety"><strong>Demo data only.</strong> No SpicyChat login, cookies, account API, real chats, private messages or saved SpicyChat data are used.</div></div></section>
+
+<section class="section tight-top"><div class="container">
+  <div class="demo-toolbar">
+    <div class="demo-mode-group" role="group" aria-label="Demo source">
+      <button type="button" class="feature-mode" data-demo-mode="stable">Stable</button>
+      <button type="button" class="feature-mode active" data-demo-mode="dev">Development</button>
+    </div>
+    <div class="demo-toolbar-meta"><span>Settings build: <strong data-demo-build>loading…</strong></span><button class="button secondary small" type="button" data-demo-reset>Reset demo settings</button><button class="button secondary small" type="button" data-demo-clear-chat>Clear dummy chat</button><button class="button secondary small" type="button" data-demo-reset-chat>Reset dummy chat</button></div>
+  </div>
+  <div class="source-state" data-demo-source>Loading the development settings source…</div>
+  <div class="demo-source-note"><strong>Current bundled exact settings snapshot:</strong> DEV v<span data-demo-snapshot-version>0.1.8.70</span>. The page already prefers live root settings files from GitHub, so it will automatically stop using this snapshot when the DEV repo gets newer <code>options.html</code>, <code>options.css</code>, <code>options.js</code> and <code>manifest.json</code>.</div>
+</div></section>
+
+<section class="section demo-workspace-section"><div class="container demo-workspace">
+  <section class="demo-pane settings-pane" aria-labelledby="demo-settings-title">
+    <div class="demo-pane-head"><div><span class="eyebrow">Settings</span><h2 id="demo-settings-title">Real QoL options UI</h2></div><span class="badge warn" data-demo-mode-badge>DEV</span></div>
+    <div class="demo-iframe-wrap"><iframe title="SpicyChat QoL settings demo" data-settings-frame sandbox="allow-scripts allow-same-origin allow-forms allow-modals" referrerpolicy="no-referrer"></iframe><div class="demo-frame-placeholder" data-demo-placeholder><strong>Loading settings…</strong><span>The exact options page will appear here.</span></div></div>
+  </section>
+
+  <section class="demo-pane preview-pane" aria-labelledby="demo-preview-title">
+    <div class="demo-pane-head"><div><span class="eyebrow">Dummy preview</span><h2 id="demo-preview-title">Safe fake Yui chat</h2></div><span class="badge good">No real chat data</span></div>
+    <div class="fake-app" data-chat-preview>
+      <aside class="fake-sidebar">
+        <div class="fake-logo">S</div>
+        <button type="button" data-sidebar-item="home">Home</button>
+        <button type="button" data-sidebar-item="chats">Chats</button>
+        <button type="button" data-sidebar-item="personas">Personas</button>
+        <button type="button" data-sidebar-item="create">Create</button>
+        <button type="button" data-sidebar-item="favorites">Favorites</button>
+        <span class="fake-sidebar-spacer"></span>
+        <button type="button" data-sidebar-item="help">Help</button>
+      </aside>
+      <div class="fake-main">
+        <div class="fake-topbar">
+          <span class="fake-top-title">Demo chat</span>
+          <div class="fake-top-actions"><button type="button" data-topbar-item="language">EN</button><button type="button" data-topbar-item="theme">Theme</button><button type="button" data-topbar-item="notifications">•</button><span class="fake-user-pill">Demo user</span></div>
+        </div>
+        <div class="fake-promo" data-preview="promo"><strong>Demo promo placeholder</strong><span>This exists only so the cleanup setting has something harmless to hide.</span></div>
+        <div class="fake-chat-head">
+          <img src="https://cdn.nd-api.com/avatars/0fb19108-bfb0-453e-85f3-3b5a2655ce29.png?class=image500x650" onerror="this.src='/assets/brand/extension-icon.jpg'" alt="Yui Kimura demo avatar">
+          <div><strong>Yui Kimura</strong><small>dummy website demo</small></div>
+          <div class="fake-chat-head-actions">
+            <button type="button" data-preview="chat-history" hidden>History</button>
+            <button type="button" data-preview="quick-new-chat" hidden>New chat</button>
+            <button type="button" data-preview="later" hidden>Later</button>
+          </div>
+        </div>
+        <div class="fake-generation-profile" data-preview="generation-profile" hidden>Generation profile: <strong>Demo Balanced</strong></div>
+        <div class="fake-messages" data-demo-messages aria-live="polite"></div>
+        <div class="fake-scroll-tools"><button type="button" data-preview="scroll-top" hidden title="Scroll to top">↑</button><button type="button" data-preview="scroll-bottom" hidden title="Scroll to bottom">↓</button></div>
+        <div class="fake-qol-panel" data-preview="quick-panel" data-placement="bottom-right" hidden>
+          <div class="fake-qol-panel-head"><strong>QoL</strong><span>demo</span></div>
+          <div class="fake-qol-panel-actions"><button type="button">Options</button><button type="button" data-preview="panel-ooc">OOC</button><button type="button" data-preview="panel-persona">Persona</button><button type="button" data-preview="panel-export">Export</button></div>
+        </div>
+        <div class="fake-composer">
+          <div class="fake-composer-tools"><button type="button">＋</button><button type="button" data-preview="image-button">Image</button><button type="button" data-preview="ooc-button" hidden>OOC</button><button type="button" data-preview="asterisk-button" hidden>*</button><button type="button" data-preview="voice-button">Voice</button><button type="button" data-preview="persona-switch" hidden>Persona</button><button type="button" data-preview="export-button" hidden>Export</button></div>
+          <div class="fake-compose-row"><textarea data-demo-composer rows="2" maxlength="300" placeholder="Type a dummy message… nothing gets sent anywhere."></textarea><button type="button" class="fake-send" data-demo-send>Send</button></div>
+        </div>
+      </div>
+    </div>
+    <p class="demo-preview-help">The preview only mirrors a useful subset visually. Every option still appears in the settings panel even when it does not have a meaningful fake-page effect.</p>
+  </section>
+</div></section>
+
+<section class="section section-muted"><div class="container two-col"><article class="plain-card"><span class="eyebrow">Persistence</span><h2>Your demo setup stays in this browser.</h2><p>Settings saved in the demo use a separate <code>localStorage</code> namespace. Refreshing the page keeps the demo setup; the Reset button clears only that demo copy.</p></article><article class="plain-card"><span class="eyebrow">Stable mode</span><h2>It will become exact automatically.</h2><p>Stable mode only activates when the root Stable settings files are actually available. Until then it refuses to substitute the DEV UI and call it Stable; once those files are uploaded, it activates automatically.</p></article></div></section>
+</main>
+<footer class="site-footer">
+  <div class="container footer-main"><div><a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a><p>SpicyChat has acknowledged the project, but SpicyChat QoL is still independent, unofficial, and not endorsed by SpicyChat.</p></div><div class="footer-links"><a href="/features/">Features</a><a href="/demo/">Demo</a><a href="/support/">Support</a><a href="/discord/">Discord</a><a href="/credits/">Credits</a><a href="/privacy.html">Privacy</a></div></div>
+  <div class="container footer-bottom"><span>© <span data-year></span> SpicyChat QoL</span></div>
+</footer>
+<div class="site-demo-toast" data-demo-toast hidden></div>
+<script src="/assets/js/markdown.js" defer></script>
+<script src="/assets/js/content-source.js" defer></script>
+<script src="/assets/js/site.js" defer></script>
+<script src="/assets/js/demo.js" defer></script>
+</body>
+</html>
