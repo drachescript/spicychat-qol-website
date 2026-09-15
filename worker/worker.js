@@ -24,8 +24,8 @@ const ALLOWED = {
 const CHROME_DEV_URL = 'https://chromewebstore.google.com/detail/dragonscript-spicychat-qo/jdbhnaohfjnmkfpfddnjilmpaemkmabh';
 const FIREFOX_DEV_URL = 'https://addons.mozilla.org/en-US/firefox/addon/dragonscript-spicychat-qol-dev/';
 const FIREFOX_DEV_API = 'https://addons.mozilla.org/api/v5/addons/addon/dragonscript-spicychat-qol-dev/';
-const FALLBACK_CHROME_DEV_VERSION = '0.1.8.70';
-const FALLBACK_FIREFOX_DEV_VERSION = '0.1.9.45';
+const FALLBACK_CHROME_DEV_VERSION = '0.1.9.118';
+const FALLBACK_FIREFOX_DEV_VERSION = '0.1.9.916';
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -97,7 +97,7 @@ async function chromeDevLatest() {
   return jsonResponse({
     version: FALLBACK_CHROME_DEV_VERSION,
     url: CHROME_DEV_URL,
-    status: 'published',
+    status: 'project-fallback',
     fallback: true
   }, 300);
 }

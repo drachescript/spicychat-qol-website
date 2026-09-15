@@ -22,12 +22,19 @@
   const cfg = await SQOLSource.config();
   document.querySelectorAll('[data-stable-version]').forEach(n => n.textContent = cfg.stableVersion);
   document.querySelectorAll('[data-demo-snapshot-version]').forEach(n => n.textContent = cfg.demoDevSnapshotVersion);
+  document.querySelectorAll('[data-chrome-dev-technical-version]').forEach(n => n.textContent = cfg.chromeDevTechnicalVersion || '');
+  document.querySelectorAll('[data-discord-bot-version]').forEach(n => n.textContent = cfg.discordBotVersion || '');
+  document.querySelectorAll('[data-current-milestone]').forEach(n => n.textContent = cfg.currentMilestone || '');
+  document.querySelectorAll('[data-public-bots-href]').forEach(n => n.href = cfg.publicBotsUrl || 'https://spicychat.drache.uk/chatbots/');
 
   const [chromeDev, firefoxDev] = await Promise.all([
     SQOLSource.chromeDevLatest(),
     SQOLSource.firefoxDevLatest()
   ]);
   document.querySelectorAll('[data-chrome-dev-version], [data-dev-version]').forEach(n => n.textContent = chromeDev.version || cfg.chromeDevVersion);
+  document.querySelectorAll('[data-chrome-dev-source]').forEach(n => {
+    n.textContent = chromeDev.source === 'fallback' ? 'current project fallback' : 'Chrome Web Store listing';
+  });
   document.querySelectorAll('[data-firefox-dev-version]').forEach(n => n.textContent = firefoxDev.version || cfg.firefoxDevVersion);
   document.querySelectorAll('[data-firefox-dev-source]').forEach(n => {
     n.textContent = firefoxDev.source === 'fallback' ? 'cached site value' : 'live Mozilla Add-ons data';
@@ -53,7 +60,7 @@
         el.className = `repo-state ${live ? 'live' : 'pending'}`;
         el.textContent = live
           ? `${project === 'dev' ? 'DEV' : project === 'stable' ? 'Stable' : 'Android'} root project files are live on GitHub.`
-          : `${project === 'dev' ? 'DEV' : project === 'stable' ? 'Stable' : 'Android'} repository is staged, but the full root project files are not uploaded yet.`;
+          : `${project === 'dev' ? 'DEV' : project === 'stable' ? 'Main / Stable' : 'Android'} repository exists, but the full root project files are not published there yet.`;
       });
     }));
   }
@@ -161,8 +168,8 @@
     const devCurrent = devSections.filter(s => !/planned/i.test(s.title));
 
     host.innerHTML = `
-      <div class="feature-pane" data-feature-pane="stable">${renderFeatureSet(stableSections, 'stable')}</div>
-      <div class="feature-pane" data-feature-pane="dev" hidden>${renderFeatureSet(devCurrent, 'dev')}</div>
+      <div class="feature-pane" data-feature-pane="stable" hidden>${renderFeatureSet(stableSections, 'stable')}</div>
+      <div class="feature-pane" data-feature-pane="dev">${renderFeatureSet(devCurrent, 'dev')}</div>
       <div class="feature-pane" data-feature-pane="planned" hidden>${renderFeatureSet(planned, 'planned')}</div>`;
 
     document.querySelectorAll('[data-feature-mode]').forEach(button => button.addEventListener('click', () => {
@@ -201,7 +208,7 @@
     el.className = `source-state ${live ? 'live' : 'fallback'}`;
     el.textContent = live
       ? `${label} loaded from the live repository.`
-      : `${label} root files are not uploaded yet — showing the bundled site snapshot.`;
+      : `${label} root files are not published yet — showing the bundled site snapshot.`;
   }
 
   function slug(s) {

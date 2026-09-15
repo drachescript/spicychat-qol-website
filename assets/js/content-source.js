@@ -45,7 +45,7 @@ window.SQOLSource = (() => {
       const r = await fetch('/api/distribution/chrome-dev', { cache: 'no-store' });
       if (r.ok) {
         const data = await r.json();
-        if (data.version) return { ...data, source: 'live-worker' };
+        if (data.version) return { ...data, source: data.fallback ? 'fallback' : 'live-worker' };
       }
     } catch (_) {}
     return { version: c.chromeDevVersion, url: c.chromeDevStore, source: 'fallback' };
@@ -57,7 +57,7 @@ window.SQOLSource = (() => {
       const r = await fetch('/api/distribution/firefox-dev', { cache: 'no-store' });
       if (r.ok) {
         const data = await r.json();
-        if (data.version) return { ...data, source: 'live-worker' };
+        if (data.version) return { ...data, source: data.fallback ? 'fallback' : 'live-worker' };
       }
     } catch (_) {}
 

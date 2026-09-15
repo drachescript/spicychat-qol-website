@@ -1,9 +1,9 @@
-# SpicyChat QoL stable features
+# SpicyChat QoL legacy stable features
 
-The stable Chrome Web Store build is currently v0.1.5. This bundled list is used until the full stable repository root files are uploaded.
+The Chrome Stable/legacy Web Store build is currently v0.1.5. It still works and may receive important fixes, but active development and current compatibility work are focused on DEV. This bundled list is used until the main repository root files are published with v0.2.
 
 ## Filtering and bot lists
-- Block or hide bots by bot, name, creator, tags, or words.
+- Block or hide bots by bot, name, creator, tags or words.
 - Not Interested list.
 - Track opened chats and optionally hide or dim bots already opened.
 

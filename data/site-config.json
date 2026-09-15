@@ -12,11 +12,15 @@
   "firefoxDevStore": "https://addons.mozilla.org/en-US/firefox/addon/dragonscript-spicychat-qol-dev/",
   "firefoxDevApi": "https://addons.mozilla.org/api/v5/addons/addon/dragonscript-spicychat-qol-dev/",
   "stableVersion": "0.1.5",
-  "chromeDevVersion": "0.1.8.70",
-  "firefoxDevVersion": "0.1.9.45",
+  "chromeDevVersion": "0.1.9.118",
+  "chromeDevTechnicalVersion": "0.1.9.918",
+  "firefoxDevVersion": "0.1.9.916",
   "demoDevSnapshotVersion": "0.1.8.70",
+  "currentMilestone": "v0.2",
+  "discordBotVersion": "0.3.9",
   "discordInvite": "https://discord.gg/XTMdWvuVSU",
   "spicyChatThread": "https://discord.com/channels/1108377954389594236/1535324675524137121",
   "spicyChatDiscord": "https://discord.com/invite/spicychatai",
+  "publicBotsUrl": "https://spicychat.drache.uk/chatbots/",
   "privacy": "https://docs.google.com/document/d/1sXusv78vQ_B5xawQNiEowY1meEz7XWXR4l4hCL8LbNU/edit?usp=sharing"
 }

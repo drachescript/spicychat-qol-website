@@ -37,13 +37,14 @@
 </header>
 <div class="global-notice-wrap" data-global-notice hidden></div>
 <main id="main">
-<section class="page-hero"><div class="container"><span class="eyebrow">Features</span><h1>Stable, DEV and planned.</h1><p>The detailed lists come from the root <code>features.md</code> files. Stable and DEV stay separate so the site does not pretend a test feature is already in the normal store build.</p><div class="button-row"><a class="button primary" href="/demo/">Try the settings demo</a><a class="button secondary" href="/changelog/">Version changelog</a></div></div></section>
+<section class="page-hero"><div class="container"><span class="eyebrow">Features</span><h1>Stable, DEV and planned.</h1><p>The detailed lists are built for the root <code>features.md</code> files. Stable stays separate from DEV, and planned work stays separate from things that actually exist.</p><div class="button-row"><a class="button primary" href="/demo/">Try the settings demo</a><a class="button secondary" href="/changelog/">Version changelog</a></div></div></section>
 <section class="section tight-top"><div class="container">
   <div class="source-pair"><div class="source-state" data-source-state="stable-features">Loading Stable source…</div><div class="source-state" data-source-state="dev-features">Loading DEV source…</div></div>
-  <div class="feature-mode-bar" role="tablist" aria-label="Feature source"><button class="feature-mode active" type="button" data-feature-mode="stable">Stable</button><button class="feature-mode" type="button" data-feature-mode="dev">DEV</button><button class="feature-mode" type="button" data-feature-mode="planned">Planned</button></div>
+  <div class="fallback-warning"><strong>Source status:</strong> the public repositories currently exist but their full root project files are not all published. Until v0.2 fills them in, this page uses a bundled current project snapshot; it will prefer GitHub automatically later.</div>
+  <div class="feature-mode-bar" role="tablist" aria-label="Feature source"><button class="feature-mode" type="button" data-feature-mode="stable">Legacy Stable</button><button class="feature-mode active" type="button" data-feature-mode="dev">DEV</button><button class="feature-mode" type="button" data-feature-mode="planned">Planned</button></div>
   <div data-features-browser><div class="loading-card">Loading feature lists…</div></div>
 </div></section>
-<section class="section section-muted"><div class="container relation-card"><div><span class="eyebrow">How it updates</span><h2>No duplicate hand-maintained list.</h2></div><p>Once the full source is uploaded, changing the root <code>features.md</code> in Stable or DEV updates this page automatically. The bundled copies only exist so the site still has useful information while those repos are placeholders.</p></div></section>
+<section class="section section-muted"><div class="container relation-card"><div><span class="eyebrow">How it updates</span><h2>One maintained feature source per build.</h2></div><p>When the full repositories are published, changing the root <code>features.md</code> in Main/Stable or DEV updates this page automatically. The website fallback is only here so the site stays useful before that source release.</p></div></section>
 </main>
 <footer class="site-footer">
   <div class="container footer-main">
@@ -57,6 +58,7 @@
       <a href="/support/">Support</a>
       <a href="/discord/">Discord</a>
       <a href="/credits/">Credits</a>
+      <a data-public-bots-href href="https://spicychat.drache.uk/chatbots/" target="_blank" rel="noopener">Bots</a>
       <a href="/privacy.html">Privacy</a>
     </div>
   </div>

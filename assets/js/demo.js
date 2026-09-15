@@ -16,9 +16,16 @@
 
   const presetMessages = [
     { who: 'bot', text: '*Yui glances from the bike on the stand to the settings panel beside the chat.*\nThe chain is behaving now. Your turn to see whether the buttons are.' },
-    { who: 'user', text: 'Good. I changed a few QoL options.' },
-    { who: 'bot', text: 'Then this is probably the part where you turn half the interface on and off just to prove you can.' },
-    { who: 'ooc', text: '[OOC: This is a harmless preset used only to demonstrate OOC styling.]' }
+    { who: 'user', text: 'This is a dummy chat, so I am turning random QoL options on and off.' },
+    { who: 'bot', text: 'Good. Try timestamps, message actions, model details, scroll buttons, OOC tools, persona switching, or the Mini Panel. Nothing here is connected to a real chat.' },
+    { who: 'ooc', text: '[OOC: This preset exists only to demonstrate OOC styling and controls.]' },
+    { who: 'user', text: '*Action formatting test.* Plain dialogue test. `Backtick dialogue test.`' },
+    { who: 'bot', text: '*Yui taps a wrench against the workbench once.*\nThis message is intentionally longer than the others so text size, line spacing, bubble appearance, search, bookmarks, formatting repair and other display options have something obvious to work with. It is still completely fake demo text.' },
+    { who: 'user', text: 'Search target: gearbox. Search target: gearbox. Whole-word and case-sensitive tests can use this message.' },
+    { who: 'bot', text: 'Model and generation metadata can appear below this reply when those demo settings are enabled.' },
+    { who: 'user', text: 'Persona test message. Switching a demo persona should never touch a real SpicyChat persona.' },
+    { who: 'bot', text: '*Yui folds her arms.*\nIf a setting normally needs SpicyChat server data, notifications, downloads, another tab, or an external service, the demo only shows or simulates the control.' },
+    { who: 'ooc', text: '[OOC: No NSFW content is included in the website demo.]' }
   ];
 
   let mode = localStorage.getItem('sqol-demo-mode') || DEFAULT_MODE;

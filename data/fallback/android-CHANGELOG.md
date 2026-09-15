@@ -1,19 +1,28 @@
-# SpicyChat QoL Android changelog
+# SpicyChat QoL Android development notes
 
-## Current testing status
-- Login and session persistence has remained stable for several days during current phone testing/using.
-- Extension compatibility patch 0.1.8.40 prevents duplicate mobile mini-panel buttons and restores missing OOC/persona panel sections after chat navigation.
+Android is tracked separately from the browser extension. The dedicated app is still an active development/testing wrapper and does not promise exact feature parity with the current browser DEV build.
 
-## Planned / in progress
-- Added a Mini panel in this tab switch inside Settings so Android does not need the extension popup to control the current tab.
-- Fixed the saved default for enabling the mini panel in new tabs not being restored correctly in Settings.
-- Add support for multiple chat tabs so different conversations can stay open inside the app.
-- Keep Google login reliable through the default browser or Android account chooser without requiring users to share login details.
-- Keep QoL scripts injected across normal navigation and chat changes without forcing full page reloads.
-- Preserve page position and loaded listings when returning from a chat instead of reloading the Home page.
-- Improve performance in long chats and reduce unnecessary work in chats or tabs that are not currently visible.
-- Keep the mobile QoL controls away from the message box, send button, chat header, and other important SpicyChat controls.
-- Make opened-chat hiding work consistently across Home, Recommendations, Search, and Chats.
-- Keep persona switching reliable and make the mobile "Don't show again" choice persist properly.
-- Support importing and exporting extension settings, opened chats, blocked bots, Later bots, personas, OOC presets, and other saved data.
-- Improve Android file handling for backups and exported chat files.
+## Current direction
+- Keep the embedded QoL bundle synchronized with browser DEV where the same feature can work safely inside Android WebView.
+- Keep login/session handling persistent, including flows that hand Google login to the normal browser/account chooser.
+- Keep SpicyChat links, chat/profile navigation and normal page changes inside the app where appropriate instead of unexpectedly escaping to an external browser.
+- Keep Android file import/export reliable for QoL settings, backups and supported chat/data exports.
+- Keep the QoL Settings entry as its own mobile control instead of overlapping SpicyChat's language selector or other native buttons.
+- Preserve scroll/list state when returning from a chat where possible instead of needlessly reloading Home.
+
+## Known Android-specific work
+- Opened/Later/list filtering can still need wrapper-specific fixes when SpicyChat changes how cards are loaded.
+- Persona switching and the mobile “Don't show again” behavior need to stay reliable across app restarts/navigation.
+- Mobile placement must avoid the composer, send button, chat header and other native SpicyChat controls.
+- Internal profile/chat links should stay in the app unless the link genuinely belongs outside it.
+- Long chats and repeated navigation continue to get performance/stability work.
+
+## Planned
+- Multiple chat tabs are opt-in only and remain disabled by default until the Android implementation is ready.
+- Continue creator/tool parity where the browser feature can be supported safely in the wrapper.
+- Keep Android release/update metadata separate from browser-extension version numbers.
+
+## Other Android ways to run QoL
+- Titanium or Kiwi Browser can run the Chrome extension on supported Android setups.
+- Firefox Android can use the Firefox QoL build where the current Firefox release supports installation.
+- Waterfox Android's Gecko version can be compatible, but arbitrary third-party XPI installation is currently the limiting factor rather than QoL itself.

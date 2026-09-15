@@ -1,10 +1,10 @@
 {
-  "updated": "2026-08-27",
+  "updated": "2026-09-15",
   "announcement": {
     "enabled": true,
-    "label": "DEV / v0.2",
-    "title": "DEV is moving fast while the full v0.2 source refresh is still being prepared.",
-    "text": "Firefox DEV is already on the 0.1.9.x line, Chrome DEV is its separately published store build, and the Stable + DEV GitHub repositories are ready for their full root files. Features, changelogs and the website demo will read those root files automatically once they are uploaded.",
+    "label": "v0.2 release candidate",
+    "title": "Feature freeze is active while v0.2 is being finished.",
+    "text": "Current work is focused on bugs, regressions, browser compatibility and final stability testing. New feature requests are being parked until after v0.2.",
     "href": "/status/"
   },
   "incident": {
