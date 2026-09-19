@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "description": "Local deterministic website-demo replies. No AI or SpicyChat API is used.",
+  "rules": [
+    {
+      "keywords": [
+        "hello",
+        "hi",
+        "hey"
+      ],
+      "replies": [
+        "“Hey,” {bot} replies. “This is just the local demo responder.”",
+        "{bot} gives a small nod. “Hi. Testing the chat?”"
+      ]
+    },
+    {
+      "keywords": [
+        "demo",
+        "qol",
+        "setting",
+        "settings"
+      ],
+      "replies": [
+        "“Yep. The website is matching your text against a few local presets,” {bot} says. “No AI request is happening.”"
+      ]
+    },
+    {
+      "keywords": [
+        "lorebook",
+        "lore"
+      ],
+      "replies": [
+        "“Lorebook,” {bot} repeats. “The demo keeps those entries local, but the page is there so QoL controls have something to work with.”"
+      ]
+    },
+    {
+      "keywords": [
+        "persona"
+      ],
+      "replies": [
+        "“Persona switch test?” {bot} asks. “The active demo persona only exists in this browser.”"
+      ]
+    },
+    {
+      "keywords": [
+        "dragon"
+      ],
+      "replies": [
+        "{bot} tilts their head at the word dragon. “That one matched a demo keyword.”"
+      ]
+    },
+    {
+      "keywords": [
+        "raptor",
+        "indoraptor"
+      ],
+      "replies": [
+        "{bot} goes still for a second at the mention of a raptor. “Keyword match. Local preset reply.”"
+      ]
+    },
+    {
+      "keywords": [
+        "bike",
+        "engine",
+        "mechanic",
+        "gearbox"
+      ],
+      "replies": [
+        "{bot} glances toward the imaginary workbench. “Gearbox, engine, bike — those all use the same little demo rule.”"
+      ]
+    },
+    {
+      "keywords": [
+        "day",
+        "storydate",
+        "state"
+      ],
+      "replies": [
+        "“Story state keyword detected,” {bot} says. “The real tracker still comes from QoL; this reply is only demo text.”"
+      ]
+    }
+  ]
+}
