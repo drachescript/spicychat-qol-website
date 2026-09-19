@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0d080a">
-<meta name="description" content="Interactive SpicyChat QoL settings and safe dummy chat demo.">
+<meta name="description" content="Interactive SpicyChat QoL playground with real QoL settings and safe dummy data.">
 <link rel="icon" href="/assets/icons/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16.png">
@@ -38,74 +38,84 @@
 <div class="global-notice-wrap" data-global-notice hidden></div>
 
 <main id="main">
-<section class="page-hero demo-hero"><div class="container"><span class="eyebrow">Interactive demo</span><h1>Real QoL settings. Fake SpicyChat data.</h1><p>Stable follows the latest public release source and Development follows the current public main branch. Both run in a sandbox beside a fake, SFW Yui chat and never connect to your SpicyChat account.</p><div class="demo-safety"><strong>Demo data only.</strong> No SpicyChat login, cookies, account API, real chats, private messages or saved SpicyChat data are used.</div></div></section>
+<section class="page-hero demo-hero"><div class="container"><span class="eyebrow">Interactive playground</span><h1>Try QoL on a safe fake account.</h1><p>This is a larger SpicyChat-style sandbox instead of a squeezed chat preview. Home, Chats, Personas, My Creations, Lorebooks, creator tools and an individual Yui chat all use dummy/local data, while the QoL settings panel itself comes from the real public extension source.</p><div class="demo-safety"><strong>SFW demo only.</strong> The bot cards are a small safe subset of my own public bots. Nothing logs in to SpicyChat, reads your account, sends messages, or calls private account APIs.</div></div></section>
 
 <section class="section tight-top"><div class="container">
-  <div class="demo-toolbar">
+  <div class="demo-toolbar demo-toolbar-v8">
     <div class="demo-mode-group" role="group" aria-label="Demo source">
       <button type="button" class="feature-mode active" data-demo-mode="stable">Stable v<span data-stable-version>0.2.0</span></button>
       <button type="button" class="feature-mode" data-demo-mode="dev">Development main</button>
     </div>
-    <div class="demo-toolbar-meta"><span>Settings build: <strong data-demo-build>loading…</strong></span><button class="button secondary small" type="button" data-demo-reset>Reset demo settings</button><button class="button secondary small" type="button" data-demo-clear-chat>Clear dummy chat</button><button class="button secondary small" type="button" data-demo-reset-chat>Reset dummy chat</button></div>
+    <div class="demo-toolbar-meta">
+      <span>Settings build: <strong data-demo-build>loading…</strong></span>
+      <button class="button small" type="button" data-demo-open-settings>Open QoL settings</button>
+      <button class="button secondary small" type="button" data-demo-reset>Reset demo settings</button>
+      <button class="button secondary small" type="button" data-demo-reset-app>Reset playground</button>
+    </div>
   </div>
   <div class="source-state" data-demo-source>Loading the current stable settings source…</div>
-  <div class="demo-source-note"><strong>Live source:</strong> Stable loads the real Settings UI from the latest public release tag. Development loads the current <code>main</code> branch. Browser/storage/download/tab actions are replaced with safe demo shims, while normal setting controls use demo-only <code>localStorage</code>.</div>
+  <div class="demo-source-note"><strong>How this works:</strong> the surrounding app is only a safe visual simulator. Stable loads the real Options UI from the latest public release tag; Development loads current <code>main</code>. Browser/storage/download/tab actions are replaced by demo shims and settings persist only in this browser.</div>
 </div></section>
 
-<section class="section demo-workspace-section"><div class="container demo-workspace">
-  <section class="demo-pane settings-pane" aria-labelledby="demo-settings-title">
-    <div class="demo-pane-head"><div><span class="eyebrow">Settings</span><h2 id="demo-settings-title">Real QoL options UI</h2></div><span class="badge good" data-demo-mode-badge>Stable</span></div>
-    <div class="demo-iframe-wrap"><iframe title="SpicyChat QoL settings demo" data-settings-frame sandbox="allow-scripts allow-same-origin allow-forms allow-modals" referrerpolicy="no-referrer"></iframe><div class="demo-frame-placeholder" data-demo-placeholder><strong>Loading settings…</strong><span>The exact options page will appear here.</span></div></div>
-  </section>
+<section class="section demo-playground-section"><div class="container">
+  <div class="demo-playground-head">
+    <div><span class="eyebrow">Playground</span><h2>Move around like a normal user.</h2><p>Use the sidebar, open bot cards, switch to Chats, edit a dummy persona, inspect My Creations, or open the Yui chat. QoL settings update the surfaces they can meaningfully simulate.</p></div>
+    <div class="demo-playground-badges"><span class="badge good">No NSFW</span><span class="badge good">No real account</span><span class="badge" data-demo-mode-badge>Stable</span></div>
+  </div>
 
-  <section class="demo-pane preview-pane" aria-labelledby="demo-preview-title">
-    <div class="demo-pane-head"><div><span class="eyebrow">Dummy preview</span><h2 id="demo-preview-title">Safe fake Yui chat</h2></div><span class="badge good">No real chat data</span></div>
-    <div class="fake-app" data-chat-preview>
-      <aside class="fake-sidebar">
-        <div class="fake-logo">S</div>
-        <button type="button" data-sidebar-item="home">Home</button>
-        <button type="button" data-sidebar-item="chats">Chats</button>
-        <button type="button" data-sidebar-item="personas">Personas</button>
-        <button type="button" data-sidebar-item="create">Create</button>
-        <button type="button" data-sidebar-item="favorites">Favorites</button>
-        <span class="fake-sidebar-spacer"></span>
-        <button type="button" data-sidebar-item="help">Help</button>
-      </aside>
-      <div class="fake-main">
-        <div class="fake-topbar">
-          <span class="fake-top-title">Demo chat</span>
-          <div class="fake-top-actions"><button type="button" data-topbar-item="language">EN</button><button type="button" data-topbar-item="theme">Theme</button><button type="button" data-topbar-item="notifications">•</button><span class="fake-user-pill">Demo user</span></div>
+  <div class="demo-app-shell" data-chat-preview>
+    <aside class="demo-app-sidebar" aria-label="Demo app navigation">
+      <div class="demo-app-mark" title="Demo app">S</div>
+      <nav class="demo-app-nav">
+        <button type="button" class="active" data-demo-route="home"><span>⌂</span><small>Home</small></button>
+        <button type="button" data-demo-route="chats"><span>◫</span><small>Chats</small></button>
+        <button type="button" data-demo-route="favorites"><span>♥</span><small>Favorites</small></button>
+        <button type="button" data-demo-route="personas"><span>☺</span><small>Personas</small></button>
+        <button type="button" data-demo-route="creations"><span>✦</span><small>My Creations</small></button>
+        <button type="button" data-demo-route="lorebooks"><span>▤</span><small>Lorebooks</small></button>
+        <button type="button" data-demo-route="create"><span>＋</span><small>Create</small></button>
+      </nav>
+      <div class="demo-app-nav-bottom">
+        <button type="button" data-demo-open-settings><span>⚙</span><small>QoL</small></button>
+      </div>
+    </aside>
+
+    <div class="demo-app-main">
+      <header class="demo-native-topbar">
+        <div class="demo-native-topbar-left"><button type="button" class="demo-mobile-nav" data-demo-mobile-nav aria-label="Toggle demo navigation">☰</button><strong data-demo-page-title>Home</strong><span data-demo-page-subtitle>safe dummy content</span></div>
+        <div class="demo-native-topbar-actions">
+          <button type="button" data-topbar-item="language">EN</button>
+          <button type="button" data-topbar-item="theme">◐</button>
+          <button type="button" data-topbar-item="notifications">●</button>
+          <button type="button" class="demo-native-qol" data-demo-open-settings title="Open QoL settings">⚙</button>
+          <span class="demo-native-user">Demo user</span>
         </div>
-        <div class="fake-promo" data-preview="promo"><strong>Demo promo placeholder</strong><span>This exists only so the cleanup setting has something harmless to hide.</span></div>
-        <div class="fake-chat-head">
-          <img src="https://cdn.nd-api.com/avatars/0fb19108-bfb0-453e-85f3-3b5a2655ce29.png?class=image500x650" onerror="this.src='/assets/brand/extension-icon.jpg'" alt="Yui Kimura demo avatar">
-          <div><strong>Yui Kimura</strong><small>dummy website demo</small></div>
-          <div class="fake-chat-head-actions">
-            <button type="button" data-preview="chat-history" hidden>History</button>
-            <button type="button" data-preview="quick-new-chat" hidden>New chat</button>
-            <button type="button" data-preview="later" hidden>Later</button>
-          </div>
-        </div>
-        <div class="fake-generation-profile" data-preview="generation-profile" hidden>Generation profile: <strong>Demo Balanced</strong></div>
-        <div class="fake-messages" data-demo-messages aria-live="polite"></div>
-        <div class="fake-scroll-tools"><button type="button" data-preview="scroll-top" hidden title="Scroll to top">↑</button><button type="button" data-preview="scroll-bottom" hidden title="Scroll to bottom">↓</button></div>
-        <div class="fake-qol-panel" data-preview="quick-panel" data-placement="bottom-right" hidden>
-          <div class="fake-qol-panel-head"><strong>QoL</strong><span>demo</span></div>
-          <div class="fake-qol-panel-actions"><button type="button">Options</button><button type="button" data-preview="panel-ooc">OOC</button><button type="button" data-preview="panel-persona">Persona</button><button type="button" data-preview="panel-export">Export</button></div>
-        </div>
-        <div class="fake-composer">
-          <div class="fake-composer-tools"><button type="button">＋</button><button type="button" data-preview="image-button">Image</button><button type="button" data-preview="ooc-button" hidden>OOC</button><button type="button" data-preview="asterisk-button" hidden>*</button><button type="button" data-preview="voice-button">Voice</button><button type="button" data-preview="persona-switch" hidden>Persona</button><button type="button" data-preview="export-button" hidden>Export</button></div>
-          <div class="fake-compose-row"><textarea data-demo-composer rows="2" maxlength="300" placeholder="Type a dummy message… nothing gets sent anywhere."></textarea><button type="button" class="fake-send" data-demo-send>Send</button></div>
-        </div>
+      </header>
+      <div class="demo-promo-strip" data-preview="promo"><strong>Demo banner</strong><span>Exists so interface-cleanup options have something safe to hide.</span></div>
+      <div class="demo-route-host" data-demo-route-host aria-live="polite"></div>
+
+      <div class="fake-qol-panel" data-preview="quick-panel" data-placement="bottom-right" hidden>
+        <div class="fake-qol-panel-head"><strong>QoL</strong><span>demo</span></div>
+        <div class="fake-qol-panel-actions"><button type="button" data-demo-open-settings>Options</button><button type="button" data-preview="panel-ooc">OOC</button><button type="button" data-preview="panel-persona">Persona</button><button type="button" data-preview="panel-export">Export</button></div>
       </div>
     </div>
-    <p class="demo-preview-help">The preview only mirrors a useful subset visually. Every option still appears in the settings panel even when it does not have a meaningful fake-page effect.</p>
-  </section>
+
+    <div class="demo-settings-backdrop" data-demo-settings-backdrop hidden></div>
+    <aside class="demo-settings-drawer" data-demo-settings-drawer aria-labelledby="demo-settings-title" aria-hidden="true">
+      <div class="demo-settings-drawer-head"><div><span class="eyebrow">Actual extension UI</span><h2 id="demo-settings-title">SpicyChat QoL settings</h2></div><button type="button" class="demo-settings-close" data-demo-close-settings aria-label="Close settings">×</button></div>
+      <div class="demo-iframe-wrap demo-iframe-drawer"><iframe title="SpicyChat QoL settings demo" data-settings-frame sandbox="allow-scripts allow-same-origin allow-forms allow-modals" referrerpolicy="no-referrer"></iframe><div class="demo-frame-placeholder" data-demo-placeholder><strong>Loading settings…</strong><span>The exact options page will appear here.</span></div></div>
+    </aside>
+  </div>
+  <p class="demo-preview-help">The simulator intentionally follows SpicyChat's page concepts and the areas QoL modifies, but it is not a pixel-for-pixel copy and none of the fake navigation buttons leave the demo. Bot/profile links inside this sandbox stay local.</p>
 </div></section>
 
-<section class="section section-muted"><div class="container two-col"><article class="plain-card"><span class="eyebrow">Persistence</span><h2>Your demo setup stays in this browser.</h2><p>Settings saved in the demo use a separate <code>localStorage</code> namespace for Stable and Development. Refreshing keeps the demo setup; Reset clears only the selected demo copy.</p></article><article class="plain-card"><span class="eyebrow">Sandbox</span><h2>Looks real, cannot touch your account.</h2><p>The actual public Settings UI is loaded, but Chrome/Firefox storage, permissions, tabs, downloads, notifications and external links are simulated or blocked. The fake chat is deliberately only a loose SpicyChat-style test surface.</p></article></div></section>
+<section class="section section-muted"><div class="container three-col demo-info-cards">
+  <article class="plain-card"><span class="eyebrow">Real settings</span><h2>The Options page is not redrawn.</h2><p>The settings drawer runs the public extension Options UI inside a sandbox. Stable and Development keep separate demo-only local storage.</p></article>
+  <article class="plain-card"><span class="eyebrow">Broader surfaces</span><h2>Not just one cramped chat.</h2><p>Home cards, saved chats, chat folders, Personas, My Creations, Lorebooks, a creator editor and an individual chat are available as test surfaces.</p></article>
+  <article class="plain-card"><span class="eyebrow">Safe data</span><h2>Only local/dummy interactions.</h2><p>Cards use a safe subset of my own public bots. Counts, folders, favorites, Later state, messages and editor contents inside the playground are demo data.</p></article>
+</div></section>
 
-<section class="section section-muted"><div class="container"><div class="section-heading"><span class="eyebrow">Development feature catalog</span><h2>See what the current branch contains.</h2><p>This section follows the public <code>main/features.md</code>, while the full feature browser lets you compare Stable, Development and Planned work.</p></div><div class="source-state" data-source-state="features">Loading Development feature source…</div><div class="markdown-sections" data-features-content><div class="loading-card">Loading current Development features…</div></div></div></section>
+<section class="section section-muted"><div class="container"><div class="section-heading"><span class="eyebrow">Development feature catalog</span><h2>Everything still stays documented below.</h2><p>This follows the public <code>main/features.md</code>. The playground is for seeing features in context; the feature catalog remains the complete source for what exists and what is planned.</p></div><div class="source-state" data-source-state="features">Loading Development feature source…</div><div class="markdown-sections" data-features-content><div class="loading-card">Loading current Development features…</div></div></div></section>
 </main>
 <footer class="site-footer">
   <div class="container footer-main"><div><a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a><p>SpicyChat QoL is an independent community project and is not affiliated with, endorsed by, or sponsored by SpicyChat.</p></div><div class="footer-links"><a href="/features/">Features</a><a href="/demo/">Demo</a><a href="/support/">Support</a><a href="/discord/">Discord</a><a href="/credits/">Credits</a><a href="/privacy.html">Privacy</a></div></div>
