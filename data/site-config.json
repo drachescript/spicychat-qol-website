@@ -13,12 +13,15 @@
   "stableReleaseUrl": "https://github.com/drachescript/spicychat-qol-extension/releases/tag/v0.2.0",
   "devReleaseUrl": "https://github.com/drachescript/spicychat-qol-extension/releases/tag/dev-build",
   "stableVersion": "0.2.0",
-  "currentMilestone": "v0.2.0 released",
+  "currentMilestone": "Open-source release live",
   "discordBotVersion": "0.3.11",
   "discordInvite": "https://discord.gg/XTMdWvuVSU",
   "spicyChatThread": "https://discord.com/channels/1108377954389594236/1535324675524137121",
   "spicyChatDiscord": "https://discord.com/invite/spicychatai",
   "publicBotsUrl": "https://spicychat.drache.uk/chatbots/",
   "privacy": "https://docs.google.com/document/d/1sXusv78vQ_B5xawQNiEowY1meEz7XWXR4l4hCL8LbNU/edit?usp=sharing",
-  "paypal": "https://paypal.me/dragongraf"
+  "paypal": "https://paypal.me/dragongraf",
+  "androidUpdateStrategy": "github-release-update-json",
+  "extensionManifestEndpoint": "/extension/manifest.json",
+  "androidManifestEndpoint": "/android/manifest.json"
 }

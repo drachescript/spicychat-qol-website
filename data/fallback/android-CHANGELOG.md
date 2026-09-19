@@ -1,33 +1,27 @@
 # SpicyChat QoL Android changelog
 
-## Recent
+## Current open-source release work
+
+### Release automation
+- Android release builds sync the current browser-extension `main` into the app assets before packaging.
+- Tagged releases build the signed APK through GitHub Actions.
+- Release assets include the APK, SHA-256/checksum data and generated `update.json`.
+- `update.json` is the release metadata source used by the website/updater; `/android/manifest.json` is a compatibility/fallback endpoint.
+- Android `versionCode` remains monotonic across releases even when the public `versionName` starts a new release line.
 
 ### Android diagnostics, performance & runtime bridge
 - Fixed Android Options diagnostics/performance reports reaching the live SpicyChat WebView.
-- Added a safe synthetic active-tab bridge for Settings/runtime communication without pretending the APK has normal browser tabs.
-- Kept browser-only tab/session automation unavailable in the APK.
+- Improved runtime bridging and recovery for wrapper-specific flows.
 
 ### Android reliability & navigation
-- Improved black-page and stalled-load recovery, SPA navigation, renderer diagnostics and duplicate-injection protection.
-- Fixed the Save & Stay device-Back edge case.
-- Added optional pinch-to-zoom, default launch-page choices, configurable native QoL control placement and improved internal navigation.
-
-### Storage, backup & files
-- Added modern `chrome.storage.local` compatibility including remove, clear, getKeys and getBytesInUse.
-- Improved large-value storage, import rollback, Persona/local-copy handling and native Save File/file-picking bridges.
-- Synchronized current extension scripts, CSS, Settings assets, CHANGELOG, features and feature-registry into Android builds.
+- Improved black-page recovery, navigation handling and native/WebView coordination.
+- Synchronized current extension scripts, CSS, Settings assets, CHANGELOG, features and feature registry into Android builds.
 
 ### Android-only interaction features
-- Added native long-press message actions including Copy, Edit, Report, Resend, Remove Image and temporary Select text where applicable.
-- Fixed long-press Copy by preferring the native Android clipboard bridge.
+- Native storage/file/clipboard bridges and long-press message actions.
+- Configurable wrapper controls and internal navigation behavior.
 
 ### Multiple Android Chat Tabs
 - Experimental and opt-in; disabled by default.
-- Uses one active WebView while inactive tabs keep lightweight URL/title/scroll/last-used state.
-- Includes a permanent Home tab, separate conversations with the same bot, switching/closing/restoration and Android Back integration.
-
-## Planned
-- Remote QoL bundle updates separate from native APK releases.
-- Use `https://spicychatqol.drache.uk/android/manifest.json` as the Android update source of truth.
-- Add compatibility/rollback checks and public APK update notifications when releases are published.
-- Continue chat-tab, navigation, long-chat, backup/import/export and mobile-layout improvements.
+- Uses one active WebView with lightweight inactive-tab state.
+- Supports a permanent Home tab, same-bot separate conversations, switching/closing/restoration, Android Back integration and scroll recovery.

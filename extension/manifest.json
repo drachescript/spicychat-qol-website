@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "project": "SpicyChat QoL browser extension",
+  "sourceRepo": "https://github.com/drachescript/spicychat-qol-extension",
+  "stable": {
+    "available": true,
+    "version": "0.2.0",
+    "tagName": "v0.2.0",
+    "releaseUrl": "https://github.com/drachescript/spicychat-qol-extension/releases/tag/v0.2.0",
+    "chromeStoreUrl": "https://chromewebstore.google.com/detail/dragonscript-spicychat-qo/jdbhnaohfjnmkfpfddnjilmpaemkmabh",
+    "firefoxStoreUrl": "https://addons.mozilla.org/en-US/firefox/addon/dragonscript-spicychat-qol-dev/"
+  },
+  "development": {
+    "available": true,
+    "tagName": "dev-build",
+    "releaseUrl": "https://github.com/drachescript/spicychat-qol-extension/releases/tag/dev-build"
+  },
+  "message": "Static fallback only. The Worker resolves the latest stable GitHub release and rolling dev-build dynamically."
+}

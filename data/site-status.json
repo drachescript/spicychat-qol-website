@@ -2,9 +2,9 @@
   "updated": "2026-09-19",
   "announcement": {
     "enabled": true,
-    "label": "v0.2.0 released",
-    "title": "SpicyChat QoL v0.2.0 is live and open source.",
-    "text": "The actively maintained Chrome/Firefox release and the Android wrapper source are public. Rolling development builds now come from the main GitHub repository.",
+    "label": "v0.2 is open source",
+    "title": "Browser and Android source are public.",
+    "text": "Stable releases, rolling development builds and Android release metadata are now designed to flow from GitHub automatically. Android APK publishing is handled separately through tagged signed releases.",
     "href": "/status/"
   },
   "incident": {

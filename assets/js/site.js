@@ -39,7 +39,8 @@
   ]);
 
   document.querySelectorAll('[data-stable-version]').forEach(n => n.textContent = stable.version || cfg.stableVersion);
-  document.querySelectorAll('[data-stable-published]').forEach(n => n.textContent = formatDate(stable.publishedAt) || '19 Sep 2026');
+  if (stable.releaseUrl) document.querySelectorAll('[data-stable-release-href]').forEach(n => n.href = stable.releaseUrl);
+  document.querySelectorAll('[data-stable-published]').forEach(n => n.textContent = formatDate(stable.publishedAt) || 'current release');
   document.querySelectorAll('[data-dev-build]').forEach(n => n.textContent = dev.label || 'Development build');
   document.querySelectorAll('[data-dev-commit]').forEach(n => n.textContent = dev.referenceCommit || 'latest main');
   document.querySelectorAll('[data-dev-published]').forEach(n => n.textContent = formatDateTime(dev.publishedAt || dev.lastBuild) || 'updated from main');
@@ -61,7 +62,7 @@
   // Repository state labels now reflect public/open-source sources.
   if (document.querySelector('[data-repo-state]')) {
     const checks = {
-      stable: ['README.md', '/data/fallback/stable/README.md', 'Release source (v0.2.0 tag)'],
+      stable: ['README.md', '/data/fallback/stable/README.md', `Release source (${stable.tagName || `v${stable.version || cfg.stableVersion}`})`],
       dev: ['README.md', '/data/fallback/dev/README.md', 'Development source (main branch)'],
       android: ['README.md', '/data/fallback/android/README.md', 'Android wrapper source']
     };
@@ -93,7 +94,7 @@
     try {
       const r = await SQOLSource.text('stable', 'features.md', '/data/fallback/stable/features.md');
       const parsed = SQOLMarkdown.sections(r.text);
-      const wanted = parsed.sections.filter(s => !/planned|history|0\.1\.9|v0\.2\.0/i.test(s.title)).slice(0, 8);
+      const wanted = parsed.sections.filter(s => !/planned|history|^v?\d+\.\d+\.\d+$/i.test(s.title)).slice(0, 8);
       const html = wanted.map(s => {
         const first = s.lines.map(x => x.match(/^\s*[-*]\s+(.+)/)?.[1]).find(Boolean) || '';
         return `<article class="overview-item"><span class="dot"></span><div><strong>${SQOLMarkdown.inline(s.title)}</strong>${first ? `<p>${SQOLMarkdown.inline(first)}</p>` : ''}</div></article>`;
@@ -109,7 +110,7 @@
       const r = await SQOLSource.text('dev', 'features.md', '/data/fallback/dev/features.md');
       setSource('features', r.source, 'Development feature list');
       const p = SQOLMarkdown.sections(r.text);
-      const html = p.sections.filter(s => !/planned|0\.1\.9|v0\.2\.0/i.test(s.title)).map(s => `<section class="markdown-section" id="${slug(s.title)}"><h2>${SQOLMarkdown.inline(s.title)}</h2>${SQOLMarkdown.render(s.lines.join('\n'))}</section>`).join('');
+      const html = p.sections.filter(s => !/planned|^v?\d+\.\d+\.\d+$/i.test(s.title)).map(s => `<section class="markdown-section" id="${slug(s.title)}"><h2>${SQOLMarkdown.inline(s.title)}</h2>${SQOLMarkdown.render(s.lines.join('\n'))}</section>`).join('');
       document.querySelectorAll('[data-features-content]').forEach(h => h.innerHTML = html);
     } catch (_) {
       document.querySelectorAll('[data-features-content]').forEach(h => h.innerHTML = '<div class="loading-card">Could not load features right now.</div>');
@@ -155,7 +156,7 @@
     try { devSrc = await SQOLSource.text('dev', 'features.md', '/data/fallback/dev/features.md'); } catch (_) {}
     if (!stableSrc || !devSrc) { host.innerHTML = '<div class="loading-card">Could not load the feature sources.</div>'; return; }
 
-    applySourceState(document.querySelector('[data-source-state="stable-features"]'), stableSrc.source, 'Stable v0.2.0');
+    applySourceState(document.querySelector('[data-source-state="stable-features"]'), stableSrc.source, `Stable v${stable.version || cfg.stableVersion}`);
     applySourceState(document.querySelector('[data-source-state="dev-features"]'), devSrc.source, 'Development main');
 
     const stableSections = currentFeatureSections(SQOLMarkdown.sections(stableSrc.text).sections, false);
@@ -176,7 +177,7 @@
   }
 
   function currentFeatureSections(sections) {
-    return sections.filter(s => !/^v?0\.1\.9/i.test(s.title) && !/^v0\.2\.0$/i.test(s.title) && !/planned|roadmap|future/i.test(s.title));
+    return sections.filter(s => !/^v?\d+\.\d+\.\d+$/i.test(s.title) && !/planned|roadmap|future/i.test(s.title));
   }
 
   function renderFeatureSet(sections, kind) {

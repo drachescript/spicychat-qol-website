@@ -1,11 +1,26 @@
 # Optional Cloudflare Worker
 
-Routes the small dynamic pieces used by the public website:
+Routes the dynamic release/source pieces used by the public website.
 
-- `/api/source` — selected files from the stable v0.2.0 tag, current extension `main`, or Android `main`
-- `/api/distribution/stable` — current stable GitHub release metadata
-- `/api/distribution/dev` — rolling `dev-build` release metadata
-- `/api/android/latest` — latest public Android APK release when one exists
-- `/android/manifest.json` — Android updater-facing manifest generated from the same release source
+## Endpoints
 
-The static site can still read raw GitHub files directly if the Worker is not deployed; bundled snapshots are only a temporary fallback for documentation pages.
+- `/api/source` — selected source files from the latest stable extension release tag, current extension `main`, or Android `main`
+- `/api/distribution/stable` — latest non-prerelease extension GitHub release
+- `/api/distribution/dev` — rolling `dev-build` prerelease metadata
+- `/api/extension/latest` — normalized stable + development extension metadata
+- `/extension/manifest.json` — same normalized extension metadata for manifest-style consumers
+- `/api/android/latest` — latest tagged Android release, preferring its attached `update.json`
+- `/android/manifest.json` — normalized Android release/updater metadata
+- `/android/update.json` — alias of the normalized Android manifest endpoint
+
+## Source-of-truth rules
+
+### Browser extension
+
+Stable resolves from GitHub's latest non-prerelease release, so future stable tags do not require a website edit. Development follows `main` plus the rolling `dev-build` prerelease.
+
+### Android
+
+The tagged Android GitHub Release is authoritative. The Worker looks for `update.json` attached to that release first. If the asset is missing, it falls back to conservative release/APK metadata; it does not promote a random local/internal build.
+
+The static site can still read raw GitHub files directly if the Worker is unavailable. Bundled snapshots and static manifests are fallbacks only.

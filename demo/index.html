@@ -38,18 +38,18 @@
 <div class="global-notice-wrap" data-global-notice hidden></div>
 
 <main id="main">
-<section class="page-hero demo-hero"><div class="container"><span class="eyebrow">Interactive demo</span><h1>Real QoL settings. Fake SpicyChat data.</h1><p>Stable uses the exact v0.2.0 source and Development follows the current public main branch. Both run in a sandbox beside a fake, SFW Yui chat and never connect to your SpicyChat account.</p><div class="demo-safety"><strong>Demo data only.</strong> No SpicyChat login, cookies, account API, real chats, private messages or saved SpicyChat data are used.</div></div></section>
+<section class="page-hero demo-hero"><div class="container"><span class="eyebrow">Interactive demo</span><h1>Real QoL settings. Fake SpicyChat data.</h1><p>Stable follows the latest public release source and Development follows the current public main branch. Both run in a sandbox beside a fake, SFW Yui chat and never connect to your SpicyChat account.</p><div class="demo-safety"><strong>Demo data only.</strong> No SpicyChat login, cookies, account API, real chats, private messages or saved SpicyChat data are used.</div></div></section>
 
 <section class="section tight-top"><div class="container">
   <div class="demo-toolbar">
     <div class="demo-mode-group" role="group" aria-label="Demo source">
-      <button type="button" class="feature-mode active" data-demo-mode="stable">Stable v0.2.0</button>
+      <button type="button" class="feature-mode active" data-demo-mode="stable">Stable v<span data-stable-version>0.2.0</span></button>
       <button type="button" class="feature-mode" data-demo-mode="dev">Development main</button>
     </div>
     <div class="demo-toolbar-meta"><span>Settings build: <strong data-demo-build>loading…</strong></span><button class="button secondary small" type="button" data-demo-reset>Reset demo settings</button><button class="button secondary small" type="button" data-demo-clear-chat>Clear dummy chat</button><button class="button secondary small" type="button" data-demo-reset-chat>Reset dummy chat</button></div>
   </div>
-  <div class="source-state" data-demo-source>Loading the stable v0.2.0 settings source…</div>
-  <div class="demo-source-note"><strong>Live source:</strong> Stable loads the real Settings UI from the public <code>v0.2.0</code> tag. Development loads the current <code>main</code> branch. Browser/storage/download/tab actions are replaced with safe demo shims, while normal setting controls use demo-only <code>localStorage</code>.</div>
+  <div class="source-state" data-demo-source>Loading the current stable settings source…</div>
+  <div class="demo-source-note"><strong>Live source:</strong> Stable loads the real Settings UI from the latest public release tag. Development loads the current <code>main</code> branch. Browser/storage/download/tab actions are replaced with safe demo shims, while normal setting controls use demo-only <code>localStorage</code>.</div>
 </div></section>
 
 <section class="section demo-workspace-section"><div class="container demo-workspace">
@@ -105,7 +105,7 @@
 
 <section class="section section-muted"><div class="container two-col"><article class="plain-card"><span class="eyebrow">Persistence</span><h2>Your demo setup stays in this browser.</h2><p>Settings saved in the demo use a separate <code>localStorage</code> namespace for Stable and Development. Refreshing keeps the demo setup; Reset clears only the selected demo copy.</p></article><article class="plain-card"><span class="eyebrow">Sandbox</span><h2>Looks real, cannot touch your account.</h2><p>The actual public Settings UI is loaded, but Chrome/Firefox storage, permissions, tabs, downloads, notifications and external links are simulated or blocked. The fake chat is deliberately only a loose SpicyChat-style test surface.</p></article></div></section>
 
-<section class="section section-muted"><div class="container"><div class="section-heading"><span class="eyebrow">Development feature catalog</span><h2>See what the current branch contains.</h2><p>This section follows the public <code>main/features.md</code>, while the full feature browser lets you compare Stable v0.2.0, Development and Planned work.</p></div><div class="source-state" data-source-state="features">Loading Development feature source…</div><div class="markdown-sections" data-features-content><div class="loading-card">Loading current Development features…</div></div></div></section>
+<section class="section section-muted"><div class="container"><div class="section-heading"><span class="eyebrow">Development feature catalog</span><h2>See what the current branch contains.</h2><p>This section follows the public <code>main/features.md</code>, while the full feature browser lets you compare Stable, Development and Planned work.</p></div><div class="source-state" data-source-state="features">Loading Development feature source…</div><div class="markdown-sections" data-features-content><div class="loading-card">Loading current Development features…</div></div></div></section>
 </main>
 <footer class="site-footer">
   <div class="container footer-main"><div><a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a><p>SpicyChat QoL is an independent community project and is not affiliated with, endorsed by, or sponsored by SpicyChat.</p></div><div class="footer-links"><a href="/features/">Features</a><a href="/demo/">Demo</a><a href="/support/">Support</a><a href="/discord/">Discord</a><a href="/credits/">Credits</a><a href="/privacy.html">Privacy</a></div></div>

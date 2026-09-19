@@ -78,7 +78,10 @@
   });
 
   async function loadMode(nextMode) {
-    const label = nextMode === 'dev' ? 'Development main' : 'Stable v0.2.0';
+    let label = nextMode === 'dev' ? 'Development main' : 'Stable';
+    if (nextMode === 'stable') {
+      try { const s = await SQOLSource.stableLatest(); label = `Stable v${s.version || 'current'}`; } catch (_) {}
+    }
     setSource('loading', `Loading ${label} settings from GitHub…`);
     placeholder.hidden = false;
     placeholder.innerHTML = '<strong>Loading settings…</strong><span>The real QoL options page will appear here.</span>';
@@ -117,7 +120,7 @@
   }
 
   async function loadSettingsSource(project) {
-    // Stable is pinned to the v0.2.0 tag; Development follows main.
+    // Stable resolves the latest public stable release tag; Development follows main.
     const fallbackBase = project === 'stable' ? '/data/demo/stable/' : '/data/demo/dev-current/';
     const names = [
       ['html', 'options.html'],
