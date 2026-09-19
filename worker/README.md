@@ -1,17 +1,11 @@
-# SpicyChat QoL website Worker
+# Optional Cloudflare Worker
 
-Optional Cloudflare Worker routes used by the static site.
+Routes the small dynamic pieces used by the public website:
 
-It proxies the small set of root files the site is allowed to display, reads the public DEV distribution version where possible, and exposes the latest Android release/update metadata when that repo begins publishing it.
+- `/api/source` — selected files from the stable v0.2.0 tag, current extension `main`, or Android `main`
+- `/api/distribution/stable` — current stable GitHub release metadata
+- `/api/distribution/dev` — rolling `dev-build` release metadata
+- `/api/android/latest` — latest public Android APK release when one exists
+- `/android/manifest.json` — Android updater-facing manifest generated from the same release source
 
-Suggested route:
-
-`spicychatqol.drache.uk/api/*`
-
-Endpoints:
-
-- `/api/source?project=stable&file=features.md`
-- `/api/source?project=dev&file=CHANGELOG.md`
-- `/api/distribution/chrome-dev`
-- `/api/distribution/firefox-dev`
-- `/api/android/latest`
+The static site can still read raw GitHub files directly if the Worker is not deployed; bundled snapshots are only a temporary fallback for documentation pages.

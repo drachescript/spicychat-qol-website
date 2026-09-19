@@ -1,10 +1,10 @@
 {
-  "updated": "2026-09-15",
+  "updated": "2026-09-19",
   "announcement": {
     "enabled": true,
-    "label": "v0.2 release candidate",
-    "title": "Feature freeze is active while v0.2 is being finished.",
-    "text": "Current work is focused on bugs, regressions, browser compatibility and final stability testing. New feature requests are being parked until after v0.2.",
+    "label": "v0.2.0 released",
+    "title": "SpicyChat QoL v0.2.0 is live and open source.",
+    "text": "The actively maintained Chrome/Firefox release and the Android wrapper source are public. Rolling development builds now come from the main GitHub repository.",
     "href": "/status/"
   },
   "incident": {

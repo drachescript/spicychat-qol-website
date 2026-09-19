@@ -1,6 +1,6 @@
-# SpicyChat QoL DEV features
+# SpicyChat QoL development features
 
-DEV is the actively maintained browser build and the recommended channel for the newest QoL features and compatibility fixes. Everything remains optional unless a built-in safety/compatibility helper says otherwise.
+Bundled website snapshot of the post-v0.2 feature catalogue. The website prefers the current public `main/features.md` whenever GitHub is reachable.
 
 ## Settings, setup and Control Center
 - Searchable Settings and feature catalog with direct links to individual controls.

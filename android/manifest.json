@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "available": false,
+  "versionName": "",
+  "versionCode": null,
+  "releaseUrl": "https://github.com/drachescript/spicychat-qol-android/releases",
+  "apkUrl": "",
+  "sha256": "",
+  "sourceRepo": "https://github.com/drachescript/spicychat-qol-android",
+  "message": "The Android source is public. No public APK release is currently published on GitHub Releases; this manifest is a static fallback until the Worker or a release provides live metadata."
+}

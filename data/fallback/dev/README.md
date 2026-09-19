@@ -1,16 +1,12 @@
-# SpicyChat QoL DEV — website fallback snapshot
+# SpicyChat QoL
 
-DEV is the actively maintained SpicyChat QoL browser build and the recommended channel while v0.2 is finalized.
+SpicyChat QoL is a configurable quality-of-life extension for SpicyChat, developed by DragonGRaf under DragonScript.
 
-Current website project-status fallback: **v0.1.9.118** (v0.2 release-candidate line).
+Current release: **0.2.0**
 
-The project is currently in a feature freeze. Work before v0.2 is focused on bug fixes, regressions, compatibility and stability testing rather than adding new feature requests.
+- Chrome / Chromium: https://chromewebstore.google.com/detail/dragonscript-spicychat-qo/jdbhnaohfjnmkfpfddnjilmpaemkmabh
+- Firefox: https://addons.mozilla.org/en-US/firefox/addon/dragonscript-spicychat-qol-dev/
+- Source: https://github.com/drachescript/spicychat-qol-extension
+- Android source: https://github.com/drachescript/spicychat-qol-android
 
-## Public channels
-- Chrome DEV: https://chromewebstore.google.com/detail/dragonscript-spicychat-qo/jdbhnaohfjnmkfpfddnjilmpaemkmabh
-- Firefox DEV: https://addons.mozilla.org/en-US/firefox/addon/dragonscript-spicychat-qol-dev/
-- Website: https://spicychatqol.drache.uk/
-- Discord: https://spicychatqol.drache.uk/discord/
-
-## Source status
-The DEV GitHub repository exists at https://github.com/drachescript/spicychat-qol-dev, but the full root source/docs upload is planned with v0.2. This website fallback is not a substitute for that future repository source of truth.
+The project is GPL v3 open source and independent from SpicyChat. Fresh installs keep the main QoL switch on while optional features stay off until enabled or selected through a setup preset.

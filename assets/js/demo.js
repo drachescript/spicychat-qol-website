@@ -11,7 +11,7 @@
   const messagesHost = document.querySelector('[data-demo-messages]');
   const composer = document.querySelector('[data-demo-composer]');
   const toast = document.querySelector('[data-demo-toast]');
-  const DEFAULT_MODE = 'dev';
+  const DEFAULT_MODE = 'stable';
   const VALID_MODES = new Set(['stable', 'dev']);
 
   const presetMessages = [
@@ -20,7 +20,7 @@
     { who: 'bot', text: 'Good. Try timestamps, message actions, model details, scroll buttons, OOC tools, persona switching, or the Mini Panel. Nothing here is connected to a real chat.' },
     { who: 'ooc', text: '[OOC: This preset exists only to demonstrate OOC styling and controls.]' },
     { who: 'user', text: '*Action formatting test.* Plain dialogue test. `Backtick dialogue test.`' },
-    { who: 'bot', text: '*Yui taps a wrench against the workbench once.*\nThis message is intentionally longer than the others so text size, line spacing, bubble appearance, search, bookmarks, formatting repair and other display options have something obvious to work with. It is still completely fake demo text.' },
+    { who: 'bot', text: '*Yui taps a wrench against the workbench once.*\nThis message is intentionally longer so text size, line spacing, bubble appearance, search, bookmarks, formatting repair and other display options have something obvious to work with. It is still completely fake demo text.' },
     { who: 'user', text: 'Search target: gearbox. Search target: gearbox. Whole-word and case-sensitive tests can use this message.' },
     { who: 'bot', text: 'Model and generation metadata can appear below this reply when those demo settings are enabled.' },
     { who: 'user', text: 'Persona test message. Switching a demo persona should never touch a real SpicyChat persona.' },
@@ -32,7 +32,6 @@
   if (!VALID_MODES.has(mode)) mode = DEFAULT_MODE;
   let storedSettings = readStore(mode);
   let draftSettings = {};
-  let currentSource = null;
 
   renderPresetMessages();
   setModeUI();
@@ -56,23 +55,11 @@
     showToast(`${mode === 'dev' ? 'Development' : 'Stable'} demo settings reset.`);
     loadMode(mode);
   });
-
-  document.querySelector('[data-demo-clear-chat]')?.addEventListener('click', () => {
-    messagesHost.innerHTML = '';
-    showToast('Dummy chat cleared.');
-  });
-
-  document.querySelector('[data-demo-reset-chat]')?.addEventListener('click', () => {
-    renderPresetMessages();
-    showToast('Dummy messages reset.');
-  });
-
+  document.querySelector('[data-demo-clear-chat]')?.addEventListener('click', () => { messagesHost.innerHTML = ''; showToast('Dummy chat cleared.'); });
+  document.querySelector('[data-demo-reset-chat]')?.addEventListener('click', () => { renderPresetMessages(); showToast('Dummy messages reset.'); });
   document.querySelector('[data-demo-send]')?.addEventListener('click', addDummyMessage);
   composer?.addEventListener('keydown', event => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      addDummyMessage();
-    }
+    if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); addDummyMessage(); }
   });
 
   window.addEventListener('message', event => {
@@ -91,22 +78,28 @@
   });
 
   async function loadMode(nextMode) {
-    setSource('loading', `Loading ${nextMode === 'dev' ? 'Development' : 'Stable'} settings…`);
+    const label = nextMode === 'dev' ? 'Development main' : 'Stable v0.2.0';
+    setSource('loading', `Loading ${label} settings from GitHub…`);
     placeholder.hidden = false;
-    placeholder.innerHTML = '<strong>Loading settings…</strong><span>The exact options page will appear here.</span>';
+    placeholder.innerHTML = '<strong>Loading settings…</strong><span>The real QoL options page will appear here.</span>';
     frame.removeAttribute('srcdoc');
     frame.style.visibility = 'hidden';
-    currentSource = null;
 
     try {
       const source = await loadSettingsSource(nextMode);
-      currentSource = source;
       const manifest = JSON.parse(source.manifest.text);
-      const version = manifest.version || 'unknown';
-      buildLabel.textContent = `v${version}`;
+      const version = manifest.version_name || manifest.version || 'unknown';
+      let buildText = nextMode === 'dev' ? `main · v${version}` : `v${version}`;
+      if (nextMode === 'dev') {
+        try {
+          const d = await SQOLSource.developmentLatest();
+          if (d.referenceCommit) buildText = `main · ${d.referenceCommit.slice(0, 7)} · v${version}`;
+        } catch (_) {}
+      }
+      buildLabel.textContent = buildText;
       setSource(source.live ? 'live' : 'fallback', source.live
-        ? `${nextMode === 'dev' ? 'Development' : 'Stable'} settings loaded from the live GitHub root.`
-        : `Development root settings are not uploaded yet — running the bundled exact v${version} settings snapshot.`);
+        ? `${label} settings loaded from the public source repository.`
+        : `${label} is using the bundled website snapshot because GitHub is temporarily unavailable.`);
       frame.srcdoc = buildSrcdoc(source, manifest, nextMode);
       frame.onload = () => {
         placeholder.hidden = true;
@@ -114,31 +107,34 @@
         applyPreview({ ...readStore(nextMode), ...draftSettings });
       };
     } catch (error) {
-      buildLabel.textContent = 'not available yet';
-      setSource('fallback', nextMode === 'stable'
-        ? 'Stable settings cannot be embedded 1:1 yet because the Stable repository is still empty. This mode will activate automatically when the root settings files are uploaded.'
-        : 'Could not load the demo settings source right now.');
+      buildLabel.textContent = 'temporarily unavailable';
+      setSource('fallback', `Could not load the ${label} settings source right now.`);
       placeholder.hidden = false;
-      placeholder.innerHTML = nextMode === 'stable'
-        ? '<strong>Stable settings source is not published yet.</strong><span>I am not substituting the DEV UI and pretending it is Stable. Switch to Development for the full working demo.</span>'
-        : '<strong>Could not load the settings demo.</strong><span>Try refreshing the page.</span>';
+      placeholder.innerHTML = '<strong>Settings demo is temporarily unavailable.</strong><span>The demo deliberately does not substitute an unrelated old build. Refresh when GitHub is reachable again.</span>';
       frame.style.visibility = 'hidden';
       applyPreview(storedSettings);
     }
   }
 
   async function loadSettingsSource(project) {
-    const fallbackBase = project === 'dev' ? '/data/demo/dev/' : null;
+    // Stable is pinned to the v0.2.0 tag; Development follows main.
+    const fallbackBase = project === 'stable' ? '/data/demo/stable/' : '/data/demo/dev-current/';
     const names = [
       ['html', 'options.html'],
       ['css', 'options.css'],
+      ['registry', 'feature-registry.js'],
       ['js', 'options.js'],
       ['manifest', 'manifest.json'],
       ['changelog', 'CHANGELOG.md']
     ];
     const out = {};
     for (const [key, file] of names) {
-      out[key] = await SQOLSource.text(project, file, fallbackBase ? `${fallbackBase}${file}` : null);
+      let fallback = null;
+      try {
+        const probe = await fetch(`${fallbackBase}${file}`, { method: 'HEAD', cache: 'no-store' });
+        if (probe.ok) fallback = `${fallbackBase}${file}`;
+      } catch (_) {}
+      out[key] = await SQOLSource.text(project, file, fallback);
     }
     out.live = names.every(([key]) => out[key].source !== 'fallback');
     return out;
@@ -147,19 +143,24 @@
   function buildSrcdoc(source, manifest, sourceMode) {
     let html = source.html.text
       .replace(/<link[^>]+href=["']options\.css["'][^>]*>/i, '')
+      .replace(/<script[^>]+src=["']feature-registry\.js["'][^>]*><\/script>/i, '')
       .replace(/<script[^>]+src=["']options\.js["'][^>]*><\/script>/i, '');
 
     const shim = makeShim(sourceMode, manifest, source.changelog.text);
     const bridge = makeBridge(sourceMode);
+    const registry = safeScript(source.registry.text);
+    const options = safeScript(source.js.text);
     const extraCss = `
       html{color-scheme:dark} body{min-width:0!important} main{max-width:980px!important;padding:22px 22px 90px!important}
       header{position:static!important}.help-link[href^="http"]{cursor:not-allowed}.demo-only-banner{background:#23161c;border:1px solid rgba(236,61,104,.28);border-radius:12px;padding:10px 12px;margin-bottom:14px;color:#d7c9cf;font-size:13px}.demo-only-banner strong{color:#ff91a8}
     `;
     html = html.replace('</head>', `<style>${source.css.text}\n${extraCss}</style><script>${shim}<\/script></head>`);
-    html = html.replace('<main>', '<main><div class="demo-only-banner"><strong>Website demo:</strong> settings are stored only in this page\'s demo localStorage. External actions are disabled.</div>');
-    html = html.replace('</body>', `<script>${source.js.text}<\/script><script>${bridge}<\/script></body>`);
+    html = html.replace(/<main([^>]*)>/i, '<main$1><div class="demo-only-banner"><strong>Website demo:</strong> this is the real QoL settings UI, but its storage and browser actions are sandboxed. Nothing connects to your SpicyChat account.</div>');
+    html = html.replace('</body>', `<script>${registry}<\/script><script>${options}<\/script><script>${bridge}<\/script></body>`);
     return html;
   }
+
+  function safeScript(text) { return String(text || '').replace(/<\/script/gi, '<\\/script'); }
 
   function makeShim(sourceMode, manifest, changelog) {
     const safeManifest = JSON.stringify(manifest).replace(/</g, '\\u003c');
@@ -171,8 +172,11 @@
         const KEY='sqol-demo-storage-'+MODE;
         const MANIFEST=${safeManifest};
         const CHANGELOG=${safeChangelog};
+        const changeListeners=[];
+        const runtimeListeners=[];
         const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch{return {}}};
-        const write=(v)=>{localStorage.setItem(KEY,JSON.stringify(v)); parent.postMessage({type:'sqol-demo-storage',mode:MODE,storage:v},'*')};
+        const notify=(changes)=>{changeListeners.forEach(fn=>{try{fn(changes,'local')}catch{}})};
+        const write=(next,changes={})=>{localStorage.setItem(KEY,JSON.stringify(next));notify(changes);parent.postMessage({type:'sqol-demo-storage',mode:MODE,storage:next},'*')};
         const pick=(store,keys)=>{
           if(keys==null)return {...store};
           if(typeof keys==='string')return Object.prototype.hasOwnProperty.call(store,keys)?{[keys]:store[keys]}:{};
@@ -180,29 +184,48 @@
           if(typeof keys==='object'){const o={};Object.keys(keys).forEach(k=>o[k]=store[k]===undefined?keys[k]:store[k]);return o}
           return {};
         };
+        const done=(cb,value)=>{if(typeof cb==='function'){queueMicrotask(()=>cb(value));return undefined}return Promise.resolve(value)};
         const storage={
-          get(keys,cb){const out=pick(read(),keys);queueMicrotask(()=>cb&&cb(out));},
-          set(obj,cb){const s={...read(),...(obj||{})};write(s);queueMicrotask(()=>cb&&cb());},
-          remove(keys,cb){const s=read();(Array.isArray(keys)?keys:[keys]).forEach(k=>delete s[k]);write(s);queueMicrotask(()=>cb&&cb());},
-          clear(cb){write({});queueMicrotask(()=>cb&&cb());},
-          getBytesInUse(keys,cb){const data=pick(read(),keys);const bytes=new TextEncoder().encode(JSON.stringify(data)).length;queueMicrotask(()=>cb&&cb(bytes));}
+          get(keys,cb){return done(cb,pick(read(),keys))},
+          getKeys(cb){return done(cb,Object.keys(read()))},
+          set(obj,cb){const prev=read(),next={...prev,...(obj||{})},changes={};Object.entries(obj||{}).forEach(([k,v])=>{if(prev[k]!==v)changes[k]={oldValue:prev[k],newValue:v}});write(next,changes);return done(cb)},
+          remove(keys,cb){const prev=read(),next={...prev},changes={};(Array.isArray(keys)?keys:[keys]).forEach(k=>{if(Object.prototype.hasOwnProperty.call(next,k)){changes[k]={oldValue:next[k],newValue:undefined};delete next[k]}});write(next,changes);return done(cb)},
+          clear(cb){const prev=read(),changes={};Object.keys(prev).forEach(k=>changes[k]={oldValue:prev[k],newValue:undefined});write({},changes);return done(cb)},
+          getBytesInUse(keys,cb){const bytes=new TextEncoder().encode(JSON.stringify(pick(read(),keys))).length;return done(cb,bytes)}
+        };
+        const event=(list)=>({addListener(fn){if(typeof fn==='function'&&!list.includes(fn))list.push(fn)},removeListener(fn){const i=list.indexOf(fn);if(i>=0)list.splice(i,1)},hasListener(fn){return list.includes(fn)}});
+        const demoToast=(message)=>parent.postMessage({type:'sqol-demo-toast',message},'*');
+        const runtimeResponse=(msg)=>{
+          if(msg&&msg.type==='DS_AUTO_AFK_RUN_NOW')return {ok:true,summary:{at:Date.now(),enabled:true,monitored:4,protected:1,recent:2,eligible:1,cleaned:1,failed:0}};
+          if(msg&&msg.type==='DS_GET_DIAGNOSTIC_CONTEXT')return {ok:true,url:'https://demo.invalid/chat/yui',pageType:'chat',title:'Yui Kimura — website demo'};
+          if(msg&&msg.type==='DS_GET_PAGE_DIAGNOSTICS')return {ok:true,environment:{browser:'Website demo',platform:'demo'},scheduler:{demo:true}};
+          return {ok:true,demo:true};
         };
         window.chrome=window.chrome||{};
-        window.chrome.storage={local:storage};
-        window.chrome.runtime={
+        chrome.storage={local:storage,onChanged:event(changeListeners)};
+        chrome.runtime={
           lastError:null,
+          onMessage:event(runtimeListeners),
           getManifest:()=>MANIFEST,
-          getURL:(path)=>path==='CHANGELOG.md'?'data:text/plain;charset=utf-8,'+encodeURIComponent(CHANGELOG):'data:text/plain,',
-          sendMessage:(msg,cb)=>{
-            let response={ok:true};
-            if(msg&&msg.type==='DS_AUTO_AFK_RUN_NOW')response={ok:true,summary:{at:Date.now(),enabled:true,monitored:4,protected:1,recent:2,eligible:1,cleaned:1,failed:0}};
-            if(msg&&msg.type==='DS_GET_DIAGNOSTIC_CONTEXT')response={ok:true,url:'https://demo.invalid/chat/yui',pageType:'chat',title:'Yui Kimura — website demo'};
-            queueMicrotask(()=>cb&&cb(response));
-          }
+          getPlatformInfo:(cb)=>done(cb,{os:'android',arch:'x86-64',nacl_arch:'x86-64'}),
+          getURL:(path)=>path==='CHANGELOG.md'?'data:text/plain;charset=utf-8,'+encodeURIComponent(CHANGELOG):'data:text/plain;charset=utf-8,',
+          sendMessage:(msg,cb)=>done(cb,runtimeResponse(msg))
         };
-        try{Object.defineProperty(navigator,'clipboard',{value:{writeText:async(text)=>{parent.postMessage({type:'sqol-demo-toast',message:'Copied inside the demo only.'},'*');return undefined}},configurable:true})}catch{}
-        window.open=()=>{parent.postMessage({type:'sqol-demo-toast',message:'External links are disabled inside the demo.'},'*');return null};
-        addEventListener('click',e=>{const a=e.target.closest?.('a');if(!a)return;if(a.href||a.download){e.preventDefault();e.stopImmediatePropagation();parent.postMessage({type:'sqol-demo-toast',message:a.download?'Demo download action simulated.':'External links are disabled inside the demo.'},'*')}},true);
+        chrome.permissions={
+          contains:(q,cb)=>done(cb,false),
+          request:(q,cb)=>{demoToast('Permission request simulated in the website demo.');return done(cb,false)},
+          remove:(q,cb)=>done(cb,true)
+        };
+        chrome.tabs={
+          create:(info,cb)=>{demoToast('Opening browser tabs is disabled in the website demo.');return done(cb,{id:999,url:info?.url||'about:blank',active:true})},
+          query:(q,cb)=>done(cb,[{id:999,active:true,currentWindow:true,url:'https://demo.invalid/chat/yui',title:'Yui Kimura — website demo'}]),
+          sendMessage:(id,msg,cb)=>done(cb,runtimeResponse(msg))
+        };
+        chrome.downloads={download:(info,cb)=>{demoToast('Download action simulated; no file was created.');return done(cb,1)}};
+        chrome.notifications={create:(id,opts,cb)=>{demoToast('Browser notification simulated.');return done(cb,id||'demo')}};
+        try{Object.defineProperty(navigator,'clipboard',{value:{writeText:async()=>{demoToast('Copied inside the demo only.')}},configurable:true})}catch{}
+        window.open=()=>{demoToast('External links are disabled inside the demo.');return null};
+        addEventListener('click',e=>{const a=e.target.closest?.('a');if(!a)return;if(a.href||a.download){e.preventDefault();e.stopImmediatePropagation();demoToast(a.download?'Demo download action simulated.':'External links are disabled inside the demo.')}},true);
       })();`;
   }
 
@@ -215,20 +238,20 @@
           const d={};
           document.querySelectorAll('input[id],select[id],textarea[id]').forEach(el=>{
             if(el.type==='checkbox')d[el.id]=el.checked;
-            else if(el.type==='radio'){if(el.checked&&el.name)d[el.name]=el.value;}
+            else if(el.type==='radio'){if(el.checked&&el.name)d[el.name]=el.value}
             else d[el.id]=el.value;
           });
           parent.postMessage({type:'sqol-demo-draft',mode:MODE,draft:d},'*');
         }
         document.addEventListener('change',()=>setTimeout(draft,0));
         document.addEventListener('input',e=>{if(e.target.matches('select,input[type=range],input[type=number]'))setTimeout(draft,0)});
-        setTimeout(()=>{draft(); chrome.storage.local.get(null,s=>parent.postMessage({type:'sqol-demo-storage',mode:MODE,storage:s},'*'))},500);
+        setTimeout(()=>{draft();chrome.storage.local.get(null,s=>parent.postMessage({type:'sqol-demo-storage',mode:MODE,storage:s},'*'))},700);
       })();`;
   }
 
   function setModeUI() {
     modeButtons.forEach(button => button.classList.toggle('active', button.dataset.demoMode === mode));
-    modeBadge.textContent = mode === 'dev' ? 'DEV' : 'Stable';
+    modeBadge.textContent = mode === 'dev' ? 'Development' : 'Stable';
     modeBadge.className = `badge ${mode === 'dev' ? 'warn' : 'good'}`;
   }
 
