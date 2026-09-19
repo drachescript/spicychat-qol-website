@@ -28,3 +28,7 @@ Selectors such as common `data-testid`, `aria-label`, `/chat/<id>`, `/chatbot/<i
 ## Content safety
 
 `data/demo/bots.json` contains the SFW bot cards taken from the supplied public `@dragongraf1312` creator-profile snapshot. Private chats, login/session values and private persona/lorebook contents are not copied into the site. Persona, Lorebook and message text in the sandbox is fabricated.
+
+## v10 playground usability
+
+The playground uses an internal scrolling content area, raw public avatar URLs for SFW creator cards, readable non-underlined chat rows, working local Persona create/edit forms, and a working local Lorebook create flow that opens the new Lorebook in the editor. These actions remain sandbox-only and never write to SpicyChat.
