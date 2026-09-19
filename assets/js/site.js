@@ -47,7 +47,7 @@
   if (dev.releaseUrl) document.querySelectorAll('[data-dev-release-href]').forEach(n => n.href = dev.releaseUrl);
 
   document.querySelectorAll('[data-android-version]').forEach(n => {
-    n.textContent = android.available ? (android.versionName || android.tagName || 'Available') : 'Public APK pending';
+    n.textContent = android.available ? (android.versionName || android.tagName || 'Available') : 'Release check unavailable';
   });
   document.querySelectorAll('[data-android-download]').forEach(n => {
     if (android.available && (android.apkUrl || android.releaseUrl)) {

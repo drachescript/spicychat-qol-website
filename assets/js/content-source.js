@@ -164,11 +164,17 @@ window.SQOLSource = (() => {
       }
     } catch (_) {}
 
+    // Last-resort bundled fallback so the public APK does not appear to vanish if GitHub is temporarily unreachable.
+    try {
+      const r = await fetch('/android/update.json', { cache: 'no-store' });
+      if (r.ok) return await r.json();
+    } catch (_) {}
+
     return {
       available: false,
       sourcePublic: true,
       metadataSource: 'github-release-update.json',
-      reason: 'no-public-apk-release'
+      reason: 'release-check-unavailable'
     };
   }
 

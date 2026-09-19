@@ -1,17 +1,19 @@
 {
   "schemaVersion": 2,
-  "available": false,
+  "available": true,
   "app": "SpicyChat QOL",
   "packageName": "uk.drache.spicychatqol",
-  "versionName": "",
+  "versionName": "0.1.0",
   "versionCode": null,
-  "tag": "",
-  "releaseUrl": "https://github.com/drachescript/spicychat-qol-android/releases",
-  "apkFile": "",
-  "apkUrl": "",
+  "tag": "v0.1.0",
+  "releaseUrl": "https://github.com/drachescript/spicychat-qol-android/releases/tag/v0.1.0",
+  "apkFile": "SpicyChat-QOL-Android-v0.1.0.apk",
+  "apkUrl": "https://github.com/drachescript/spicychat-qol-android/releases/download/v0.1.0/SpicyChat-QOL-Android-v0.1.0.apk",
   "sha256": "",
   "minimumAndroidSdk": 24,
   "sourceRepo": "https://github.com/drachescript/spicychat-qol-android",
   "metadataSource": "github-release-update.json",
-  "message": "Static fallback only. Live Android update metadata comes from update.json attached to the latest tagged GitHub release."
+  "message": "Bundled fallback for the public v0.1.0 Android release. The website normally checks the latest GitHub release automatically.",
+  "tagName": "v0.1.0",
+  "apkName": "SpicyChat-QOL-Android-v0.1.0.apk"
 }

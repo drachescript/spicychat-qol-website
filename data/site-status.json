@@ -2,10 +2,10 @@
   "updated": "2026-09-19",
   "announcement": {
     "enabled": true,
-    "label": "v0.2 is open source",
-    "title": "Browser and Android source are public.",
-    "text": "Stable releases, rolling development builds and Android release metadata are now designed to flow from GitHub automatically. Android APK publishing is handled separately through tagged signed releases.",
-    "href": "/status/"
+    "label": "Android v0.1.0 is out",
+    "title": "The first public Android APK is available.",
+    "text": "Starting with v0.1.0, most normal QoL updates can update inside the app. You only need a new APK when the Android app itself changes.",
+    "href": "/android/"
   },
   "incident": {
     "enabled": false,
