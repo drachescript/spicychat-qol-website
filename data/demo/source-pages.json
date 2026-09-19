@@ -1,0 +1,70 @@
+{
+  "note": "Structural reference inventory only. Original saved pages are not bundled into the public site.",
+  "capturedAt": "2026-09-19",
+  "pages": [
+    {
+      "fixture": "home",
+      "sourceSnapshot": "Spicychat_ NSFW AI Chatbots and Roleplay for Adults.html"
+    },
+    {
+      "fixture": "home-filters-closed",
+      "sourceSnapshot": "Spicychat_ NSFW AI Chatbots and Roleplay for Adults filters closed.html"
+    },
+    {
+      "fixture": "chats",
+      "sourceSnapshot": "All Your Interactive AI Chats _ Spicychat.html"
+    },
+    {
+      "fixture": "personas",
+      "sourceSnapshot": "My User Personas _ Spicychat.html"
+    },
+    {
+      "fixture": "persona-edit",
+      "sourceSnapshot": "Edit Sali's Persona - Spicychat.html"
+    },
+    {
+      "fixture": "my-chatbots",
+      "sourceSnapshot": "All Your Chatbot Characters In One Place _ Spicychat.html"
+    },
+    {
+      "fixture": "my-chatbots-load-more",
+      "sourceSnapshot": "All Your Chatbot Characters In One Place _ Spicychat with load more.html"
+    },
+    {
+      "fixture": "creator-profile",
+      "sourceSnapshot": "Creator Profile @dragongraf1312 _ Spicychat.html"
+    },
+    {
+      "fixture": "chatbot-create",
+      "sourceSnapshot": "Create Personalized AI Characters Chatbots _ Spicychat.html"
+    },
+    {
+      "fixture": "chatbot-edit-advanced-open",
+      "sourceSnapshot": "Edit Cly Kullervo's Profile - Spicychat advanced open.html"
+    },
+    {
+      "fixture": "chatbot-edit-advanced-closed",
+      "sourceSnapshot": "Edit Cly Kullervo's Profile - Spicychat advanced closed.html"
+    },
+    {
+      "fixture": "lorebooks",
+      "sourceSnapshot": "My Lorebooks – View and Manage Your AI Lore _ Spicychat.html"
+    },
+    {
+      "fixture": "lorebook-create",
+      "sourceSnapshot": "Build Immersive Worlds with Spicychat Lorebook.html"
+    },
+    {
+      "fixture": "lorebook-edit-details",
+      "sourceSnapshot": "Edit a Lorebook – Manage Entries & Keywords _ Spicychat details.html"
+    },
+    {
+      "fixture": "lorebook-edit-entries",
+      "sourceSnapshot": "Edit a Lorebook – Manage Entries & Keywords _ Spicychat entries.html"
+    },
+    {
+      "fixture": "chat",
+      "sourceSnapshot": "Chat with Cly Kullervo on Spicychat.html"
+    }
+  ]
+}

@@ -10,6 +10,6 @@ Main projects:
 - Android: https://github.com/drachescript/spicychat-qol-android
 - Website: https://github.com/drachescript/spicychat-qol-website
 
-The interactive demo uses fake, SFW data and never connects to a visitor's SpicyChat account.
+The interactive demo uses SFW public creator cards plus fabricated private/account data and never connects to a visitor's SpicyChat account. Its Settings UI and feature registry load automatically from the public extension source.
 
-See `AUTOMATION.md` for the release/manifest flow used by the site.
+See `AUTOMATION.md` for the release/manifest flow used by the site and `DEMO.md` for the playground architecture.

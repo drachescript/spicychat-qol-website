@@ -47,3 +47,14 @@ A typical release `update.json` contains:
 ```
 
 Only published tagged releases should update public Android release metadata. Internal/local builds must not appear as public updates.
+
+## Website playground / demo source sync
+
+The playground deliberately separates two things:
+
+1. **QoL source of truth** — Stable and Development settings are loaded from the public extension repository at runtime. The demo requests `options.html`, `options.css`, `options.js`, `feature-registry.js`, `manifest.json`, and `CHANGELOG.md`. This means normal Settings changes do not require a hand-maintained copy in the website.
+2. **SpicyChat compatibility fixtures** — The fake Home/Chats/Personas/creator/Lorebook/chat pages are local, SFW fixtures shaped from saved real page structures. They contain no login/session data and all actions remain local/simulated.
+
+The playground's bot allowlist is stored in `data/demo/creator-allowlist.json` and the safe card snapshot in `data/demo/bots.json`. Both were generated from the supplied public creator-profile snapshot for `@dragongraf1312`.
+
+The site intentionally does not execute private SpicyChat APIs or reuse authentication. New QoL settings still appear automatically in the real Options drawer even when a matching fake-page effect has not yet been implemented.
