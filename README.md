@@ -15,3 +15,7 @@ Main projects:
 The interactive demo uses SFW public creator cards plus fabricated private/account data and never connects to a visitor's SpicyChat account. Its Settings UI and feature registry load automatically from the public extension source.
 
 See `AUTOMATION.md` for the release/manifest flow used by the site and `DEMO.md` for the playground architecture.
+
+## Reviews / creator feedback
+
+`/reviews/` explains the moderation/abuse context behind SpicyChat not having an open public chatbot review wall and records DragonGraf's plan for a more structured creator-feedback system later. The two Discord screenshots on that page are stored locally under `assets/reviews/` and open at full size when clicked.

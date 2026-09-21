@@ -58,3 +58,6 @@
 .demo-typing .fake-message-text{color:#777;font-style:italic}
 .fake-scroll-tools{z-index:8}
 @media(max-width:560px){.demo-sc-card-actions-left,.demo-sc-card-actions-right{top:5px;gap:4px}.demo-sc-card-actions-left{left:5px}.demo-sc-card-actions-right{right:5px}.demo-sc-heart,.demo-sc-info,.demo-qol-card-hide,.demo-qol-card-later{height:26px;min-width:26px;padding:0 6px}.demo-qol-card-later{min-width:38px;font-size:.56rem}}
+
+/* Reviews / creator feedback */
+.review-summary-grid{margin-top:22px}.review-shot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:22px}.review-shot{display:flex;flex-direction:column;gap:10px;padding:12px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.017);color:#ff9bb0;text-decoration:none;transition:.16s ease}.review-shot:hover{transform:translateY(-2px);border-color:var(--border2);background:rgba(255,255,255,.028)}.review-shot img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.06)}.review-shot span{font-size:.78rem;font-weight:760}.review-context-note{margin:16px 0 0;color:var(--muted2);font-size:.78rem}.review-summary-grid .plain-card h2{font-size:1.35rem}.review-summary-grid .plain-card p{margin-bottom:0}@media(max-width:800px){.review-shot-grid{grid-template-columns:1fr}}
