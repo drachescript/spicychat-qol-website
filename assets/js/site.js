@@ -31,6 +31,9 @@
   document.querySelectorAll('[data-dev-release-href]').forEach(n => n.href = cfg.devReleaseUrl);
   document.querySelectorAll('[data-main-repo-href]').forEach(n => n.href = cfg.stableRepo);
   document.querySelectorAll('[data-android-repo-href]').forEach(n => n.href = cfg.androidRepo);
+  document.querySelectorAll('[data-discord-bot-install]').forEach(n => n.href = cfg.discordBotInstallUrl || '#');
+  document.querySelectorAll('[data-discord-invite]').forEach(n => n.href = cfg.discordInvite || '/discord/');
+  document.querySelectorAll('[data-discord-bot-user-id]').forEach(n => n.textContent = cfg.discordBotUserId || '');
 
   const [stable, dev, android] = await Promise.all([
     SQOLSource.stableLatest().catch(() => ({ version: cfg.stableVersion, source: 'fallback' })),
