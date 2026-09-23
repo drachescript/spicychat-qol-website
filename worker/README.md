@@ -23,4 +23,4 @@ Stable resolves from GitHub's latest non-prerelease release, so future stable ta
 
 The tagged Android GitHub Release is authoritative. The Worker looks for `update.json` attached to that release first. If the asset is missing, it falls back to conservative release/APK metadata; it does not promote a random local/internal build.
 
-The static site can still read raw GitHub files directly if the Worker is unavailable. Bundled snapshots and static manifests are fallbacks only.
+The static site can still read raw GitHub files directly if the Worker is unavailable. Because the custom-domain site may serve `/android/manifest.json` directly from GitHub Pages instead of routing that request through this Worker, the website repository also has a small scheduled sync workflow that refreshes the static Android manifest/update JSON from the latest tagged GitHub release.

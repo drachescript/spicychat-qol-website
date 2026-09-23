@@ -4,7 +4,7 @@ Source for https://spicychatqol.drache.uk/.
 
 The public site is mostly static and reads current SpicyChat QoL information from the public GitHub repositories whenever possible. The Cloudflare Worker resolves the latest stable browser release, rolling `dev-build`, selected source files, and Android release metadata.
 
-Current public Android release: **v0.1.0**. Normal compatible QoL updates can update inside the app; a new APK is only required for Android-app changes.
+Current public Android release: **v0.1.3**. Normal compatible QoL updates can update inside the app; a new APK is only required for Android-app changes.
 
 Main projects:
 

@@ -1,10 +1,10 @@
 {
-  "updated": "2026-09-19",
+  "updated": "2026-09-23",
   "announcement": {
     "enabled": true,
-    "label": "Android v0.1.0 is out",
-    "title": "The first public Android APK is available.",
-    "text": "Starting with v0.1.0, most normal QoL updates can update inside the app. You only need a new APK when the Android app itself changes.",
+    "label": "Android v0.1.3 is out",
+    "title": "The latest Android APK is available.",
+    "text": "Android v0.1.3 is available now. Normal compatible QoL updates can still update inside the app; a new APK is only needed when the Android app itself changes.",
     "href": "/android/"
   },
   "incident": {

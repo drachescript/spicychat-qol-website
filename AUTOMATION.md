@@ -26,7 +26,9 @@ The Android tagged-release workflow is expected to publish:
 
 The website Worker queries the latest GitHub Release, loads its `update.json` asset first, and only falls back to ordinary release/APK metadata if that asset is missing.
 
-`/android/manifest.json` normalizes the same data for compatibility. The static `android/manifest.json` and `android/update.json` files in this website are offline fallbacks only.
+`/android/manifest.json` normalizes the same data for compatibility. The public site is static, so `android/manifest.json` and `android/update.json` are also synchronized into this repository by `.github/workflows/sync-android-manifest.yml`. This keeps the direct URLs current even when they are served straight from GitHub Pages instead of through the optional Worker.
+
+The sync workflow runs on a schedule, can be started manually, and can also accept a future `repository_dispatch` event named `android-release`. It reads the latest tagged Android release, prefers its attached `update.json`, fills missing checksum/version-code data from the release/tag when needed, and commits only when the generated files actually changed.
 
 A typical release `update.json` contains:
 
@@ -34,12 +36,12 @@ A typical release `update.json` contains:
 {
   "app": "SpicyChat QOL",
   "packageName": "uk.drache.spicychatqol",
-  "versionName": "0.1.0",
-  "versionCode": 71,
-  "tag": "v0.1.0",
-  "apkFile": "SpicyChat-QOL-Android-v0.1.0.apk",
-  "apkUrl": "https://github.com/drachescript/spicychat-qol-android/releases/download/v0.1.0/SpicyChat-QOL-Android-v0.1.0.apk",
-  "releaseUrl": "https://github.com/drachescript/spicychat-qol-android/releases/tag/v0.1.0",
+  "versionName": "0.1.3",
+  "versionCode": 74,
+  "tag": "v0.1.3",
+  "apkFile": "SpicyChat-QOL-Android-v0.1.3.apk",
+  "apkUrl": "https://github.com/drachescript/spicychat-qol-android/releases/download/v0.1.3/SpicyChat-QOL-Android-v0.1.3.apk",
+  "releaseUrl": "https://github.com/drachescript/spicychat-qol-android/releases/tag/v0.1.3",
   "sha256": "...",
   "minimumAndroidSdk": 24,
   "publishedAt": "..."
