@@ -77,20 +77,34 @@ jobs:
 
             # Copy every local script referenced by options.html. This keeps the
             # demo compatible when Settings adds new registry/helper scripts.
-            grep -oE '<script[^>]+src="[^"]+"' "$src/options.html" \
-              | sed -E 's/.*src="([^"]+)".*/\1/' \
-              | while IFS= read -r file; do
+            while IFS= read -r file; do
                   case "$file" in
                     http:*|https:*|//*|/*|'') continue ;;
                   esac
-                  test -f "$src/$file"
+                  if [ ! -f "$src/$file" ]; then
+                    echo "::warning::Skipping missing Settings script referenced by $src/options.html: $file"
+                    continue
+                  fi
                   mkdir -p "$dst/$(dirname "$file")"
                   cp "$src/$file" "$dst/$file"
-                done
+                done < <(
+                  grep -oE '<script[^>]+src="[^"]+"' "$src/options.html" \
+                    | sed -E 's/.*src="([^"]+)".*/\1/' \
+                    || true
+                )
           }
 
           copy_source extension-stable "$stable_dir"
           copy_source extension-dev "$dev_dir"
+
+          for dir in "$stable_dir" "$dev_dir"; do
+            for required in options.html options.css options.js manifest.json CHANGELOG.md; do
+              if [ ! -s "$dir/$required" ]; then
+                echo "::error::Required mirrored Settings file is missing or empty: $dir/$required"
+                exit 1
+              fi
+            done
+          done
 
           stable_sha="$(git -C extension-stable rev-parse HEAD)"
           dev_sha="$(git -C extension-dev rev-parse HEAD)"
