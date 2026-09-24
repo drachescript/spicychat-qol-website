@@ -2,10 +2,27 @@ window.SQOLSource = (() => {
   let configPromise;
   let stableLatestPromise;
 
-  const config = () => configPromise ||= fetch('/data/site-config.json', { cache: 'no-store' }).then(r => {
-    if (!r.ok) throw new Error('Could not load site config');
-    return r.json();
-  });
+  async function fetchWithTimeout(url, options = {}, timeoutMs = 6500) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, { ...options, signal: controller.signal });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  const config = () => {
+    if (configPromise) return configPromise;
+    configPromise = fetchWithTimeout('/data/site-config.json', { cache: 'no-store' }, 4000).then(r => {
+      if (!r.ok) throw new Error('Could not load site config');
+      return r.json();
+    }).catch(error => {
+      configPromise = null;
+      throw error;
+    });
+    return configPromise;
+  };
 
   async function baseFor(c, project) {
     if (project === 'stable') {
@@ -23,17 +40,17 @@ window.SQOLSource = (() => {
     const rawBase = await baseFor(c, project);
 
     try {
-      const wr = await fetch(`/api/source?project=${encodeURIComponent(project)}&file=${encodeURIComponent(file)}`, { cache: 'no-store' });
+      const wr = await fetchWithTimeout(`/api/source?project=${encodeURIComponent(project)}&file=${encodeURIComponent(file)}`, { cache: 'no-store' }, 3000);
       if (wr.ok) return { text: await wr.text(), source: 'live-worker', project, file };
     } catch (_) {}
 
     try {
-      const rr = await fetch(`${rawBase}/${file}?v=${Date.now()}`, { cache: 'no-store' });
+      const rr = await fetchWithTimeout(`${rawBase}/${file}?v=${Date.now()}`, { cache: 'no-store' }, 7000);
       if (rr.ok) return { text: await rr.text(), source: 'live-github', project, file };
     } catch (_) {}
 
     if (!fallback) throw new Error(`Could not load ${project}/${file}`);
-    const fr = await fetch(fallback, { cache: 'no-store' });
+    const fr = await fetchWithTimeout(fallback, { cache: 'no-store' }, 3000);
     if (!fr.ok) throw new Error(`Could not load fallback for ${project}/${file}`);
     return { text: await fr.text(), source: 'fallback', project, file };
   }
@@ -48,16 +65,16 @@ window.SQOLSource = (() => {
     stableLatestPromise = (async () => {
       const c = await config();
       try {
-        const r = await fetch('/api/distribution/stable', { cache: 'no-store' });
+        const r = await fetchWithTimeout('/api/distribution/stable', { cache: 'no-store' }, 3000);
         if (r.ok) {
           const data = await r.json();
           if (data.version) return { ...data, source: data.fallback ? 'fallback' : 'live-worker' };
         }
       } catch (_) {}
       try {
-        const r = await fetch('https://api.github.com/repos/drachescript/spicychat-qol-extension/releases/latest', {
+        const r = await fetchWithTimeout('https://api.github.com/repos/drachescript/spicychat-qol-extension/releases/latest', {
           cache: 'no-store', headers: { Accept: 'application/vnd.github+json' }
-        });
+        }, 6000);
         if (r.ok) {
           const rel = await r.json();
           return {
@@ -82,16 +99,16 @@ window.SQOLSource = (() => {
   async function developmentLatest() {
     const c = await config();
     try {
-      const r = await fetch('/api/distribution/dev', { cache: 'no-store' });
+      const r = await fetchWithTimeout('/api/distribution/dev', { cache: 'no-store' }, 3000);
       if (r.ok) {
         const data = await r.json();
         if (data.available !== false) return { ...data, source: data.fallback ? 'fallback' : 'live-worker' };
       }
     } catch (_) {}
     try {
-      const r = await fetch('https://api.github.com/repos/drachescript/spicychat-qol-extension/releases/tags/dev-build', {
+      const r = await fetchWithTimeout('https://api.github.com/repos/drachescript/spicychat-qol-extension/releases/tags/dev-build', {
         cache: 'no-store', headers: { Accept: 'application/vnd.github+json' }
-      });
+      }, 6000);
       if (r.ok) {
         const rel = await r.json();
         const body = String(rel.body || '');
@@ -120,21 +137,21 @@ window.SQOLSource = (() => {
 
   async function androidLatest() {
     try {
-      const r = await fetch('/api/android/latest', { cache: 'no-store' });
+      const r = await fetchWithTimeout('/api/android/latest', { cache: 'no-store' }, 3000);
       if (r.ok) return await r.json();
     } catch (_) {}
 
     // Browser-side fallback: query the latest tagged release and prefer its update.json asset.
     try {
-      const r = await fetch('https://api.github.com/repos/drachescript/spicychat-qol-android/releases/latest', {
+      const r = await fetchWithTimeout('https://api.github.com/repos/drachescript/spicychat-qol-android/releases/latest', {
         cache: 'no-store', headers: { Accept: 'application/vnd.github+json' }
-      });
+      }, 6000);
       if (r.ok) {
         const rel = await r.json();
         const updateAsset = (rel.assets || []).find(a => String(a.name || '').toLowerCase() === 'update.json');
         if (updateAsset) {
           try {
-            const ur = await fetch(updateAsset.browser_download_url, { cache: 'no-store' });
+            const ur = await fetchWithTimeout(updateAsset.browser_download_url, { cache: 'no-store' }, 6000);
             if (ur.ok) {
               const data = await ur.json();
               return normalizeAndroid(data, rel, updateAsset.browser_download_url);
@@ -166,7 +183,7 @@ window.SQOLSource = (() => {
 
     // Last-resort bundled fallback so the public APK does not appear to vanish if GitHub is temporarily unreachable.
     try {
-      const r = await fetch('/android/update.json', { cache: 'no-store' });
+      const r = await fetchWithTimeout('/android/update.json', { cache: 'no-store' }, 4000);
       if (r.ok) return await r.json();
     } catch (_) {}
 
@@ -215,7 +232,7 @@ window.SQOLSource = (() => {
 
   async function extensionManifest() {
     try {
-      const r = await fetch('/extension/manifest.json', { cache: 'no-store' });
+      const r = await fetchWithTimeout('/extension/manifest.json', { cache: 'no-store' }, 4000);
       if (r.ok) return await r.json();
     } catch (_) {}
     const c = await config();

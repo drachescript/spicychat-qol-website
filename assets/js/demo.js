@@ -27,7 +27,7 @@
   ];
 
   let bots = [];
-  let mode = localStorage.getItem('sqol-demo-mode') || DEFAULT_MODE;
+  let mode = safeLocalGet('sqol-demo-mode') || DEFAULT_MODE;
   if (!VALID_MODES.has(mode)) mode = DEFAULT_MODE;
   let storedSettings = readStore(mode);
   let draftSettings = {};
@@ -35,19 +35,33 @@
   let activeBotId = app.activeBotId || DEFAULT_BOT;
   let currentManifest = null;
   let replyRules = [];
+  let settingsLoadGeneration = 0;
 
   init();
 
   async function init() {
-    bots = await loadBots();
-    replyRules = await loadReplyRules();
+    // Render the playground immediately from bundled fallback data. Remote source
+    // loading must never be able to leave the whole demo on its initial
+    // "Loading…" shell.
+    bots = [...fallbackBots];
+    replyRules = fallbackReplyRules();
     if (!bots.some(b => b.id === activeBotId)) activeBotId = bots.find(b=>b.name==='Yui Kimura')?.id || bots[0]?.id || DEFAULT_BOT;
     app.activeBotId = activeBotId;
     hydrateBotState();
     setModeUI();
     renderRoute(app.route || 'home');
-    loadMode(mode);
     bindGlobalEvents();
+    void loadMode(mode);
+
+    // Upgrade the local playground data in the background. If either request
+    // stalls or fails, the already-rendered fallback playground remains usable.
+    const [loadedBots, loadedRules] = await Promise.all([loadBots(), loadReplyRules()]);
+    bots = loadedBots;
+    replyRules = loadedRules;
+    if (!bots.some(b => b.id === activeBotId)) activeBotId = bots.find(b=>b.name==='Yui Kimura')?.id || bots[0]?.id || DEFAULT_BOT;
+    app.activeBotId = activeBotId;
+    hydrateBotState();
+    renderRoute(app.route || 'home');
   }
 
   function bindGlobalEvents() {
@@ -55,7 +69,7 @@
       const next = button.dataset.demoMode;
       if (!VALID_MODES.has(next) || next === mode) return;
       mode = next;
-      localStorage.setItem('sqol-demo-mode', mode);
+      safeLocalSet('sqol-demo-mode', mode);
       storedSettings = readStore(mode);
       draftSettings = {};
       setModeUI();
@@ -67,6 +81,7 @@
       const openSettings = event.target.closest('[data-demo-open-settings]');
       if (openSettings) { event.preventDefault(); openDrawer(); return; }
       if (event.target.closest('[data-demo-close-settings]') || event.target === backdrop) { closeDrawer(); return; }
+      if (event.target.closest('[data-demo-retry-settings]')) { event.preventDefault(); void loadMode(mode); return; }
 
       const routeButton = event.target.closest('[data-demo-route]');
       if (routeButton) { event.preventDefault(); renderRoute(routeButton.dataset.demoRoute); return; }
@@ -180,7 +195,7 @@
       const data = event.data;
       if (data.type === 'sqol-demo-storage' && data.mode === mode) {
         storedSettings = data.storage || {};
-        localStorage.setItem(storageKey(mode), JSON.stringify(storedSettings));
+        safeLocalSet(storageKey(mode), JSON.stringify(storedSettings));
         applyPreview({ ...storedSettings, ...draftSettings });
       }
       if (data.type === 'sqol-demo-draft' && data.mode === mode) {
@@ -193,7 +208,7 @@
 
   async function loadBots() {
     try {
-      const response = await fetch('/data/demo/bots.json', { cache: 'no-store' });
+      const response = await fetchWithTimeout('/data/demo/bots.json', { cache: 'no-store' }, 4500);
       if (!response.ok) throw new Error('demo bot data unavailable');
       const data = await response.json();
       const list = Array.isArray(data.bots) ? data.bots : [];
@@ -204,27 +219,31 @@
 
   async function loadReplyRules() {
     try {
-      const response = await fetch('/data/demo/replies.json', { cache: 'no-store' });
+      const response = await fetchWithTimeout('/data/demo/replies.json', { cache: 'no-store' }, 4500);
       if (!response.ok) throw new Error('demo reply data unavailable');
       const data = await response.json();
       return Array.isArray(data.rules) ? data.rules : [];
     } catch (_) {
-      return [
-        { keywords:['hello','hi','hey'], replies:['Hey. This is a local preset reply from {bot}.'] },
-        { keywords:['demo','qol','setting','settings'], replies:['The website is only matching your message against local reply presets. No AI or SpicyChat request is involved.'] },
-        { keywords:['lorebook','lore'], replies:['Lorebook keyword spotted. In the playground, Lorebooks are local dummy data only.'] },
-        { keywords:['persona'], replies:['Persona keyword spotted. The active demo persona stays local to this browser.'] },
-        { keywords:['dragon'], replies:['Dragon keyword spotted. {bot} gives you a cautious look, clearly waiting to see where you take the scene.'] },
-        { keywords:['raptor','indoraptor'], replies:['Raptor keyword spotted. {bot} pauses, alert and watchful.'] }
-      ];
+      return fallbackReplyRules();
     }
+  }
+
+  function fallbackReplyRules() {
+    return [
+      { keywords:['hello','hi','hey'], replies:['Hey. This is a local preset reply from {bot}.'] },
+      { keywords:['demo','qol','setting','settings'], replies:['The website is only matching your message against local reply presets. No AI or SpicyChat request is involved.'] },
+      { keywords:['lorebook','lore'], replies:['Lorebook keyword spotted. In the playground, Lorebooks are local dummy data only.'] },
+      { keywords:['persona'], replies:['Persona keyword spotted. The active demo persona stays local to this browser.'] },
+      { keywords:['dragon'], replies:['Dragon keyword spotted. {bot} gives you a cautious look, clearly waiting to see where you take the scene.'] },
+      { keywords:['raptor','indoraptor'], replies:['Raptor keyword spotted. {bot} pauses, alert and watchful.'] }
+    ];
   }
 
   function defaultAppState() {
     return { route:'home', activeBotId:DEFAULT_BOT, hiddenBots:[], chatFolder:'All', persona:'Demo user', homeSearch:'', homeSort:'Trending', quickFilter:'', filtersOpen:false, creationSearch:'', personaSearch:'', chatSearch:'', chatSearchOpen:false, botFlags:{}, editorAdvancedOpen:false, loreTab:'entries', activeLorebook:'wayfarer', activePersonaName:'Demo user', customPersonas:[], personaOverrides:{}, customLorebooks:[], lorebookOverrides:{}, creatorFollowed:false, promoDismissed:false, botTyping:false, typingBotId:'', messagesByBot:{} };
   }
   function readAppState() { try { return { ...defaultAppState(), ...(JSON.parse(localStorage.getItem(APP_STATE_KEY) || '{}') || {}) }; } catch { return defaultAppState(); } }
-  function saveAppState() { localStorage.setItem(APP_STATE_KEY, JSON.stringify(app)); }
+  function saveAppState() { safeLocalSet(APP_STATE_KEY, JSON.stringify(app)); }
   function hydrateBotState(reset=false) {
     if (reset) app.botFlags = {};
     bots.forEach(bot => { if (!app.botFlags[bot.id]) app.botFlags[bot.id] = { favorite: !!bot.favorite, later: !!bot.later, opened: !!bot.opened }; });
@@ -549,33 +568,96 @@
   function closeDrawer(){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');backdrop.hidden=true;document.body.classList.remove('demo-drawer-open');}
 
   async function loadMode(nextMode) {
+    const generation=++settingsLoadGeneration;
     const label=nextMode==='dev'?'Development main':'Stable';
-    placeholder.hidden=false; placeholder.innerHTML='<strong>Loading settings…</strong><span>The public extension Options page is being loaded.</span>'; frame.style.visibility='hidden';
+    placeholder.hidden=false; placeholder.innerHTML='<strong>Loading settings…</strong><span>The public extension Options page is being loaded. The playground stays usable while this loads.</span>'; frame.style.visibility='hidden';
     try {
-      const source=await loadSettingsSource(nextMode); const manifest=JSON.parse(source.manifest.text); currentManifest=manifest;
+      const source=await promiseWithTimeout(loadSettingsSource(nextMode), 14000, 'Settings source timed out');
+      if(generation!==settingsLoadGeneration || nextMode!==mode) return;
+      const manifest=JSON.parse(source.manifest.text); currentManifest=manifest;
       let buildText=nextMode==='dev'?'main':`v${manifest.version||'current'}`;
       try { const version=manifest.version_name||manifest.version||''; buildText=nextMode==='dev'?`main · v${version}`:`v${version}`; } catch(_) {}
       buildLabel.textContent=buildText;
       if(runtimeBadge) runtimeBadge.textContent=`Options + registry synced · ${manifest.version_name||manifest.version||'current'}`;
-      setSource(source.live?'live':'fallback',source.live?`${label} Options UI and feature registry loaded from the public extension source.`:`${label} is using bundled snapshots because the public source is temporarily unavailable.`);
+      const sourceMessage=source.synced
+        ? `${label} Options UI loaded from the website's automatically synced public extension source.`
+        : source.live
+          ? `${label} Options UI loaded directly from the public extension source.`
+          : `${label} is using a bundled fallback because the public source is temporarily unavailable.`;
+      setSource(source.live?'live':'fallback',sourceMessage);
+      frame.onload=()=>{
+        if(generation!==settingsLoadGeneration || nextMode!==mode) return;
+        placeholder.hidden=true;frame.style.visibility='visible';applyPreview({...readStore(nextMode),...draftSettings});
+      };
       frame.srcdoc=buildSrcdoc(source,manifest,nextMode);
-      frame.onload=()=>{placeholder.hidden=true;frame.style.visibility='visible';applyPreview({...readStore(nextMode),...draftSettings});};
     } catch(error) {
+      if(generation!==settingsLoadGeneration || nextMode!==mode) return;
       buildLabel.textContent='temporarily unavailable'; if(runtimeBadge) runtimeBadge.textContent='source unavailable';
       setSource('fallback',`Could not load the ${label} settings source right now.`);
-      placeholder.hidden=false; placeholder.innerHTML='<strong>Settings demo is temporarily unavailable.</strong><span>The sandbox pages still work; refresh when GitHub is reachable again.</span>'; frame.style.visibility='hidden'; applyPreview(storedSettings);
+      placeholder.hidden=false; placeholder.innerHTML='<strong>Settings demo is temporarily unavailable.</strong><span>The playground itself still works. You can retry the settings source without reloading the whole page.</span><button type="button" class="button small" data-demo-retry-settings>Retry settings</button>'; frame.style.visibility='hidden'; applyPreview(storedSettings);
     }
   }
 
   async function loadSettingsSource(project) {
-    const fallbackBase=project==='stable'?'/data/demo/stable/':'/data/demo/dev-current/';
-    const names=[['html','options.html'],['css','options.css'],['registry','feature-registry.js'],['js','options.js'],['manifest','manifest.json'],['changelog','CHANGELOG.md']];
-    const out={};
-    for(const [key,file] of names){let fallback=null;try{const probe=await fetch(`${fallbackBase}${file}`,{method:'HEAD',cache:'no-store'});if(probe.ok)fallback=`${fallbackBase}${file}`;}catch(_){}out[key]=await SQOLSource.text(project,file,fallback);}
-    out.live=names.every(([key])=>out[key].source!=='fallback');return out;
+    const localBase=project==='stable'?'/data/demo/stable/':'/data/demo/dev-current/';
+    const loadOne=async(file)=>{
+      // Prefer the website's automatically synced copy. This keeps the demo fast,
+      // same-origin and independent from a visitor's connection to raw GitHub.
+      try {
+        const local=await fetchWithTimeout(`${localBase}${file}`,{cache:'no-store'},4000);
+        if(local.ok) return {text:await local.text(),source:'site-sync',project,file};
+      } catch(_) {}
+      return SQOLSource.text(project,file,null);
+    };
+
+    const [html,manifest,changelog]=await Promise.all([
+      loadOne('options.html'),
+      loadOne('manifest.json'),
+      loadOne('CHANGELOG.md')
+    ]);
+
+    // Follow the source HTML rather than keeping a hand-written list of Settings
+    // dependencies. If the extension adds another registry/helper script later,
+    // the website will pick it up automatically after the source snapshot sync.
+    const parsed=new DOMParser().parseFromString(html.text,'text/html');
+    const styleFiles=[...parsed.querySelectorAll('link[rel="stylesheet"][href]')]
+      .map(node=>node.getAttribute('href')?.trim()||'')
+      .filter(isLocalSourceFile);
+    const scriptFiles=[...parsed.querySelectorAll('script[src]')]
+      .map(node=>node.getAttribute('src')?.trim()||'')
+      .filter(isLocalSourceFile);
+
+    const [styles,scripts]=await Promise.all([
+      Promise.all(unique(styleFiles).map(async file=>({file,value:await loadOne(file)}))),
+      Promise.all(unique(scriptFiles).map(async file=>({file,value:await loadOne(file)})))
+    ]);
+
+    const all=[html,manifest,changelog,...styles.map(x=>x.value),...scripts.map(x=>x.value)];
+    return {
+      html,manifest,changelog,styles,scripts,
+      synced:all.every(item=>item.source==='site-sync'),
+      live:all.every(item=>item.source!=='fallback')
+    };
   }
 
-  function buildSrcdoc(source,manifest,sourceMode){let html=source.html.text.replace(/<link[^>]+href=["']options\.css["'][^>]*>/i,'').replace(/<script[^>]+src=["']feature-registry\.js["'][^>]*><\/script>/i,'').replace(/<script[^>]+src=["']options\.js["'][^>]*><\/script>/i,'');const shim=makeShim(sourceMode,manifest,source.changelog.text),bridge=makeBridge(sourceMode),registry=safeScript(source.registry.text),options=safeScript(source.js.text);const extraCss=`html{color-scheme:dark}body{min-width:0!important}main{max-width:980px!important;padding:20px 20px 90px!important}header{position:static!important}.help-link[href^="http"]{cursor:not-allowed}.demo-only-banner{background:#23161c;border:1px solid rgba(236,61,104,.28);border-radius:12px;padding:10px 12px;margin-bottom:14px;color:#d7c9cf;font-size:13px}.demo-only-banner strong{color:#ff91a8}`;html=html.replace('</head>',`<style>${source.css.text}\n${extraCss}</style><script>${shim}<\/script></head>`);html=html.replace(/<main([^>]*)>/i,'<main$1><div class="demo-only-banner"><strong>Website sandbox:</strong> this is the real QoL Options UI with demo-only storage/actions.</div>');html=html.replace('</body>',`<script>${registry}<\/script><script>${options}<\/script><script>${bridge}<\/script></body>`);return html;}
+  function isLocalSourceFile(file){
+    if(!file || /^(?:https?:|data:|blob:|\/\/)/i.test(file)) return false;
+    return !file.startsWith('/');
+  }
+
+  function buildSrcdoc(source,manifest,sourceMode){
+    let html=source.html.text
+      .replace(/<link\b[^>]*rel=["']stylesheet["'][^>]*>/gi,'')
+      .replace(/<script\b[^>]*src=["'][^"']+["'][^>]*>\s*<\/script>/gi,'');
+    const shim=makeShim(sourceMode,manifest,source.changelog.text),bridge=makeBridge(sourceMode);
+    const cssText=(source.styles||[]).map(entry=>entry.value.text).join('\n');
+    const scripts=(source.scripts||[]).map(entry=>`<script>${safeScript(entry.value.text)}<\/script>`).join('');
+    const extraCss=`html{color-scheme:dark}body{min-width:0!important}main{max-width:980px!important;padding:20px 20px 90px!important}header{position:static!important}.help-link[href^="http"]{cursor:not-allowed}.demo-only-banner{background:#23161c;border:1px solid rgba(236,61,104,.28);border-radius:12px;padding:10px 12px;margin-bottom:14px;color:#d7c9cf;font-size:13px}.demo-only-banner strong{color:#ff91a8}`;
+    html=html.replace('</head>',`<style>${cssText}\n${extraCss}</style><script>${shim}<\/script></head>`);
+    html=html.replace(/<main([^>]*)>/i,'<main$1><div class="demo-only-banner"><strong>Website sandbox:</strong> this is the real QoL Options UI with demo-only storage/actions.</div>');
+    html=html.replace('</body>',`${scripts}<script>${bridge}<\/script></body>`);
+    return html;
+  }
   function safeScript(text){return String(text||'').replace(/<\/script/gi,'<\\/script');}
 
   function makeShim(sourceMode,manifest,changelog){const safeManifest=JSON.stringify(manifest).replace(/</g,'\\u003c'),safeChangelog=JSON.stringify(changelog).replace(/</g,'\\u003c'),safeMode=JSON.stringify(sourceMode);return `( ()=>{const MODE=${safeMode};const KEY='sqol-demo-storage-'+MODE;const MANIFEST=${safeManifest};const CHANGELOG=${safeChangelog};const changeListeners=[];const runtimeListeners=[];const read=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch{return {}}};const notify=(changes)=>{changeListeners.forEach(fn=>{try{fn(changes,'local')}catch{}})};const write=(next,changes={})=>{localStorage.setItem(KEY,JSON.stringify(next));notify(changes);parent.postMessage({type:'sqol-demo-storage',mode:MODE,storage:next},'*')};const pick=(store,keys)=>{if(keys==null)return {...store};if(typeof keys==='string')return Object.prototype.hasOwnProperty.call(store,keys)?{[keys]:store[keys]}:{};if(Array.isArray(keys)){const o={};keys.forEach(k=>{if(Object.prototype.hasOwnProperty.call(store,k))o[k]=store[k]});return o}if(typeof keys==='object'){const o={};Object.keys(keys).forEach(k=>o[k]=store[k]===undefined?keys[k]:store[k]);return o}return {}};const done=(cb,value)=>{if(typeof cb==='function'){queueMicrotask(()=>cb(value));return undefined}return Promise.resolve(value)};const storage={get(keys,cb){return done(cb,pick(read(),keys))},getKeys(cb){return done(cb,Object.keys(read()))},set(obj,cb){const prev=read(),next={...prev,...(obj||{})},changes={};Object.entries(obj||{}).forEach(([k,v])=>{if(prev[k]!==v)changes[k]={oldValue:prev[k],newValue:v}});write(next,changes);return done(cb)},remove(keys,cb){const prev=read(),next={...prev},changes={};(Array.isArray(keys)?keys:[keys]).forEach(k=>{if(Object.prototype.hasOwnProperty.call(next,k)){changes[k]={oldValue:next[k],newValue:undefined};delete next[k]}});write(next,changes);return done(cb)},clear(cb){const prev=read(),changes={};Object.keys(prev).forEach(k=>changes[k]={oldValue:prev[k],newValue:undefined});write({},changes);return done(cb)},getBytesInUse(keys,cb){const bytes=new TextEncoder().encode(JSON.stringify(pick(read(),keys))).length;return done(cb,bytes)}};const event=(list)=>({addListener(fn){if(typeof fn==='function'&&!list.includes(fn))list.push(fn)},removeListener(fn){const i=list.indexOf(fn);if(i>=0)list.splice(i,1)},hasListener(fn){return list.includes(fn)}});const demoToast=(message)=>parent.postMessage({type:'sqol-demo-toast',message},'*');const runtimeResponse=(msg)=>{if(msg&&msg.type==='DS_AUTO_AFK_RUN_NOW')return {ok:true,summary:{at:Date.now(),enabled:true,monitored:4,protected:1,recent:2,eligible:1,cleaned:1,failed:0}};if(msg&&msg.type==='DS_GET_DIAGNOSTIC_CONTEXT')return {ok:true,url:'https://demo.invalid/chat/yui',pageType:'chat',title:'Website sandbox'};if(msg&&msg.type==='DS_GET_PAGE_DIAGNOSTICS')return {ok:true,environment:{browser:'Website demo',platform:'demo'},scheduler:{demo:true}};return {ok:true,demo:true}};window.chrome=window.chrome||{};chrome.storage={local:storage,onChanged:event(changeListeners)};chrome.runtime={lastError:null,onMessage:event(runtimeListeners),getManifest:()=>MANIFEST,getPlatformInfo:(cb)=>done(cb,{os:'android',arch:'x86-64',nacl_arch:'x86-64'}),getURL:(path)=>path==='CHANGELOG.md'?'data:text/plain;charset=utf-8,'+encodeURIComponent(CHANGELOG):'data:text/plain;charset=utf-8,',sendMessage:(msg,cb)=>done(cb,runtimeResponse(msg))};chrome.permissions={contains:(q,cb)=>done(cb,false),request:(q,cb)=>{demoToast('Permission request simulated in the website demo.');return done(cb,false)},remove:(q,cb)=>done(cb,true)};chrome.tabs={create:(info,cb)=>{demoToast('Opening browser tabs is disabled in the website demo.');return done(cb,{id:999,url:info?.url||'about:blank',active:true})},query:(q,cb)=>done(cb,[{id:999,active:true,currentWindow:true,url:'https://demo.invalid/',title:'Website sandbox'}]),sendMessage:(id,msg,cb)=>done(cb,runtimeResponse(msg))};chrome.downloads={download:(info,cb)=>{demoToast('Download action simulated; no file was created.');return done(cb,1)}};chrome.notifications={create:(id,opts,cb)=>{demoToast('Browser notification simulated.');return done(cb,id||'demo')}};try{Object.defineProperty(navigator,'clipboard',{value:{writeText:async()=>{demoToast('Copied inside the demo only.')}},configurable:true})}catch{}window.open=()=>{demoToast('External links are disabled inside the demo.');return null};addEventListener('click',e=>{const a=e.target.closest?.('a');if(!a)return;if(a.href||a.download){e.preventDefault();e.stopImmediatePropagation();demoToast(a.download?'Demo download action simulated.':'External links are disabled inside the demo.')}},true);})();`;}
@@ -584,7 +666,20 @@
   function setModeUI(){modeButtons.forEach(button=>button.classList.toggle('active',button.dataset.demoMode===mode));modeBadge.textContent=mode==='dev'?'Development':'Stable';modeBadge.className=`badge ${mode==='dev'?'warn':'good'}`;}
   function setSource(kind,text){sourceState.className=`source-state ${kind==='live'?'live':kind==='fallback'?'fallback':''}`;sourceState.textContent=text;}
   function storageKey(which){return `sqol-demo-storage-${which}`;}
-  function readStore(which){try{return JSON.parse(localStorage.getItem(storageKey(which))||'{}')||{}}catch{return {}}}
+  function readStore(which){try{return JSON.parse(safeLocalGet(storageKey(which))||'{}')||{}}catch{return {}}}
+  function safeLocalGet(key){try{return localStorage.getItem(key)}catch{return null}}
+  function safeLocalSet(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}
+  async function fetchWithTimeout(url, options={}, timeoutMs=6000){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeoutMs);
+    try{return await fetch(url,{...options,signal:controller.signal})}finally{clearTimeout(timer)}
+  }
+  function promiseWithTimeout(promise, timeoutMs, message='Timed out'){
+    return new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>reject(new Error(message)),timeoutMs);
+      Promise.resolve(promise).then(value=>{clearTimeout(timer);resolve(value)},error=>{clearTimeout(timer);reject(error)});
+    });
+  }
   function formatText(text){return escapeHTML(text).replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>');}
   function fakeTime(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
   function compactNumber(n){n=Number(n)||0;return n>=1000000?`${(n/1000000).toFixed(1).replace('.0','')}m`:n>=1000?`${(n/1000).toFixed(n>=10000?0:1).replace('.0','')}k`:String(n);}

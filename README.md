@@ -21,3 +21,5 @@ See `AUTOMATION.md` for the release/manifest flow used by the site and `DEMO.md`
 `/reviews/` explains the moderation/abuse context behind SpicyChat not having an open public chatbot review wall and records DragonGraf's plan for a more structured creator-feedback system later. The two Discord screenshots on that page are stored locally under `assets/reviews/` and open at full size when clicked.
 
 - `/bot/` explains QoL Bot user installs, public commands, creator-follow DMs, and links back to the QoL Discord community.
+
+The interactive demo's real extension Settings source is automatically mirrored from the public extension repository by `.github/workflows/sync-demo-source.yml`, avoiding a runtime dependency on multiple raw-GitHub requests for every visitor.

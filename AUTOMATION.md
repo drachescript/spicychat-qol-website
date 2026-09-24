@@ -60,3 +60,11 @@ The playground deliberately separates two things:
 The playground's bot allowlist is stored in `data/demo/creator-allowlist.json` and the safe card snapshot in `data/demo/bots.json`. Both were generated from the supplied public creator-profile snapshot for `@dragongraf1312`.
 
 The site intentionally does not execute private SpicyChat APIs or reuse authentication. New QoL settings still appear automatically in the real Options drawer even when a matching fake-page effect has not yet been implemented.
+
+## Demo Settings source sync
+
+The demo no longer depends on every visitor fetching several large extension Settings files directly from raw GitHub.
+
+`.github/workflows/sync-demo-source.yml` runs on demand and every 15 minutes. It copies the latest normal release Settings source into `data/demo/stable/` and current extension `main` Settings source into `data/demo/dev-current/`. The demo prefers these same-origin synchronized copies and only falls back to direct public-source fetching when a synchronized copy is unavailable.
+
+The workflow follows the `<script src="...">` entries in `options.html`, so new Settings registry/helper scripts are copied automatically instead of needing to be added to the website by hand.

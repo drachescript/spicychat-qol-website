@@ -40,3 +40,7 @@ The card controls are grouped into fixed left/right action rows and do not use `
 Dummy chats now have deterministic local preset replies from `data/demo/replies.json`. A user message is matched against simple keywords and receives a short local bot reply; unmatched text uses a generic fallback. There is no model call and no SpicyChat message/API request. Reply history is stored separately per demo bot.
 
 Playground controls no longer claim that an unseen menu was "opened." If a captured surface exists, the control navigates to or edits that local surface. If the corresponding menu/dialog was not supplied, the visible native control is inert and labelled as unavailable in the demo rather than inventing a menu. QoL-specific controls should increasingly come from the real extension source instead of handwritten fake menus.
+
+## Loading/failure behavior
+
+The playground renders immediately from bundled safe fallback data. Live Stable/Development Settings source loading happens in the background with bounded timeouts and parallel file fetches. If GitHub/Worker source loading is unavailable, the playground remains usable and the Settings drawer shows a retry action instead of staying on an endless Loading state.
