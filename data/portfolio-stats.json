@@ -1,0 +1,26 @@
+{
+  "updatedAt": "2026-09-24T16:53:00Z",
+  "chrome": {
+    "users": 27,
+    "status": "cached",
+    "source": "https://chromewebstore.google.com/detail/spicychat-qol/jdbhnaohfjnmkfpfddnjilmpaemkmabh",
+    "metric": "public store user count",
+    "analyticsSnapshot": {
+      "weeklyUsers": 28,
+      "date": "2026-09-22"
+    }
+  },
+  "firefox": {
+    "users": 16,
+    "status": "cached",
+    "source": "https://addons.mozilla.org/en-US/firefox/addon/dragonscript-spicychat-qol-dev/",
+    "metric": "average daily users / public listing user count"
+  },
+  "history": [
+    {
+      "date": "2026-09-24",
+      "chromeUsers": 27,
+      "firefoxUsers": 16
+    }
+  ]
+}
