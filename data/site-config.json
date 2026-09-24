@@ -24,9 +24,9 @@
   "androidUpdateStrategy": "github-release-update-json",
   "extensionManifestEndpoint": "/extension/manifest.json",
   "androidManifestEndpoint": "/android/manifest.json",
-  "androidVersionFallback": "0.1.3",
-  "androidReleaseUrl": "https://github.com/drachescript/spicychat-qol-android/releases/tag/v0.1.3",
-  "androidApkUrl": "https://github.com/drachescript/spicychat-qol-android/releases/download/v0.1.3/SpicyChat-QOL-Android-v0.1.3.apk",
+  "androidVersionFallback": "0.1.4",
+  "androidReleaseUrl": "https://github.com/drachescript/spicychat-qol-android/releases/tag/v0.1.4",
+  "androidApkUrl": "https://github.com/drachescript/spicychat-qol-android/releases/download/v0.1.4/SpicyChat-QOL-Android-v0.1.4.apk",
   "discordBotUserId": "1531639619278606357",
   "discordBotInstallUrl": "https://discord.com/oauth2/authorize?client_id=1531639619278606357&integration_type=1&scope=applications.commands"
 }
