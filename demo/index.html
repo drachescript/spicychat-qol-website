@@ -128,8 +128,20 @@
 </footer>
 <div class="site-demo-toast" data-demo-toast hidden></div>
 <script src="/assets/js/markdown.js" defer></script>
-<script src="/assets/js/content-source.js?v=16" defer></script>
+<script src="/assets/js/content-source.js?v=19" defer></script>
 <script src="/assets/js/site.js" defer></script>
-<script src="/assets/js/demo.js?v=16" defer></script>
+<script src="/assets/js/demo.js?v=19" defer></script>
+<script>
+window.setTimeout(() => {
+  const build = document.querySelector('[data-demo-build]');
+  const source = document.querySelector('[data-demo-source]');
+  if (!build || !/loading/i.test(build.textContent || '')) return;
+  build.textContent = 'startup error';
+  if (source) {
+    source.className = 'source-state fallback';
+    source.textContent = 'The experimental demo did not finish starting. Reload after the next website update; the actual extension is unaffected.';
+  }
+}, 12000);
+</script>
 </body>
 </html>

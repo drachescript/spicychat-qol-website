@@ -44,3 +44,8 @@ Playground controls no longer claim that an unseen menu was "opened." If a captu
 ## Loading/failure behavior
 
 The playground renders immediately from bundled safe fallback data. Live Stable/Development Settings source loading happens in the background with bounded timeouts and parallel file fetches. If GitHub/Worker source loading is unavailable, the playground remains usable and the Settings drawer shows a retry action instead of staying on an endless Loading state.
+
+
+## v19 startup fix
+
+The playground startup no longer aborts when applying demo card filters. A missing `filterCardsBySettings()` helper had caused the first Home render to throw before event binding and the Settings source loader started, leaving the static shell on `loading…` forever. The helper is restored, startup now launches the Settings loader before route rendering, route boot errors render a visible local error state, and the demo script URL is cache-busted to v19.

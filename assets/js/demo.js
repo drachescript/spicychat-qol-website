@@ -37,7 +37,7 @@
   let replyRules = [];
   let settingsLoadGeneration = 0;
 
-  init();
+  init().catch(handleDemoBootFailure);
 
   async function init() {
     // Render the playground immediately from bundled fallback data. Remote source
@@ -49,9 +49,13 @@
     app.activeBotId = activeBotId;
     hydrateBotState();
     setModeUI();
-    renderRoute(app.route || 'home');
+
+    // Start the controls/settings loader before rendering the current route. If a
+    // playground renderer ever breaks, Settings should still report an error or
+    // finish loading instead of leaving the entire page stuck on "loading…".
     bindGlobalEvents();
     void loadMode(mode);
+    renderRouteSafely(app.route || 'home');
 
     // Upgrade the local playground data in the background. If either request
     // stalls or fails, the already-rendered fallback playground remains usable.
@@ -61,7 +65,30 @@
     if (!bots.some(b => b.id === activeBotId)) activeBotId = bots.find(b=>b.name==='Yui Kimura')?.id || bots[0]?.id || DEFAULT_BOT;
     app.activeBotId = activeBotId;
     hydrateBotState();
-    renderRoute(app.route || 'home');
+    renderRouteSafely(app.route || 'home');
+  }
+
+  function renderRouteSafely(route) {
+    try {
+      renderRoute(route);
+      document.documentElement.dataset.demoJsStarted = 'true';
+      return true;
+    } catch (error) {
+      console.error('[SpicyChat QoL demo] route render failed', error);
+      routeHost.innerHTML = `<section class="demo-view"><div class="demo-empty-state"><strong>The experimental playground hit a local rendering error.</strong><span>The QoL Settings loader can still run. Reload after the next website update; nothing was sent to SpicyChat.</span></div></section>`;
+      return false;
+    }
+  }
+
+  function handleDemoBootFailure(error) {
+    console.error('[SpicyChat QoL demo] startup failed', error);
+    if (buildLabel && /loading/i.test(buildLabel.textContent || '')) buildLabel.textContent = 'startup error';
+    if (sourceState && /loading/i.test(sourceState.textContent || '')) {
+      setSource('fallback', 'The experimental demo hit a local startup error. The main extension is unaffected.');
+    }
+    if (routeHost) {
+      routeHost.innerHTML = `<section class="demo-view"><div class="demo-empty-state"><strong>The experimental playground could not start.</strong><span>Reload after the next website update. This does not affect the actual extension or Android app.</span></div></section>`;
+    }
   }
 
   function bindGlobalEvents() {
@@ -302,6 +329,53 @@
 
   function homeFilterPanelHTML() {
     return `<aside class="demo-native-filter-panel" aria-label="Home filters"><div class="demo-filter-head"><strong>Filters</strong><button data-demo-filter-toggle>×</button></div><section><span>Saved state</span><button data-demo-filter-chip="opened">Opened</button><button data-demo-filter-chip="favorites">Favorites</button><button data-demo-filter-chip="later">Later</button></section><section><span>Lorebook</span><button data-demo-filter-chip="lorebook">Has Lorebook</button></section><section><span>Language</span><label><input type="checkbox" checked disabled> English / untagged</label><small>The public sandbox is SFW and English-first.</small></section><section><span>Creator</span><div class="demo-filter-token">${CREATOR}</div></section></aside>`;
+  }
+
+  function filterCardsBySettings(list, settings = {}) {
+    let out = Array.isArray(list) ? [...list] : [];
+    if (!settings || typeof settings !== 'object') return out;
+
+    const asList = value => {
+      if (Array.isArray(value)) return value.map(v => String(v || '').trim()).filter(Boolean);
+      if (typeof value === 'string') return value.split(/[\n,]+/).map(v => v.trim()).filter(Boolean);
+      return [];
+    };
+
+    // These are deliberately small demo equivalents of the real listing filters.
+    // They only affect the local SFW fixture cards; the extension remains the
+    // source of truth for the full matching/filtering behavior.
+    if (settings.hideOpenedChats) out = out.filter(bot => !botState(bot).opened);
+    if (settings.hideLaterBotsFromListings) out = out.filter(bot => !botState(bot).later);
+
+    if (settings.blockCards) {
+      const blockedWords = asList(settings.blockedWords).map(v => v.toLowerCase());
+      const blockedTags = asList(settings.blockedTags).map(v => v.toLowerCase());
+      const blockedCreators = asList(settings.blockedCreators).map(v => v.toLowerCase().replace(/^@/, ''));
+      out = out.filter(bot => {
+        const text = [bot.name, bot.title, bot.blurb].filter(Boolean).join(' ').toLowerCase();
+        const tags = (bot.tags || []).map(tag => String(tag).toLowerCase());
+        const creator = String(bot.creator || '').toLowerCase().replace(/^@/, '');
+        if (blockedWords.some(word => word && text.includes(word))) return false;
+        if (blockedTags.some(tag => tag && tags.includes(tag))) return false;
+        if (blockedCreators.some(name => name && creator === name)) return false;
+        return true;
+      });
+    }
+
+    if (settings.autoTags) {
+      const includeTags = asList(settings.includeTags).map(v => v.toLowerCase());
+      const excludeTags = asList(settings.excludeTags).map(v => v.toLowerCase());
+      if (includeTags.length) out = out.filter(bot => {
+        const tags = (bot.tags || []).map(tag => String(tag).toLowerCase());
+        return includeTags.every(tag => tags.includes(tag));
+      });
+      if (excludeTags.length) out = out.filter(bot => {
+        const tags = (bot.tags || []).map(tag => String(tag).toLowerCase());
+        return !excludeTags.some(tag => tags.includes(tag));
+      });
+    }
+
+    return out;
   }
 
   function homeFilteredList() {
