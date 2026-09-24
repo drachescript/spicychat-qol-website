@@ -75,23 +75,40 @@ jobs:
             cp "$src/manifest.json" "$dst/manifest.json"
             cp "$src/CHANGELOG.md" "$dst/CHANGELOG.md"
 
-            # Copy every local script referenced by options.html. This keeps the
-            # demo compatible when Settings adds new registry/helper scripts.
+            copy_reference() {
+              file="$1"
+              kind="$2"
+              case "$file" in
+                http:*|https:*|//*|/*|'') return ;;
+              esac
+              if [ ! -f "$src/$file" ]; then
+                echo "::warning::Skipping missing Settings $kind referenced by $src/options.html: $file"
+                return
+              fi
+              mkdir -p "$dst/$(dirname "$file")"
+              cp "$src/$file" "$dst/$file"
+            }
+
+            # Mirror local scripts referenced by options.html. A stale optional
+            # reference should warn instead of taking the whole demo sync down.
             while IFS= read -r file; do
-                  case "$file" in
-                    http:*|https:*|//*|/*|'') continue ;;
-                  esac
-                  if [ ! -f "$src/$file" ]; then
-                    echo "::warning::Skipping missing Settings script referenced by $src/options.html: $file"
-                    continue
-                  fi
-                  mkdir -p "$dst/$(dirname "$file")"
-                  cp "$src/$file" "$dst/$file"
-                done < <(
-                  grep -oE '<script[^>]+src="[^"]+"' "$src/options.html" \
-                    | sed -E 's/.*src="([^"]+)".*/\1/' \
-                    || true
-                )
+              copy_reference "$file" "script"
+            done < <(
+              grep -oE '<script[^>]+src="[^"]+"' "$src/options.html" \
+                | sed -E 's/.*src="([^"]+)".*/\1/' \
+                || true
+            )
+
+            # Mirror every local stylesheet too, not only options.css. This keeps
+            # additions such as options-overhaul.css same-origin in the demo.
+            while IFS= read -r file; do
+              copy_reference "$file" "stylesheet"
+            done < <(
+              grep -oE '<link[^>]+>' "$src/options.html" \
+                | grep -E 'rel="stylesheet"' \
+                | sed -nE 's/.*href="([^"]+)".*/\1/p' \
+                || true
+            )
           }
 
           copy_source extension-stable "$stable_dir"

@@ -627,14 +627,30 @@
       .map(node=>node.getAttribute('src')?.trim()||'')
       .filter(isLocalSourceFile);
 
-    const [styles,scripts]=await Promise.all([
-      Promise.all(unique(styleFiles).map(async file=>({file,value:await loadOne(file)}))),
-      Promise.all(unique(scriptFiles).map(async file=>({file,value:await loadOne(file)})))
+    const requiredDependencies=new Set(['options.css','options.js']);
+    const loadDependency=async(file,kind)=>{
+      try {
+        return {file,value:await loadOne(file)};
+      } catch(error) {
+        if(requiredDependencies.has(file)) throw error;
+        console.warn(`[SpicyChat QoL demo] Skipping missing ${kind}: ${file}`,error);
+        return {file,value:null};
+      }
+    };
+
+    const [styleResults,scriptResults]=await Promise.all([
+      Promise.all(unique(styleFiles).map(file=>loadDependency(file,'stylesheet'))),
+      Promise.all(unique(scriptFiles).map(file=>loadDependency(file,'script')))
     ]);
+    const styles=styleResults.filter(entry=>entry.value);
+    const scripts=scriptResults.filter(entry=>entry.value);
+    const skippedDependencies=[...styleResults,...scriptResults]
+      .filter(entry=>!entry.value)
+      .map(entry=>entry.file);
 
     const all=[html,manifest,changelog,...styles.map(x=>x.value),...scripts.map(x=>x.value)];
     return {
-      html,manifest,changelog,styles,scripts,
+      html,manifest,changelog,styles,scripts,skippedDependencies,
       synced:all.every(item=>item.source==='site-sync'),
       live:all.every(item=>item.source!=='fallback')
     };

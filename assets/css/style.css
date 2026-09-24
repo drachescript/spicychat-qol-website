@@ -65,3 +65,4 @@
 
 /* QoL Bot / user install */
 .bot-mark{width:64px;height:64px;border-radius:18px;border:1px solid var(--border2);background:linear-gradient(145deg,#21141b,#171015);display:grid;place-items:center;font-size:.78rem;font-weight:900;letter-spacing:.08em;color:#ff7f9e;box-shadow:0 12px 34px rgba(0,0,0,.28)}.hero-bot-mark{margin-bottom:24px}.bot-install-note{max-width:760px;color:var(--muted2);font-size:.82rem;margin:18px 0 0}.bot-command-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.bot-command-pills{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 14px}.bot-command-pills code{display:inline-flex;padding:7px 10px;border-radius:9px;background:#0f0b0d;border:1px solid var(--border);color:#ff9bb0;font-weight:750}.bot-discord-callout .button-row{margin-top:18px}@media(max-width:850px){.bot-command-grid{grid-template-columns:1fr}}
+.demo-experimental{border-color:rgba(232,182,95,.24);background:rgba(232,182,95,.065)}
