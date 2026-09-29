@@ -100,7 +100,7 @@ const DEFAULT_ARCHIVE_IMPORT_ENDPOINT = "https://spicychat-archive-import.dragon
 const DEFAULT_ARCHIVE_SUBMISSION_ENDPOINT = "https://spicychat-archive-import.dragongraf.workers.dev/api/submissions/bot-status";
 const ARCHIVE_UPLOAD_SOFT_MAX_BYTES = 60 * 1024 * 1024;
 const ARCHIVE_UPLOAD_CHUNK_SIZE = 1000;
-const BOT_STATUS_SCAN_SPEED_DELAYS = Object.freeze({ safe: 750, normal: 500, fast: 300 });
+const BOT_STATUS_SCAN_SPEED_DELAYS = Object.freeze({ safe: 600, normal: 450, fast: 350 });
 
 const OPTIONS_PERFORMANCE = {
   bootStartedAt: typeof performance !== "undefined" ? performance.now() : 0,
@@ -1597,6 +1597,9 @@ const FEATURE_CHANGE_MARKERS = {
   enableFocusMode: { version: "0.1.8.87", label: "New" },
   enableChatBackgrounds: { version: "0.1.9.54", label: "New" },
   enableChatBubbleCustomization: { version: "0.1.9.88", label: "Updated" },
+  stackChatMessages: { version: "0.2.22", label: "Updated" },
+  expandLongCardDescriptions: { version: "0.2.22", label: "Updated" },
+  enablePersonaOrganizer: { version: "0.2.22", label: "Updated" },
   persistSpicyChatUserAppearance: { version: "0.1.9.88", label: "New" },
   androidTopBarMenu: { version: "0.1.8.84", label: "New" },
   performanceDiagnostics: { version: "0.1.8.84", label: "New" },
@@ -18050,13 +18053,63 @@ async function markUpdatesSeen() {
   showSettingsToast("New/updated setting markers cleared.");
 }
 
-async function loadChangelog() {
+function promiseWithTimeout(promise, timeoutMs, label = "operation") {
+  let timer = 0;
+  return Promise.race([
+    Promise.resolve(promise),
+    new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(`${label} timed out`)), timeoutMs);
+    })
+  ]).finally(() => clearTimeout(timer));
+}
+
+async function readBundledOptionsText(name) {
+  const filename = String(name || "").trim();
+  if (!filename) throw new Error("Missing bundled text filename");
+
+  // Android Options is rendered from an in-memory HTML document. Older
+  // WebView builds can leave fetch(CHANGELOG.md) pending forever even though
+  // the APK already exposes the file through optionsReadBundledText. Prefer
+  // that native path directly instead of depending on fetch interception.
+  if (window.__spicyChatQolAndroidWebView || window.__spicyChatQolAndroidApp) {
+    try {
+      const bridge = window.flutter_inappwebview;
+      if (bridge?.callHandler) {
+        const text = await promiseWithTimeout(
+          bridge.callHandler("optionsReadBundledText", filename),
+          3500,
+          `Android ${filename} bridge`
+        );
+        if (typeof text === "string" && text.trim()) return text;
+      }
+    } catch (error) {
+      console.warn(`[DS Options] Native ${filename} read failed; trying packaged fetch.`, error);
+    }
+  }
+
+  const url = chrome.runtime?.getURL?.(filename) || filename;
+  const response = await promiseWithTimeout(
+    fetch(url, { cache: "no-store" }),
+    5000,
+    `${filename} fetch`
+  );
+  if (!response?.ok) throw new Error(`${filename} returned HTTP ${response?.status || 0}`);
+  return await promiseWithTimeout(response.text(), 3000, `${filename} text read`);
+}
+
+async function loadChangelog({ force = false } = {}) {
   const host = $("changelogContent");
-  if (!host || host.dataset.loaded === "1") return;
+  if (!host || (!force && host.dataset.loaded === "1")) return;
+  if (!force && host.dataset.loading === "1") return;
+
+  host.dataset.loading = "1";
+  if (force) {
+    delete host.dataset.loaded;
+    host.textContent = "Loading changelog...";
+  }
 
   try {
-    const response = await fetch(chrome.runtime.getURL("CHANGELOG.md"));
-    const text = await response.text();
+    const text = await readBundledOptionsText("CHANGELOG.md");
     const blocks = text
       .split(/\n(?=##\s+)/g)
       .map(block => block.trim())
@@ -18095,11 +18148,19 @@ async function loadChangelog() {
       } else {
         host.replaceChildren(...recent);
       }
-    } else host.textContent = "No changelog entries yet.";
+    } else {
+      host.textContent = "No changelog entries yet.";
+    }
 
     host.dataset.loaded = "1";
-  } catch {
-    host.textContent = "Could not load the changelog.";
+  } catch (error) {
+    console.error("[DS Options] Could not load changelog", error);
+    const message = makeElement("span", { text: "Could not load the changelog. " });
+    const retry = makeElement("button", { text: "Retry", attrs: { type: "button" } });
+    retry.addEventListener("click", () => loadChangelog({ force: true }));
+    host.replaceChildren(message, retry);
+  } finally {
+    delete host.dataset.loading;
   }
 }
 
