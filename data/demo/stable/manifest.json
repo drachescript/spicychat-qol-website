@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SpicyChat QoL",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "description": "Configurable quality-of-life tools for SpicyChat: chat helpers, filters, saved lists, creator tools, backups, and UI cleanup.",
   "permissions": [
     "storage",
@@ -19,7 +19,7 @@
     "https://syncqol.drache.uk/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background-entry.js"
   },
   "content_scripts": [
     {
@@ -72,12 +72,12 @@
         "content/accessibility.js",
         "content/command-palette.js",
         "content/tag-aliases.js",
-        "content/rc87-panel-position.js",
+        "content/listing-panel-position.js",
         "content/soundscapes.js",
         "content/opened-chats.js",
         "content/tags-nsfw.js",
         "content/premium-notifications.js",
-        "content/rc83-ui.js",
+        "content/interface-runtime-tools.js",
         "content/top-bar.js",
         "content/chat-topbar.js",
         "content/model-selector.js",
@@ -110,8 +110,9 @@
         "content/creation-audit.js",
         "content/creator-writing-assistant.js",
         "content/animation-control.js",
-        "content/rc86-bulk-block.js",
+        "content/bulk-blocking.js",
         "content/bot-blocking.js",
+        "content/runtime-improvements.js",
         "content/bot-organizer.js",
         "content/card-workflow.js",
         "content/chat-tags.js",
@@ -145,7 +146,7 @@
         "content/text-replacements.js",
         "content/translation.js",
         "content/composer-control.js",
-        "content/rc88-chat-stability.js",
+        "content/chat-stability.js",
         "content/delete-guard.js",
         "content/failed-message-helper.js",
         "content/performance-mode.js",
@@ -155,8 +156,9 @@
         "content/chat-list.js",
         "content/chat-organizer.js",
         "content/saved-chat-actions.js",
+        "content/pagination-tools.js",
         "content/list-fill.js",
-        "content/rc87-fixes.js",
+        "content/my-creations-auto-load.js",
         "content/personas.js",
         "content/persona-organizer.js",
         "content/lorebook-entries.js",
@@ -215,5 +217,5 @@
     "downloads",
     "notifications"
   ],
-  "version_name": "0.2.25"
+  "version_name": "0.2.26"
 }
