@@ -1,3 +1,14 @@
+## 0.2.31
+
+- Fixed Saved Bot Copies / Recovery and Deleted / Unavailable Saved Bots loading from IndexedDB without needing to rescan thousands of bots.
+- Fixed missing Settings bot pictures and made animated avatars play only while hovered.
+- Improved Lorebook Status & History with tracked-only scans, automatic loading, safer availability handling, recovery copies, and entry change history.
+- Added local Lorebook Archive export for confirmed Public Lorebooks; private/restricted/unconfirmed recovery data stays local.
+- Added optional Public Lorebook blocking using normal blocked words, tags, creators, exact Lorebook UUIDs, and a quick Block button.
+- Fixed Public Lorebook filtering/refill leaving empty grid spaces and improved Lorebook tag lookup when needed.
+- Improved backups and support info for Lorebook Status and large recovery datasets.
+- Fixed Group creation being hidden when normal member/Lorebook UI was mistaken for a promo banner.
+
 ## 0.2.30
 
 - Fixed a v0.2.30 service-worker startup regression where the Chat Nudge / followed-creator background helper block was accidentally omitted, causing Chrome status-code-15 registration failure and `configureChatNudgeAlarm is not defined`.
