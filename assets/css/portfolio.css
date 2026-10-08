@@ -16,6 +16,5 @@
 .portfolio-feedback-item a{display:block;width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;border-radius:10px;background:#08090b}
 .portfolio-feedback-item img{display:block;width:auto;max-width:100%;height:auto;max-height:none;margin:0;object-fit:contain}
 .portfolio-feedback-item.feedback-wide img{width:100%}
-.portfolio-feedback-item figcaption{color:var(--muted2);font-size:.78rem}
 .feedback-more{margin:22px 0 0;color:var(--muted);font-size:.9rem}
 @media(max-width:800px){.portfolio-feedback-grid{grid-template-columns:1fr}.portfolio-feedback-item.feedback-wide{grid-column:auto}.portfolio-feedback-item.feedback-wide img{width:auto;max-width:none;height:auto}.portfolio-feedback-item.feedback-wide a{overflow-x:auto}.portfolio-feedback-item.feedback-small img{max-width:100%}}
