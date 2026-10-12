@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0709">
+  <meta name="description" content="Build and save custom SpicyChat QoL Lite recipes by choosing only the feature groups you want.">
+  <link rel="icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/lite.css">
+  <title>QoL Lite Builder · SpicyChat QoL</title>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community QoL tools</small></span></a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
+    <nav class="site-nav" data-nav aria-label="Main navigation"><a href="/features/">Features</a><a href="/demo/">Demo</a><a href="/extension/">Extension</a><a href="/lite/" aria-current="page">Lite</a><a href="/android/">Android</a><a href="/changelog/">Changelog</a><a href="/status/">Status</a><a href="/support/">Support</a><a class="nav-discord" href="/discord/">Discord</a></nav>
+  </div>
+</header>
+<div class="global-notice-wrap" data-global-notice hidden></div>
+
+<main id="main">
+  <section class="page-hero product-hero lite-hero">
+    <div class="container">
+      <img src="/assets/brand/extension-icon.jpg" class="hero-icon small-icon" alt="SpicyChat QoL icon">
+      <span class="eyebrow">Experimental builder</span>
+      <h1>Build the QoL you actually want.</h1>
+      <p>QoL Lite is not a separate fork. It uses the same SpicyChat QoL source, but custom builds will leave out whole feature groups you do not use instead of shipping everything and only turning settings off.</p>
+      <div class="hero-meta-row"><span>Source <strong data-lite-source>loading…</strong></span><span>Core updates <strong>Required</strong></span><span>Recipes <strong>Working now</strong></span></div>
+      <div class="lite-status-callout"><span class="lite-status-dot"></span><div><strong>The package generator is still being built.</strong><p>You can already choose modules, save/import recipes and make share links. Chrome/Firefox custom ZIP generation stays disabled until the extension-side modular builder can safely produce reduced packages.</p></div></div>
+    </div>
+  </section>
+
+  <section class="section tight-top">
+    <div class="container">
+      <div class="source-state" data-lite-status>Loading the Lite module catalog…</div>
+      <div class="lite-stage-grid">
+        <article class="plain-card"><span class="lite-stage-number">1</span><h3>Choose modules</h3><p>Pick the broad parts of QoL you want. Required dependencies are included automatically.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">2</span><h3>Save a recipe</h3><p>Export it, import it later, or copy a share link. Recipe module codes stay stable across future builder updates.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">3</span><h3>Generate the extension</h3><p>Next stage: use the recipe to physically omit unselected JavaScript/CSS/settings from Chrome and Firefox packages.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted">
+    <div class="container">
+      <div class="section-heading"><span class="eyebrow">Starting point</span><h2>Pick a preset, then change whatever you want.</h2><p>Full is the normal reference extension. Recommended Lite is the current draft. Minimal starts with only the shared runtime and interface. Any manual change becomes Custom.</p></div>
+      <div class="lite-preset-row" role="group" aria-label="Lite build preset">
+        <button class="lite-preset" type="button" data-lite-preset="full"><strong>Full</strong><span>All current module groups. Useful as the parity/reference build.</span></button>
+        <button class="lite-preset active" type="button" data-lite-preset="recommended-lite"><strong>Recommended Lite</strong><span>Chat, listings, profiles and personas without the heavier Creator/Lorebook groups.</span></button>
+        <button class="lite-preset" type="button" data-lite-preset="minimal"><strong>Minimal</strong><span>Core + Interface only. Add the areas you actually need.</span></button>
+        <button class="lite-preset" type="button" data-lite-preset="custom"><strong>Custom</strong><span>Keep the current selection and adjust individual groups yourself.</span></button>
+      </div>
+
+      <div class="lite-builder-wrap">
+        <div class="lite-builder-main">
+          <div class="lite-builder-panel">
+            <div class="lite-panel-head"><div><span class="eyebrow">Modules</span><h2>What should be included?</h2><p>This is intentionally group-based first. Individual feature-level trimming comes after the module/package pipeline is proven safe.</p></div><span class="lite-source-chip">same source tree</span></div>
+            <div class="lite-module-grid" data-lite-modules><div class="loading-card">Loading modules…</div></div>
+            <p class="lite-dependency-note" data-lite-dependency-note>Dependencies are added automatically. Core is always included.</p>
+            <div class="lite-unknown" data-lite-unknown hidden></div>
+          </div>
+        </div>
+
+        <aside class="lite-summary" aria-label="Current build summary">
+          <div class="lite-summary-card">
+            <span class="eyebrow">Your build</span>
+            <h3 data-lite-preset-name>Recommended Lite</h3>
+            <div class="lite-summary-grid">
+              <div><strong data-lite-selected-count>–</strong><span>modules</span></div>
+              <div><strong data-lite-file-count>–</strong><span>runtime files</span></div>
+              <div><strong data-lite-omitted-count>–</strong><span>files omitted</span></div>
+            </div>
+            <p class="lite-summary-note">These file counts are the current runtime-module catalog, not the final ZIP size. Shared files are counted once.</p>
+            <div class="button-row">
+              <button class="button primary" type="button" data-lite-export>Download recipe</button>
+              <button class="button secondary" type="button" data-lite-share>Copy share link</button>
+              <button class="button secondary" type="button" data-lite-reset>Reset builder</button>
+            </div>
+            <hr style="border:0;border-top:1px solid var(--border);margin:18px 0">
+            <button class="button primary" type="button" data-lite-build-chrome disabled>Build Chrome / Chromium ZIP</button>
+            <button class="button secondary" type="button" data-lite-build-firefox disabled>Build Firefox ZIP</button>
+            <p class="lite-summary-note">Package generation is intentionally locked until reduced builds pass the same parity/dependency checks as Full.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading"><span class="eyebrow">Recipes</span><h2>Save it once. Rebuild it later.</h2><p>The recipe is the important part of the custom-build system. It stores module IDs, not a separate fork of the extension, so the same setup can later be rebuilt against a newer source version.</p></div>
+      <div class="lite-recipe-grid">
+        <article class="lite-recipe-card"><h3>Current recipe</h3><p>Export the JSON, copy it, or make a URL that carries the current selection.</p><pre class="lite-recipe-preview" data-lite-recipe-preview>{}</pre><div class="lite-actions"><button class="button secondary" type="button" data-lite-copy>Copy JSON</button><button class="button secondary" type="button" data-lite-export>Download JSON</button><button class="button secondary" type="button" data-lite-share>Copy share link</button></div></article>
+        <article class="lite-recipe-card"><h3>Import a recipe</h3><p>Load an older recipe and continue editing it. Unknown future module codes are preserved instead of silently being deleted.</p><label class="lite-file-label">Recipe file <input type="file" accept="application/json,.json" data-lite-import-file></label><textarea class="lite-import-text" data-lite-import-text placeholder='Paste a QoL Lite recipe here…'></textarea><div class="lite-actions"><button class="button primary" type="button" data-lite-import>Import recipe</button><button class="button secondary" type="button" data-lite-clear-import>Clear</button></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted">
+    <div class="container two-col">
+      <article class="plain-card"><span class="eyebrow">Why modules first?</span><h2>Actually leave code out.</h2><p>A Lite build should not just be the Full extension with switches turned off. The goal is to physically omit unused runtime groups and their settings/background pieces, while keeping required shared dependencies.</p></article>
+      <article class="plain-card"><span class="eyebrow">Updates later</span><h2>Same recipe, newer QoL.</h2><p>Core updates will remain required. Optional-module update controls are planned around the saved recipe so a custom build can be rebuilt without making you choose everything again.</p></article>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer"><div class="container footer-main"><div><a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a><p>SpicyChat QoL is an independent community project and is not affiliated with, endorsed by, or sponsored by SpicyChat.</p></div><div class="footer-links"><a href="/lite/">Lite builder</a><a href="/features/">Features</a><a href="/demo/">Demo</a><a href="/reviews/">Reviews & feedback</a><a href="/support/">Support</a><a href="/discord/">Discord</a><a href="/credits/">Credits</a><a href="/privacy.html">Privacy</a></div></div><div class="container footer-bottom"><span>© <span data-year></span> SpicyChat QoL</span></div></footer>
+<div class="lite-toast" data-lite-toast hidden></div>
+<script src="/assets/js/content-source.js" defer></script>
+<script src="/assets/js/site.js" defer></script>
+<script src="/assets/js/lite.js" defer></script>
+</body>
+</html>
