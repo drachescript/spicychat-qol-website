@@ -1,3 +1,46 @@
+## 0.2.46
+- Reduced unnecessary beta-capability rechecks during Rulebook editor rerenders: only relevant native Rulebook, Lorebook and Story controls wake the short-lived observer.
+- Improved passive Rulebook detection for the chat attachment menu and Rulebook picker. No new Rulebook features are enabled or changed by default.
+- Fixed mobile Account & Sync category checkboxes reverting after changes by serializing selection saves and preserving intentional empty selections. Added clear save/failure feedback.
+- Added an optional Account & Sync choices category to QoL backup/export and import preview. It backs up device sync directions, selected settings/categories, and saved-list modes without credentials, account/device IDs or cloud revision history.
+- Fixed confirmed-unavailable cleanup repeatedly offering already-cleaned bots. Existing unavailable statuses remain recorded, but repeat cleanup skips saved cleanup checkpoints unless bots become newly unavailable or re-enter active lists.
+- Prevented overlapping unavailable-cleanup actions while a save is running.
+- Added manual blocked-bot data compacting with an age filter. Blocked IDs always remain; users can retain saved copies, purge only verified Archive-preserved copies, or explicitly discard unarchived local copies after an additional warning.
+- Fixed a rare scheduler timing error when a saved/opened-chat step finished as the slow scheduler yielded, avoiding a null `sliceStarted` write.
+- Made unavailable-bot cleanup wait for recovery/availability data before evaluating the cleanup set, and show the underlying error if it fails.
+- Separated Account & Sync and device-compatibility Settings controllers and chat message-cache helpers into independently loaded modules without changing Full runtime behavior.
+- Made Bot Status scans recoverable after browser/extension restarts: save the remaining queue before the first check, checkpoint verified results and remaining IDs every 50 checks or 30 seconds, and offer Resume interrupted scan on the next Settings visit.
+- Made API-based Load all chats imports resume from a saved page cursor. Completed metadata and optional Chat Index pages are saved before the cursor advances, with checkpoints every 100 conversations or 30 seconds.
+- Normal Stop/Pause and scan completion still save results; successful full scans clear only their own resume checkpoint.
+- Started preparing QoL Lite Custom with separately loaded Auto-AFK/low-memory and Wiki-fetch background services.
+- Moved Persona Manager, chat-bubble styling and Bot Organizer CSS into individually owned stylesheets while preserving Full stylesheet order.
+- Added explicit background-service and stylesheet ownership to the build registry for future smaller custom packages.
+- Full remains the supported runtime; Custom/Lite packaging will stay disabled until the remaining Settings, Core and background event dependencies are separated and tested.
+
+## 0.2.45
+- Fixed blocked-word auto-blocking for cards whose actual bot name is in SpicyChat's chat-link label, preventing matches such as Leon Kennedy and Simon Riley from being hidden without getting saved to Blocked bots.
+- Fixed Settings reopening on General instead of the last section after refresh; the current section now stays in the URL and is remembered locally for new Settings tabs.
+- Fixed blocked-word/tag auto-block rules being skipped when language or other discovery filters hid a card first. Actual tag badges are checked separately from names/descriptions.
+- Improved Portuguese detection for short descriptions, including sentences using “mãe”, “agora”, “quer”, and “você”.
+- Normalized mixed Greek/Cyrillic lookalike text in stylized Latin titles while leaving ordinary single-script Greek/Cyrillic descriptions unchanged.
+- Fixed Bot Status controls squeezing the known-bot summary into the scan filters. Counts now have a full-width row.
+- Moved the optional Chat Index into Chat List tools with a larger, scrollable index window. It remains disabled by default.
+- Improved per-device sync Settings layout by keeping the individual setting list collapsed until needed.
+- Bot Status scans now pause and preserve unfinished work after repeated authorization or connectivity failures instead of replacing confirmed results with Unknown.
+- Improved bulk Less Like and Dislike pause messages for repeated authentication or network failures.
+- Fixed mobile Settings getting stuck on General when the Sections menu did not initialize. Section navigation now starts independently and stays accessible if later Settings setup fails.
+- Reduced repeated OOC button class updates and unnecessary Copy/Edit toolbar checks while preserving early controls and repairs after chat rerenders.
+- Added an opt-in Chat Index for chat-list pages, with manual API refresh, full rescans, search and confirmed unavailable/restricted/unknown filters. It starts off and is opened from Chat List tools.
+- Added local favorites for individual conversations, alongside existing QoL bot favorites. Exact chat links and message counts are saved without loading extra chat cards.
+- Chat index imports use the existing API importer only when the feature is enabled, save progress in batches, and do not treat missing chats or temporary errors as deletions. Previously indexed data stays saved when disabled.
+- Added a separate option to automatically add bots with blocked tags to Blocked bots; matched tags must be recognized on the card.
+- Fixed overlapping blocked-tag and blocked-word rules so either enabled option can auto-block a bot without creating duplicate blocks.
+- Added persistent Words, Tags, and Both counts for successful automatic blocks in the current Blocked bots list. Manual unblocks remain exempt until matching rules change.
+- Added device-specific sync choices for settings and saved lists, with separate upload/download directions and optional individual settings selection.
+- New device links can now leave local settings untouched, sync only Blocked bots, or download account settings before choosing ongoing sync directions.
+- Added compact, ID-only sync for Blocked, Favorite, Later, Not Interested and Opened bot lists. Merges per bot across devices without uploading chat content, backup details or images.
+- Avoided repeat uploads of unchanged saved-list parts, with checkpointed updates and explicit device opt-in. Cloud history cleanup still requires backend support.
+
 ## 0.2.44
 - Fixed automated GitHub builds checking outdated release ZIPs instead of the newly built version.
 - Fixed automatic Chrome and Firefox development and release builds after the root folder cleanup.
