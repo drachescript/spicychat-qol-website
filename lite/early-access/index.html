@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0709">
+  <meta name="description" content="Experimental SpicyChat QoL Custom Core + OOC installer and folder updater for Chrome and Brave.">
+  <link rel="icon" href="/assets/icons/favicon.ico">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/lite.css">
+  <link rel="stylesheet" href="/assets/css/lite-early-access.css">
+  <title>QoL Custom Early Access · SpicyChat QoL</title>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community QoL tools</small></span></a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
+    <nav class="site-nav" data-nav aria-label="Main navigation">
+      <a href="/features/">Features</a><a href="/demo/">Demo</a><a href="/extension/">Extension</a>
+      <a href="/lite/" aria-current="page">Lite</a><a href="/android/">Android</a>
+      <a href="/changelog/">Changelog</a><a href="/status/">Status</a>
+      <a href="/support/">Support</a><a class="nav-discord" href="/discord/">Discord</a>
+    </nav>
+  </div>
+</header>
+<div class="global-notice-wrap" data-global-notice hidden></div>
+<main id="main">
+  <section class="page-hero product-hero lite-hero">
+    <div class="container">
+      <span class="eyebrow">QoL Custom · experimental early access</span>
+      <h1>Install only what you need.</h1>
+      <p>Here's our first genuinely small Custom build: the shared OOC insert tools and composer button, without the rest of Full QoL. It uses the same OOC feature code as Full, with a minimal Core and Settings page.</p>
+      <div class="hero-meta-row">
+        <span>Build <strong data-ea-version>Loading…</strong></span>
+        <span>Browser <strong>Chrome / Brave desktop</strong></span>
+        <span>Updates <strong>Website-managed, user approved</strong></span>
+      </div>
+      <div class="lite-status-callout"><span class="lite-status-dot"></span>
+        <div><strong>This is a test build, not the finished Custom builder.</strong>
+          <p>Only Core + OOC is currently installable here. The main <a href="/lite/">Lite feature selector</a> still saves future recipes; it does not yet generate arbitrary combinations. Firefox and automatic background updates are not included in this early access.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tight-top">
+    <div class="container ea-layout">
+      <article class="lite-builder-panel ea-install-panel">
+        <span class="eyebrow">Step 1 · Install</span>
+        <h2>Download or install into a folder</h2>
+        <p>Select a new, empty folder to let the website write the verified Custom extension files into it. You can also download a ZIP and extract it yourself. Nothing is installed without your action.</p>
+        <div class="ea-actions">
+          <button class="button primary" type="button" data-ea-install>Install / update selected folder</button>
+          <button class="button secondary" type="button" data-ea-download>Download Custom ZIP</button>
+          <button class="button secondary" type="button" data-ea-reconnect>Choose another folder</button>
+        </div>
+        <p class="ea-info" data-ea-connected>No folder selected yet.</p>
+        <p class="ea-status" data-ea-status role="status" aria-live="polite">Checking source files…</p>
+        <p class="lite-summary-note" data-ea-details>Website writes need browser permission. The folder path is not uploaded to a server.</p>
+      </article>
+      <aside class="lite-summary-card ea-contents">
+        <span class="eyebrow">Included right now</span>
+        <h2>Core + OOC</h2>
+        <div class="ea-feature"><span class="ea-check">✓</span><div><strong>OOC insert panel</strong><small>Choose and insert presets while chatting</small></div></div>
+        <div class="ea-feature"><span class="ea-check">✓</span><div><strong>Chat composer OOC button</strong><small>With Image-button replacement option</small></div></div>
+        <div class="ea-feature"><span class="ea-check">✓</span><div><strong>OOC Settings</strong><small>Edit, import and export OOC templates</small></div></div>
+        <div class="ea-feature"><span class="ea-check muted">—</span><div><strong>Other QoL modules</strong><small>Not bundled or downloadable in this test</small></div></div>
+        <p class="lite-summary-note">Includes only the required Core adapter, OOC scripts, OOC CSS, Settings assets and icon. No Full background worker, full chat scheduler, or other feature controllers.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section-muted">
+    <div class="container">
+      <div class="section-heading"><span class="eyebrow">Step 2 · Enable once</span><h2>Load the folder in your browser</h2></div>
+      <div class="lite-stage-grid">
+        <article class="plain-card"><span class="lite-stage-number">1</span><h3>Open extensions</h3><p>In Chrome, open <code>chrome://extensions</code>. In Brave, open <code>brave://extensions</code>. Turn on <strong>Developer mode</strong>.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">2</span><h3>Load unpacked</h3><p>Choose <strong>Load unpacked</strong> and select the directory the site populated (or the folder where you extracted the downloaded ZIP).</p></article>
+        <article class="plain-card"><span class="lite-stage-number">3</span><h3>Try OOC</h3><p>Open a SpicyChat conversation, try inserting a preset, and check the extension's small Settings page. Test in a separate browser profile from Full QoL.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading"><span class="eyebrow">Step 3 · Update later</span><h2>Keep the same folder and your settings</h2></div>
+      <div class="ea-update-guide">
+        <p>Come back to this page when a newer early-access release appears. Choose <strong>Install / update selected folder</strong>, allow access to the same directory and approve the update. The page verifies each pinned source file before writing, backs up the previous files, and writes the new manifest last.</p>
+        <p><strong>Important:</strong> After changing files, open the extensions page and click <strong>Reload</strong> for Core + OOC. Fully automatic reloads and update checks while the website is closed are not implemented yet. The site can remember your folder choice locally, but browser permissions may still need approval.</p>
+        <p>Replacing files in the same unpacked extension folder preserves that extension's browser storage. Installing it alongside Full QoL creates separate extension storage; you can import/export your OOC presets as JSON.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted">
+    <div class="container two-col">
+      <article class="plain-card"><span class="eyebrow">Coming next</span><h2>Actual feature selection</h2><p>Once this first package works reliably in real browser tests, we'll add a second independent module and support rebuilding a selected set without discarding existing modules. Recipe codes and per-module update preferences are still in development.</p><p><a class="button secondary" href="/lite/">View the Lite recipe builder</a></p></article>
+      <article class="plain-card"><span class="eyebrow">Testing feedback</span><h2>Found something broken?</h2><p>OOC button missing, duplicated after a chat switch, presets not saving, or a browser console error? Please report it. This early-access page does not connect to your SpicyChat account.</p><p><a class="button secondary" href="/discord/">Report feedback on Discord</a></p></article>
+    </div>
+  </section>
+</main>
+<footer class="site-footer"><div class="container footer-main"><div><a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a><p>SpicyChat QoL is an independent community project and is not affiliated with, endorsed by, or sponsored by SpicyChat.</p></div><div class="footer-links"><a href="/lite/">Lite builder</a><a href="/features/">Features</a><a href="/support/">Support</a><a href="/discord/">Discord</a><a href="/privacy.html">Privacy</a></div></div><div class="container footer-bottom"><span>© <span data-year></span> SpicyChat QoL</span></div></footer>
+<script src="/assets/js/content-source.js" defer></script>
+<script src="/assets/js/site.js" defer></script>
+<script src="/assets/js/lite-early-access.js" defer></script>
+</body>
+</html>
