@@ -131,10 +131,19 @@
       showToast('Builder reset to Recommended Lite.');
     });
 
-    [els.buildChrome, els.buildFirefox].forEach(button => {
-      button?.addEventListener('click', () => {
-        showToast('Package generation is not enabled yet. Your recipe is ready to export now.');
-      });
+    // The experimental browser builder accepts the current group selection
+    // without requiring the user to redo it. This does not enable Firefox or
+    // claim that a selected combination has passed browser compatibility tests.
+    els.buildChrome?.addEventListener('click', () => {
+      const code = toBase64Url(JSON.stringify({
+        schema: 'sqol-experimental-recipe/v1',
+        version: catalog.source?.version || 'unknown',
+        modules: catalog.bundleOrder.filter(id => selected.has(id))
+      }));
+      location.href = '/lite/early-access/experimental/#build=' + code;
+    });
+    els.buildFirefox?.addEventListener('click', () => {
+      showToast('Firefox custom builds are not supported in early access yet.');
     });
   }
 
