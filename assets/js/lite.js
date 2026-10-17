@@ -1,6 +1,6 @@
 (() => {
 'use strict';
-// Early-access group builder: Full QoL v0.2.50 is the single source of truth.
+// Unified early-access Custom builder; QoL source is pinned through release metadata.
 // Experimental combinations are NOT certified to work in Chrome/Brave.
 const T = new TextEncoder();
 const D = new TextDecoder();
