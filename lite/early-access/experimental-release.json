@@ -1,9 +1,9 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.50",
+  "version": "0.2.51",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "31d37a81716ffc943d403dab3a4a49bb0fa46793",
-  "tree": "eb51ab9e3743522aa4fceb58c843f0fce177976e",
+  "commit": "377b27e1a2f43d939c51ebd7ebbc98c5bf727440",
+  "tree": "6b4bbb057c6a83bfcf982b3d609e626e0ab0341d",
   "browser": "chrome",
   "status": "experimental-unvalidated",
   "warning": "Experimental module selection; some combinations may fail. Shared Settings/background services are not yet individually trimmed."
