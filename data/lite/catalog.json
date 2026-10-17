@@ -3,11 +3,11 @@
   "generatedFor": "website-lite-builder",
   "source": {
     "repository": "https://github.com/drachescript/spicychat-qol-extension",
-    "ref": "main",
-    "version": "0.2.43",
+    "ref": "qol-custom",
+    "version": "0.2.50",
     "moduleSchema": 1
   },
-  "status": "preparation",
+  "status": "experimental-early-access",
   "bundleOrder": [
     "core",
     "interface",
@@ -22,7 +22,7 @@
   "bundles": {
     "core": {
       "label": "Core",
-      "description": "The shared runtime, settings, routing, compatibility and common helpers every custom build needs.",
+      "description": "Always-required runtime, compatibility, routing, diagnostics and shared helpers.",
       "required": true,
       "dependsOn": [],
       "files": [
@@ -30,15 +30,18 @@
         "content/auto-afk.js",
         "content/build-profile.js",
         "content/compatibility.js",
-        "platform-capabilities.js",
+        "shared/platform-capabilities.js",
         "content/runtime-improvements.js",
         "content/core-settings-defaults.js",
         "content/core.js",
+        "content/core-storage-writers.js",
         "content/background-worker-coordinator.js",
         "content/diagnostic-protocol.js",
         "content/dom.js",
         "content/main-page-observer.js",
         "content/main-diagnostics.js",
+        "content/feature-build-map.js",
+        "content/feature-lifecycle.js",
         "content/main.js",
         "content/my-creations-auto-load.js",
         "content/runtime-kernel.js",
@@ -46,14 +49,19 @@
         "content/tab-diagnostics.js",
         "content/tag-aliases.js",
         "content/update-toast.js",
-        "content/creator-editor-privacy-guard.js"
+        "content/creator-editor-privacy-guard.js",
+        "content/main-startup.js",
+        "content/main-scheduler-utils.js",
+        "content/main-message-mutations.js"
       ]
     },
     "interface": {
       "label": "Interface",
-      "description": "Top bar, sidebar, Mini Panel, accessibility, scroll helpers and other shared interface tools.",
+      "description": "Shared top bar, sidebar, panel, accessibility and interface helpers.",
       "required": false,
-      "dependsOn": ["core"],
+      "dependsOn": [
+        "core"
+      ],
       "files": [
         "content/accessibility.js",
         "content/ad-banners.js",
@@ -73,9 +81,12 @@
     },
     "chat": {
       "label": "Chat",
-      "description": "Single-chat tools for messages, formatting, OOC, search, export, memory, generation and roleplay helpers.",
+      "description": "Single-chat message, composer, generation, memory and roleplay tools.",
       "required": false,
-      "dependsOn": ["core", "interface"],
+      "dependsOn": [
+        "core",
+        "interface"
+      ],
       "files": [
         "content/chat-format-compatibility.js",
         "content/alternate-dialogue.js",
@@ -105,8 +116,10 @@
         "content/message-options.js",
         "content/model-selector.js",
         "content/native-rating-helpers.js",
+        "content/ooc-composer.js",
         "content/ooc.js",
         "content/performance-mode.js",
+        "content/core-message-cache.js",
         "content/chat-stability.js",
         "content/reply-instructions.js",
         "content/rp-format-repair.js",
@@ -115,30 +128,42 @@
         "content/selection-memory.js",
         "content/story-day-tracker.js",
         "content/text-replacements.js",
-        "content/translation.js"
+        "content/translation.js",
+        "content/chat-rulebook-metadata.js",
+        "content/rulebook-diagnostics.js",
+        "content/story-reading-layout.js"
       ]
     },
     "chatList": {
       "label": "Chat List",
-      "description": "Chat folders, saved conversation actions, opened history and chat-list organization.",
+      "description": "Chats-list organization, opened-history and saved-chat tools.",
       "required": false,
-      "dependsOn": ["core", "interface"],
+      "dependsOn": [
+        "core",
+        "interface"
+      ],
       "files": [
         "content/chat-list.js",
         "content/chat-organizer.js",
         "content/chat-tags.js",
         "content/opened-chats.js",
+        "content/chat-index.js",
         "content/saved-chat-actions.js"
       ]
     },
     "listings": {
       "label": "Listings & Discovery",
-      "description": "Home/listing filters, blocking, saved bot lists, cards, recommendations, refill and discovery helpers.",
+      "description": "Discovery, saved-bot, filtering, card, blocking and refill tools.",
       "required": false,
-      "dependsOn": ["core", "interface"],
+      "dependsOn": [
+        "core",
+        "interface"
+      ],
       "files": [
         "content/bot-blocking.js",
         "content/bot-organizer.js",
+        "content/mobile-bot-organizer.js",
+        "content/mobile-listing-overflow.js",
         "content/card-token-auth-loader.js",
         "content/card-token-info.js",
         "content/card-token-main.js",
@@ -158,14 +183,18 @@
         "content/saved-lists-overlay.js",
         "content/smart-filter-presets.js",
         "content/tags-nsfw.js",
-        "content/local-tag-matching.js"
+        "content/local-tag-matching.js",
+        "content/rulebook-filter.js"
       ]
     },
     "creator": {
       "label": "Creator",
-      "description": "Chatbot editor helpers, creator backups, Creation Audit, draft history and creator workflow tools.",
+      "description": "Chatbot editor, creation history, backups, audit and creator tools.",
       "required": false,
-      "dependsOn": ["core", "interface"],
+      "dependsOn": [
+        "core",
+        "interface"
+      ],
       "files": [
         "content/bot-backup.js",
         "content/bot-editor-actions.js",
@@ -185,9 +214,12 @@
     },
     "lorebook": {
       "label": "Lorebooks",
-      "description": "Lorebook editor helpers, entry tools, search/filtering, backup and Wiki/Web importer.",
+      "description": "Lorebook editor, import, backup, filtering and entry tools.",
       "required": false,
-      "dependsOn": ["core", "interface"],
+      "dependsOn": [
+        "core",
+        "interface"
+      ],
       "files": [
         "content/lorebook-backup.js",
         "content/lorebook-entries.js",
@@ -196,17 +228,22 @@
         "content/lorebook-tags.js",
         "content/lorebook-workflow.js",
         "content/wiki-lorebook-importer.js",
-        "content/lorebook-public-qol.js"
+        "content/lorebook-public-qol.js",
+        "content/lorebook-connections.js"
       ]
     },
     "profiles": {
       "label": "Profiles",
-      "description": "Public bot/profile helpers, local archive information and profile-side organization tools.",
+      "description": "Public character/profile helpers and profile-side organization tools.",
       "required": false,
-      "dependsOn": ["core", "interface"],
+      "dependsOn": [
+        "core",
+        "interface"
+      ],
       "files": [
         "content/bot-archive.js",
         "content/bot-organizer.js",
+        "content/mobile-bot-organizer.js",
         "content/card-workflow.js",
         "content/creator-favorites.js",
         "content/creator-following.js",
@@ -216,9 +253,12 @@
     },
     "personas": {
       "label": "Personas",
-      "description": "Persona saving, organizer tools and local persona backup/library features.",
+      "description": "Persona page, persona saving and organizer tools.",
       "required": false,
-      "dependsOn": ["core", "interface"],
+      "dependsOn": [
+        "core",
+        "interface"
+      ],
       "files": [
         "content/persona-organizer.js",
         "content/persona-full-backup.js",
@@ -231,19 +271,40 @@
       "label": "Full",
       "description": "Everything included. This matches the normal reference build.",
       "buildableUpstream": true,
-      "bundles": ["core", "interface", "chat", "chatList", "listings", "creator", "lorebook", "profiles", "personas"]
+      "bundles": [
+        "core",
+        "interface",
+        "chat",
+        "chatList",
+        "listings",
+        "creator",
+        "lorebook",
+        "profiles",
+        "personas"
+      ]
     },
     "recommended-lite": {
       "label": "Recommended Lite",
-      "description": "The current draft Lite starting point. Creator and Lorebook tools are left out for now.",
+      "description": "The current experimental Lite starting point. Creator and Lorebook tools are left out for now.",
       "buildableUpstream": false,
-      "bundles": ["core", "interface", "chat", "chatList", "listings", "profiles", "personas"]
+      "bundles": [
+        "core",
+        "interface",
+        "chat",
+        "chatList",
+        "listings",
+        "profiles",
+        "personas"
+      ]
     },
     "minimal": {
       "label": "Minimal",
       "description": "A tiny starting point with only Core + Interface. Add only the areas you actually want.",
       "buildableUpstream": false,
-      "bundles": ["core", "interface"]
+      "bundles": [
+        "core",
+        "interface"
+      ]
     }
   }
 }
