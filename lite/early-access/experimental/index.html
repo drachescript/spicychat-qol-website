@@ -21,17 +21,17 @@
 <section class="page-hero product-hero lite-hero"><div class="container">
 <span class="eyebrow">QoL Custom · early access / work in progress</span>
 <h1>Choose your QoL. Try it early.</h1>
-<p>Build a custom Chrome/Brave extension with whichever module groups u want, and skip the content scripts u don't select. This is an experimental preview of the real modular builder, not just Full QoL with every feature disabled.</p>
+<p>Choose the QoL tools u want and make your own Chrome/Brave build. Start with the basics or try everything. This early-access version is for testers, so some features might not work correctly yet.</p>
 <div class="hero-meta-row"><span>Source <strong data-mod-version>Loading…</strong></span><span>Feature groups <strong>9</strong></span><span>Stability <strong>Early access — expect bugs</strong></span></div>
 <div class="lite-status-callout"><span class="lite-status-dot"></span><div>
 <strong>Important: everything here is WIP and subject to changes.</strong>
-<p>Module combinations are not individually browser-tested. Some buttons, Settings, background jobs or pages may not work. The shared Core, Settings and background infrastructure are still being separated, so these packages are not perfectly minimal yet. Please use a separate Chrome/Brave profile from Full QoL, export your data before testing, and send bug reports.</p>
+<p>Every build is still a work in progress. Some tools may be missing, not save correctly, or cause glitches. Please try this in a separate Chrome/Brave profile from Full QoL if u can, back up your QoL settings first, and tell us what breaks.</p>
 </div></div>
 </div></section>
 <section class="section tight-top"><div class="container ea-layout">
 <article class="lite-builder-panel ea-install-panel">
 <span class="eyebrow">Build your experimental extension</span><h2>Choose module groups</h2>
-<p>Every group contains multiple features. Uncheck entire groups u don't use; dependencies are included automatically. Individual feature-by-feature packaging and feature freezes are still being built.</p>
+<p>Choose as many groups as u want. Each contains several related tools, and we'll automatically include anything else those tools need. More individual choices are coming.</p>
 <div class="ea-actions"><button class="button secondary" type="button" data-mod-all>Select all</button><button class="button secondary" type="button" data-mod-minimal>Core + Interface</button><button class="button secondary" type="button" data-mod-recommended>Recommended</button></div>
 <div class="lite-module-grid ea-module-grid" data-mod-list><p>Loading the v0.2.50 source catalog…</p></div>
 <p class="lite-dependency-note" data-mod-dependencies>Core always stays enabled; dependent modules are selected automatically.</p>
@@ -45,7 +45,7 @@
 </article>
 <aside class="lite-summary-card ea-contents">
 <span class="eyebrow">Your experimental build</span><h2 data-mod-summary>Loading…</h2>
-<p class="lite-summary-note">Unselected content scripts and feature styles are omitted. Shared background and Settings files remain included in this early version.</p>
+<p class="lite-summary-note">Only your selected groups are added to the experimental build, plus shared parts needed by several tools. Some unselected tools may still have background or Settings connections while we work on the builder.</p>
 <div class="ea-actions"><button class="button secondary" type="button" data-mod-code>Copy build code</button><button class="button secondary" type="button" data-mod-import>Import build code</button></div>
 <label for="ea-code-input" class="ea-code-label">Saved / shared selection code</label>
 <textarea id="ea-code-input" class="lite-import-text ea-code-input" data-mod-code-input placeholder="Paste a Custom build code here (then choose Import build code)"></textarea>
@@ -57,12 +57,22 @@
 <section class="section section-muted"><div class="container">
 <div class="section-heading"><span class="eyebrow">Installation</span><h2>One unpacked installation, updates through the website</h2><p>Chrome/Brave desktop · Developer Mode required</p></div>
 <div class="lite-stage-grid">
-<article class="plain-card"><span class="lite-stage-number">1</span><h3>Build &amp; choose folder</h3><p>Choose modules, then click Install / update folder. Grant access to an empty folder or to a previous QoL Custom early-access folder. Or download the ZIP and extract it.</p></article>
-<article class="plain-card"><span class="lite-stage-number">2</span><h3>Load unpacked</h3><p>Open <code>chrome://extensions</code> or <code>brave://extensions</code>, enable Developer Mode, choose <strong>Load unpacked</strong> and select the folder.</p></article>
-<article class="plain-card"><span class="lite-stage-number">3</span><h3>Try it &amp; update</h3><p>Test the modules and report issues. Come back here to add/remove groups or update; the site backs up existing files first. Click <strong>Reload</strong> in extensions after updating.</p></article>
+<article class="plain-card"><span class="lite-stage-number">1</span><h3>Build &amp; choose folder</h3><p>Choose your tools, then select <strong>Install / update folder</strong> and pick an <strong>empty folder</strong>. The website puts the files there. Or click <strong>Download Custom ZIP</strong>, save it, and <strong>extract</strong> the ZIP into a folder before continuing.</p></article>
+<article class="plain-card"><span class="lite-stage-number">2</span><h3>Load unpacked</h3><p>In Chrome, enter <code>chrome://extensions</code> in the address bar. In Brave, use <code>brave://extensions</code>. Turn on <strong>Developer mode</strong>, choose <strong>Load unpacked</strong>, and select the folder containing <code>manifest.json</code>.</p></article>
+<article class="plain-card"><span class="lite-stage-number">3</span><h3>Try it &amp; update</h3><p>Open SpicyChat and try your tools. To change your selection or update later, return to this page and choose the <strong>same folder</strong>. Your browser may ask permission again. Once the update finishes, click <strong>Reload</strong> on the extension's card.</p></article>
 </div>
-<div class="lite-status-callout"><span class="lite-status-dot"></span><div><strong>Current limitations</strong><p>Chrome/Brave only for folder installation. Firefox builds, fully automatic updates, and exact per-feature dependency isolation are not ready yet. Selecting every group approaches Full QoL's package size. Builds can be broken even if the file checks pass.</p></div></div>
+<div class="lite-status-callout"><span class="lite-status-dot"></span><div><strong>Current limitations</strong><p>This Chrome/Brave build is experimental, not a finished extension. Firefox Custom builds aren't ready, and updates don't happen automatically while the site is closed. Some tool combinations may be broken. Tell us if anything fails!</p></div></div>
 </div></section>
+<section class="section" id="firefox">
+  <div class="container">
+    <div class="section-heading"><span class="eyebrow">Firefox users</span><h2>What about Firefox?</h2>
+      <p>Firefox needs a different extension package, so please don't install the Chrome/Brave ZIP there. Firefox Custom is still being prepared.</p></div>
+    <div class="ea-update-guide">
+      <p><strong>For now:</strong> use the regular Firefox QoL release linked from the <a href="/extension/">Extension page</a>. U can still try the builder here and save or share your module-selection code.</p>
+      <p><strong>When Firefox Custom builds are available:</strong> we'll provide a Firefox-compatible download and instructions. Firefox's <code>about:debugging#/runtime/this-firefox</code> page can load an extension temporarily for development, but temporary add-ons disappear when Firefox restarts. A permanent installation needs an appropriately signed add-on.</p>
+    </div>
+  </div>
+</section>
 </main>
 <footer class="site-footer"><div class="container footer-main"><div><a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a><p>SpicyChat QoL is an independent community project and is not affiliated with, endorsed by, or sponsored by SpicyChat.</p></div><div class="footer-links"><a href="/lite/">Lite builder</a><a href="/lite/early-access/">OOC test</a><a href="/support/">Support</a><a href="/discord/">Discord</a><a href="/privacy.html">Privacy</a></div></div><div class="container footer-bottom"><span>© <span data-year></span> SpicyChat QoL</span></div></footer>
 <script src="/assets/js/content-source.js" defer></script><script src="/assets/js/site.js" defer></script>
