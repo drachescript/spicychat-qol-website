@@ -12,8 +12,8 @@ from html.parser import HTMLParser
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = ROOT / 'lite/early-access/experimental-release.json'
-PAGE = ROOT / 'lite/early-access/experimental/index.html'
-SCRIPT = ROOT / 'assets/js/lite-experimental.js'
+PAGE = ROOT / 'lite/index.html'
+SCRIPT = ROOT / 'assets/js/lite.js'
 
 
 class HTMLAssets(HTMLParser):
@@ -41,7 +41,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.50'
+    assert release['version'] == '0.2.51'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -51,8 +51,16 @@ def main():
     for path in refs.files:
         if path.startswith('/'):
             assert (ROOT / path.lstrip('/')).is_file(), path
-    assert '/lite/early-access/experimental/' in (
-        ROOT / 'lite/index.html').read_text(encoding='utf-8')
+    page = PAGE.read_text(encoding='utf-8')
+    for control in ('data-mod-list', 'data-mod-download', 'data-mod-install',
+                    'data-mod-export', 'data-mod-share', 'data-mod-import',
+                    'data-mod-recipe-preview', 'data-mod-preset'):
+        assert control in page, 'Unified Lite builder missing ' + control
+    redirect = (ROOT / 'lite/early-access/experimental/index.html').read_text(encoding='utf-8')
+    assert "location.search + location.hash" in redirect
+    assert "location.replace('/lite/'" in redirect
+    assert 'lite-experimental.js' not in page
+    assert 'lite-experimental.js' not in redirect
 
     base = f"https://raw.githubusercontent.com/{release['repository']}/{release['commit']}"
     modules = fetch_json(base + '/build/modules.json')
