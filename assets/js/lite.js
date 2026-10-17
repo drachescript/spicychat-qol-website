@@ -48,11 +48,11 @@
     catalog = await response.json();
 
     if (els.source) {
-      els.source.textContent = `main · v${catalog.source?.version || 'current'} · ${catalog.bundleOrder.length} module groups`;
+      els.source.textContent = `QoL v${catalog.source?.version || 'current'} · ${catalog.bundleOrder.length} feature groups`;
     }
     if (els.status) {
       els.status.className = 'source-state live';
-      els.status.textContent = 'Module catalog loaded. Recipe building works now; downloadable custom extension packages are the next stage.';
+      els.status.textContent = 'Pick the tools u want. Experimental Chrome/Brave downloads are available for testing.';
     }
 
     restoreState();
@@ -127,8 +127,8 @@
     els.resetButton?.addEventListener('click', () => {
       localStorage.removeItem(STORAGE_KEY);
       history.replaceState(null, '', location.pathname);
-      applyPreset('recommended-lite');
-      showToast('Builder reset to Recommended Lite.');
+      applyPreset('minimal');
+      showToast('Builder reset to the basic setup.');
     });
 
     // The experimental browser builder accepts the current group selection
@@ -336,13 +336,13 @@
       if (saved && Array.isArray(saved.bundles)) {
         selected = new Set(saved.bundles.filter(id => catalog.bundles[id]));
         unknownBundles = Array.isArray(saved.unknownBundles) ? saved.unknownBundles.map(String) : [];
-        preset = (catalog.presets[saved.preset] || saved.preset === 'custom') ? (saved.preset || 'custom') : 'recommended-lite';
+        preset = (catalog.presets[saved.preset] || saved.preset === 'custom') ? (saved.preset || 'custom') : 'minimal';
         return;
       }
     } catch {}
-    const initial = catalog.presets['recommended-lite']?.bundles || ['core'];
+    const initial = catalog.presets['minimal']?.bundles || ['core'];
     selected = new Set(initial);
-    preset = 'recommended-lite';
+    preset = 'minimal';
   }
 
   function persistState() {
