@@ -29,9 +29,9 @@
     <div class="container">
       <img src="/assets/brand/extension-icon.jpg" class="hero-icon small-icon" alt="SpicyChat QoL icon">
       <span class="eyebrow">Experimental builder</span>
-      <h1>Build the QoL you actually want.</h1>
-      <p>QoL Lite is not a separate fork. It uses the same SpicyChat QoL source, but custom builds will leave out whole feature groups you do not use instead of shipping everything and only turning settings off.</p>
-      <div class="hero-meta-row"><span>Source <strong data-lite-source>loading…</strong></span><span>Core updates <strong>Required</strong></span><span>Recipes <strong>Working now</strong></span></div>
+      <h1>Make QoL your own.</h1>
+      <p>Choose the QoL tools u want, skip the ones u don't, and create a build that suits how u use SpicyChat. Early access is live for testers, so expect some bugs and changes.</p>
+      <div class="hero-meta-row"><span>Source <strong data-lite-source>loading…</strong></span><span>Browser <strong>Chrome / Brave</strong></span><span>Builds <strong>Early access</strong></span></div>
       <div class="lite-status-callout"><span class="lite-status-dot"></span><div><strong>QoL Custom early access is now available for testing.</strong><p>Select different module groups, download experimental Chrome/Brave builds or update an unpacked Custom folder through the website. Everything is WIP and some combinations may have bugs or missing features. <a href="/lite/early-access/experimental/">Try the experimental module builder →</a> · <a href="/lite/early-access/">Core + OOC test</a></p></div></div>
     </div>
   </section>
@@ -44,9 +44,9 @@
     <div class="container">
       <div class="source-state" data-lite-status>Loading the Lite module catalog…</div>
       <div class="lite-stage-grid">
-        <article class="plain-card"><span class="lite-stage-number">1</span><h3>Choose modules</h3><p>Pick the broad parts of QoL you want. Required dependencies are included automatically.</p></article>
-        <article class="plain-card"><span class="lite-stage-number">2</span><h3>Save a recipe</h3><p>Export it, import it later, or copy a share link. Recipe module codes stay stable across future builder updates.</p></article>
-        <article class="plain-card"><span class="lite-stage-number">3</span><h3>Generate the extension</h3><p>Next stage: use the recipe to physically omit unselected JavaScript/CSS/settings from Chrome and Firefox packages.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">1</span><h3>Choose modules</h3><p>Pick the tools u want to use. We'll include anything they need to work.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">2</span><h3>Save a recipe</h3><p>Save your choices to a file or share link so u can pick up where u left off.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">3</span><h3>Generate the extension</h3><p>Try an experimental Chrome/Brave download. Some combinations may still have issues.</p></article>
       </div>
     </div>
   </section>
@@ -64,7 +64,7 @@
       <div class="lite-builder-wrap">
         <div class="lite-builder-main">
           <div class="lite-builder-panel">
-            <div class="lite-panel-head"><div><span class="eyebrow">Modules</span><h2>What should be included?</h2><p>This is intentionally group-based first. Individual feature-level trimming comes after the module/package pipeline is proven safe.</p></div><span class="lite-source-chip">same source tree</span></div>
+            <div class="lite-panel-head"><div><span class="eyebrow">Modules</span><h2>What should be included?</h2><p>For now, features are grouped by what they do. More individual controls are coming.</p></div><span class="lite-source-chip">your choices</span></div>
             <div class="lite-module-grid" data-lite-modules><div class="loading-card">Loading modules…</div></div>
             <p class="lite-dependency-note" data-lite-dependency-note>Dependencies are added automatically. Core is always included.</p>
             <div class="lite-unknown" data-lite-unknown hidden></div>
@@ -77,10 +77,10 @@
             <h3 data-lite-preset-name>Recommended Lite</h3>
             <div class="lite-summary-grid">
               <div><strong data-lite-selected-count>–</strong><span>modules</span></div>
-              <div><strong data-lite-file-count>–</strong><span>runtime files</span></div>
-              <div><strong data-lite-omitted-count>–</strong><span>files omitted</span></div>
+              <div><strong data-lite-file-count>–</strong><span>included files</span></div>
+              <div><strong data-lite-omitted-count>–</strong><span>files skipped</span></div>
             </div>
-            <p class="lite-summary-note">These file counts are the current runtime-module catalog, not the final ZIP size. Shared files are counted once.</p>
+            <p class="lite-summary-note">These counts are just a rough comparison of your choices, not the finished download size.</p>
             <div class="button-row">
               <button class="button primary" type="button" data-lite-export>Download recipe</button>
               <button class="button secondary" type="button" data-lite-share>Copy share link</button>
@@ -98,7 +98,7 @@
 
   <section class="section">
     <div class="container">
-      <div class="section-heading"><span class="eyebrow">Recipes</span><h2>Save it once. Rebuild it later.</h2><p>The recipe is the important part of the custom-build system. It stores module IDs, not a separate fork of the extension, so the same setup can later be rebuilt against a newer source version.</p></div>
+      <div class="section-heading"><span class="eyebrow">Recipes</span><h2>Save it once. Rebuild it later.</h2><p>Save your choices now, then import them later instead of choosing everything again.</p></div>
       <div class="lite-recipe-grid">
         <article class="lite-recipe-card"><h3>Current recipe</h3><p>Export the JSON, copy it, or make a URL that carries the current selection.</p><pre class="lite-recipe-preview" data-lite-recipe-preview>{}</pre><div class="lite-actions"><button class="button secondary" type="button" data-lite-copy>Copy JSON</button><button class="button secondary" type="button" data-lite-export>Download JSON</button><button class="button secondary" type="button" data-lite-share>Copy share link</button></div></article>
         <article class="lite-recipe-card"><h3>Import a recipe</h3><p>Load an older recipe and continue editing it. Unknown future module codes are preserved instead of silently being deleted.</p><label class="lite-file-label">Recipe file <input type="file" accept="application/json,.json" data-lite-import-file></label><textarea class="lite-import-text" data-lite-import-text placeholder='Paste a QoL Lite recipe here…'></textarea><div class="lite-actions"><button class="button primary" type="button" data-lite-import>Import recipe</button><button class="button secondary" type="button" data-lite-clear-import>Clear</button></div></article>
@@ -106,10 +106,25 @@
     </div>
   </section>
 
-  <section class="section section-muted">
+  <section class="section section-muted" id="install-guide">
+    <div class="container">
+      <div class="section-heading"><span class="eyebrow">Getting started</span><h2>How do I install QoL Custom?</h2><p>It's a test version, so there are a few extra steps. U only need to do the setup once.</p></div>
+      <div class="lite-stage-grid">
+        <article class="plain-card"><span class="lite-stage-number">1</span><h3>Chrome or Brave</h3>
+          <p>Select your tools and click <strong>Build experimental Chrome / Brave ZIP</strong>. Download the ZIP and extract it into a folder (don't load the ZIP itself). Open <code>chrome://extensions</code> or <code>brave://extensions</code>, enable <strong>Developer mode</strong>, click <strong>Load unpacked</strong>, then pick the extracted folder.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">2</span><h3>Want easier updates?</h3>
+          <p>On the early-access builder, choose <strong>Install / update folder</strong> instead of downloading a ZIP. Pick an empty folder the first time; the website will fill it for u. Load that folder once using <strong>Load unpacked</strong>. For later updates, choose the same folder, then click <strong>Reload</strong> on the extensions page.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">3</span><h3>Firefox</h3>
+          <p>Custom downloads aren't Firefox-compatible yet. Firefox requires a different extension package and additional checks. For now, use the normal Firefox QoL version on the <a href="/extension/">Extension page</a>. Firefox Custom testing will be added when its package is ready.</p></article>
+      </div>
+      <div class="lite-status-callout"><span class="lite-status-dot"></span><div><strong>Early access means bugs can happen!</strong><p>Test in a separate browser profile from Full QoL if possible. Some modules or combinations might not work yet. Make a backup of your QoL settings and share any problems u run into.</p></div></div>
+    </div>
+  </section>
+
+    <section class="section section-muted">
     <div class="container two-col">
-      <article class="plain-card"><span class="eyebrow">Why modules first?</span><h2>Actually leave code out.</h2><p>A Lite build should not just be the Full extension with switches turned off. The goal is to physically omit unused runtime groups and their settings/background pieces, while keeping required shared dependencies.</p></article>
-      <article class="plain-card"><span class="eyebrow">Updates later</span><h2>Same recipe, newer QoL.</h2><p>Core updates will remain required. Optional-module update controls are planned around the saved recipe so a custom build can be rebuilt without making you choose everything again.</p></article>
+      <article class="plain-card"><span class="eyebrow">Your setup</span><h2>Choose what matters to u.</h2><p>Want chat tools but don't use Creator Tools? Just pick the parts u want. You can always change your selection later.</p></article>
+      <article class="plain-card"><span class="eyebrow">Updates</span><h2>Keep your setup.</h2><p>Come back to the early-access builder, pick the same installation folder, and update it without starting from scratch. You can also add or remove feature groups.</p></article>
     </div>
   </section>
 </main>
