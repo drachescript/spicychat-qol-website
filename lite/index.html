@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/lite.css">
   <link rel="stylesheet" href="/assets/css/lite-early-access.css">
-  <title>QoL Custom Builder · SpicyChat QoL</title>
+  <title>QoL Custom — Feature Builder · SpicyChat QoL</title>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -28,88 +28,86 @@
 <main id="main">
   <section class="page-hero product-hero lite-hero">
     <div class="container">
-      <span class="eyebrow">QoL Custom · early access</span>
-      <h1>Make QoL your own.</h1>
-      <p>Pick the tools u want, download your own QoL build, and change your choices whenever u like. All builds are experimental, so some features or combinations might have bugs.</p>
+      <span class="eyebrow">QoL Custom · Early Access</span>
+      <h1>Your QoL. Your features.</h1>
+      <p>Pick the features u actually want and download your own Custom build. Blocking, filters, chat tools, Creator tools and more can now be selected separately.</p>
       <div class="hero-meta-row">
-        <span>Source <strong data-mod-version>Loading…</strong></span>
+        <span>Source <strong data-features-version>Loading…</strong></span>
         <span>Browser <strong>Chrome / Brave</strong></span>
-        <span>Custom builds <strong>Work in progress</strong></span>
+        <span>Status <strong>Experimental</strong></span>
       </div>
-      <div class="lite-status-callout"><span class="lite-status-dot"></span><div>
-        <strong>Early access — expect bugs and changes.</strong>
-        <p>Some features may not load or work correctly yet. Try a separate browser profile if possible, back up your current QoL settings, and pls report anything that breaks. <a href="/discord/">Join our Discord</a>.</p>
-      </div></div>
+      <div class="lite-status-callout">
+        <span class="lite-status-dot"></span><div>
+          <strong>This is early access — some features and combinations might break.</strong>
+          <p>We're still separating parts of the extension. Test with a backup of your QoL settings and preferably in a separate browser profile. Bugs, unexpected behavior and missing tools are possible. <a href="/discord/">Tell us what isn't working!</a></p>
+        </div>
+      </div>
     </div>
   </section>
-
-  <section class="section tight-top">
+  <section class="section tight-top" id="builder">
     <div class="container">
       <div class="section-heading">
-        <span class="eyebrow">Step 1 · Choose your features</span>
-        <h2>What should be in your build?</h2>
-        <p>Start with a preset or choose the parts u use. More individual feature switches will come later.</p>
-      </div>
-      <div class="lite-preset-row" role="group" aria-label="Build preset">
-        <button class="lite-preset" type="button" data-mod-preset="minimal" aria-pressed="true"><strong>Minimal</strong><span>Core + basic interface. Add what u need.</span></button>
-        <button class="lite-preset" type="button" data-mod-preset="recommended-lite" aria-pressed="false"><strong>Recommended Lite</strong><span>Chat, listings, profiles and personas.</span></button>
-        <button class="lite-preset" type="button" data-mod-preset="full" aria-pressed="false"><strong>Full</strong><span>Include all available groups for testing.</span></button>
-        <button class="lite-preset" type="button" data-mod-preset="custom" aria-pressed="false"><strong>Custom</strong><span>Keep your own selection.</span></button>
+        <span class="eyebrow">Step 1 · Choose features</span>
+        <h2>Only the tools u want</h2>
+        <p>Everything starts off unselected. Core is included automatically, and the builder also adds any features required by your choices.</p>
       </div>
       <div class="lite-builder-wrap">
         <div class="lite-builder-main">
-          <div class="lite-builder-panel">
-            <div class="lite-panel-head"><div><span class="eyebrow">Your modules</span><h2>Choose what u want</h2>
-              <p>Each group includes related QoL features. Anything a group needs will be included automatically.</p>
-            </div><span class="lite-source-chip">early access</span></div>
-            <div class="lite-module-grid" data-mod-list><div class="loading-card">Loading your feature choices…</div></div>
-            <p class="lite-dependency-note" data-mod-dependencies>Core is always included.</p>
-            <div class="ea-actions">
-              <button type="button" class="button secondary" data-mod-all>Select all</button>
-              <button type="button" class="button secondary" data-mod-minimal>Minimal</button>
-              <button type="button" class="button secondary" data-mod-recommended>Recommended</button>
-              <button type="button" class="button secondary" data-mod-reset>Reset</button>
+          <article class="lite-builder-panel" aria-label="Feature selection">
+            <div class="ea-feature-toolbar">
+              <label for="ea-feature-search" class="ea-search-label">Find a feature</label>
+              <input id="ea-feature-search" class="ea-feature-search" data-features-search type="search" placeholder="Search features, e.g. blocking, chat index, OOC…" autocomplete="off">
+              <div class="ea-actions">
+                <button type="button" class="button secondary" data-features-none>Unselect all</button>
+                <button type="button" class="button secondary" data-features-recommended>Suggested starter features</button>
+                <button type="button" class="button secondary" data-features-all>Select everything</button>
+              </div>
             </div>
-          </div>
+            <div class="ea-category-nav" data-features-categories aria-label="Feature categories"></div>
+            <label class="ea-only-selected"><input type="checkbox" data-features-only-selected> Show only selected features</label>
+            <div class="ea-selected-summary" data-features-count aria-live="polite">Loading features…</div>
+            <div class="ea-feature-list" data-features-list><p>Loading individual features…</p></div>
+            <div class="ea-feature-detail" data-features-details hidden aria-live="polite"></div>
+          </article>
 
-          <div class="lite-builder-panel ea-recipe-area">
-            <span class="eyebrow">Step 2 · Save or share</span>
-            <h2>Keep your setup</h2>
-            <p>Save your choices to a file or copy a share link. Later, u can import them without selecting everything again.</p>
+          <article class="lite-builder-panel ea-recipe-area">
+            <span class="eyebrow">Step 2 · Keep your selection</span>
+            <h2>Save or share your features</h2>
+            <p>Recipes save your selected features, not your chats or personal settings. Import your old Lite group recipes too — we'll convert them to individual selections automatically.</p>
             <div class="ea-actions">
-              <button type="button" class="button secondary" data-mod-export>Download recipe</button>
-              <button type="button" class="button secondary" data-mod-share>Copy share link</button>
-              <button type="button" class="button secondary" data-mod-code>Copy build code</button>
+              <button type="button" class="button secondary" data-features-export>Download recipe</button>
+              <button type="button" class="button secondary" data-features-share>Copy share link</button>
+              <button type="button" class="button secondary" data-features-copy>Copy build code</button>
             </div>
             <details class="ea-recipe-details">
-              <summary>Show my current recipe</summary>
-              <pre class="lite-recipe-preview" data-mod-recipe-preview>{}</pre>
+              <summary>See my current recipe</summary>
+              <pre class="lite-recipe-preview" data-features-recipe-preview>{}</pre>
             </details>
             <label class="lite-file-label">Import a saved recipe (JSON file)
-              <input type="file" accept=".json,application/json" data-mod-import-file>
+              <input type="file" accept=".json,application/json" data-features-import-file>
             </label>
-            <label for="lite-recipe-code" class="ea-code-label">Or paste an old share link, recipe JSON, or build code</label>
-            <textarea id="lite-recipe-code" class="lite-import-text ea-code-input" data-mod-code-input placeholder="Paste a saved recipe, share link, or build code here…"></textarea>
-            <div class="ea-actions"><button type="button" class="button secondary" data-mod-import>Import selection</button></div>
-          </div>
+            <label class="ea-code-label" for="ea-import-code">Or paste a recipe, share link, or build code</label>
+            <textarea id="ea-import-code" class="lite-import-text ea-code-input" data-features-code-input placeholder="Paste your recipe or share code here…"></textarea>
+            <div class="ea-actions"><button type="button" class="button secondary" data-features-import>Import selection</button></div>
+          </article>
         </div>
 
-        <aside class="lite-summary" aria-label="Your Custom build">
+        <aside class="lite-summary" aria-label="Custom build downloads">
           <div class="lite-summary-card">
-            <span class="eyebrow">Step 3 · Get your build</span>
-            <h3 data-mod-summary>Loading…</h3>
-            <p class="lite-summary-note">Your ZIP includes the selected tools and parts they share. This is still a test version, so some extra shared features may remain.</p>
+            <span class="eyebrow">Step 3 · Get your Custom build</span>
+            <h3 data-features-summary>Loading…</h3>
+            <p class="lite-summary-note">Your ZIP includes your selected features and shared files they need. The background and Settings systems are still being separated, so some extra shared functionality remains.</p>
             <div class="ea-actions ea-actions-stacked">
-              <button class="button primary" type="button" data-mod-download disabled>Download Custom ZIP</button>
-              <button class="button secondary" type="button" data-mod-install disabled>Install / update folder</button>
-              <button class="button secondary" type="button" data-mod-folder disabled>Choose another folder</button>
+              <button type="button" class="button primary" data-features-download disabled>Download Custom ZIP</button>
+              <button type="button" class="button secondary" data-features-install disabled>Install / update folder</button>
+              <button type="button" class="button secondary" data-features-folder disabled>Choose a different folder</button>
             </div>
-            <p class="ea-info" data-mod-folder-name>No folder selected yet.</p>
-            <p class="ea-status" data-mod-status role="status" aria-live="polite">Checking the latest source…</p>
-            <p class="lite-summary-note">The website asks for permission before writing to your folder. To finish an update, click <strong>Reload</strong> for your extension in Chrome/Brave.</p>
-            <hr class="ea-subtle-rule">
-            <a href="/lite/early-access/">Core + OOC test build</a>
-            <p class="lite-summary-note">Firefox Custom is not available yet.</p>
+            <p class="ea-info" data-features-folder-name>No installation folder selected yet.</p>
+            <p class="ea-status" data-features-status role="status" aria-live="polite">Loading Custom source…</p>
+            <p class="lite-summary-note">Folder updates need your permission. To activate an update, click <strong>Reload</strong> in your browser's extensions page.</p>
+            <div class="ea-subtle-rule"></div>
+            <p><a href="/lite/early-access/">Try the smaller Core + OOC test</a></p>
+            <p class="lite-summary-note">Firefox Custom isn't available yet; see the instructions below.</p>
           </div>
         </aside>
       </div>
@@ -118,20 +116,19 @@
 
   <section class="section section-muted" id="install-guide">
     <div class="container">
-      <div class="section-heading"><span class="eyebrow">Installation help</span><h2>How do I use my Custom build?</h2>
-        <p>Chrome and Brave can load your experimental extension from a folder. The setup is only needed once.</p></div>
+      <div class="section-heading"><span class="eyebrow">Installation help</span><h2>How to install QoL Custom</h2><p>Chrome and Brave can load an unpacked extension from a folder. U only need to do this once.</p></div>
       <div class="lite-stage-grid">
-        <article class="plain-card"><span class="lite-stage-number">1</span><h3>Download or choose a folder</h3>
-          <p>Click <strong>Download Custom ZIP</strong> and extract it into a folder, or use <strong>Install / update folder</strong> and choose an empty folder for the website to fill. Don't try to load the ZIP directly.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">1</span><h3>Get your files</h3>
+          <p>Select features and click <strong>Download Custom ZIP</strong>, then extract it into a folder. Or choose <strong>Install / update folder</strong> and let the website place the files into an empty folder.</p></article>
         <article class="plain-card"><span class="lite-stage-number">2</span><h3>Load it in Chrome / Brave</h3>
-          <p>Open <code>chrome://extensions</code> (Chrome) or <code>brave://extensions</code> (Brave). Enable <strong>Developer mode</strong>, click <strong>Load unpacked</strong>, and select the folder containing <code>manifest.json</code>.</p></article>
-        <article class="plain-card"><span class="lite-stage-number">3</span><h3>Change or update it</h3>
-          <p>Return to this page, adjust your selection, and choose the <strong>same folder</strong> when updating. The site backs up the previous files. Then click <strong>Reload</strong> for the extension in your browser.</p></article>
+          <p>Open <code>chrome://extensions</code> in Chrome or <code>brave://extensions</code> in Brave. Turn on <strong>Developer mode</strong>, click <strong>Load unpacked</strong>, and select the folder with <code>manifest.json</code>.</p></article>
+        <article class="plain-card"><span class="lite-stage-number">3</span><h3>Change it later</h3>
+          <p>Return here, adjust the individual features and update the <strong>same installation folder</strong>. The website backs up older files before updating. Click <strong>Reload</strong> for the extension afterwards.</p></article>
       </div>
       <div class="ea-update-guide ea-guide-after">
-        <h3>What about Firefox?</h3>
-        <p>Firefox needs its own add-on package, and Custom isn't ready for Firefox yet. You can use the <a href="/extension/">normal Firefox QoL extension</a> in the meantime. Firefox Custom installation instructions will be added when a compatible package is available.</p>
-        <p>For temporary developer testing, Firefox can load an unpacked extension through <code>about:debugging#/runtime/this-firefox</code>, but it won't stay installed after Firefox restarts. A permanent Firefox installation needs a signed add-on.</p>
+        <h3>Firefox users</h3>
+        <p>Firefox Custom packages need their own build and signing. For now, use the <a href="/extension/">normal Firefox QoL extension</a>. Custom ZIPs from this page are for Chrome/Brave.</p>
+        <p>Firefox developers can temporarily load an add-on using <code>about:debugging#/runtime/this-firefox</code>, but temporary installs disappear on restart. Permanent Firefox Custom installs are not ready yet.</p>
       </div>
     </div>
   </section>
@@ -141,6 +138,6 @@
 <div class="lite-toast" data-lite-toast hidden></div>
 <script src="/assets/js/content-source.js" defer></script>
 <script src="/assets/js/site.js" defer></script>
-<script src="/assets/js/lite.js" defer></script>
+<script src="/assets/js/lite-features.js" defer></script>
 </body>
 </html>
