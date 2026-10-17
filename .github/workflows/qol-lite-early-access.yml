@@ -2,7 +2,7 @@ name: QoL Lite Early Access checks
 
 on:
   push:
-    branches: [qol-lite-early-access]
+    branches: [qol-lite-early-access, main]
   workflow_dispatch:
 
 permissions:
@@ -20,6 +20,6 @@ jobs:
         with:
           node-version: '22'
       - name: Check installer JavaScript syntax
-        run: node --check assets/js/lite-early-access.js && node --check assets/js/lite-experimental.js
+        run: node --check assets/js/lite-early-access.js && node --check assets/js/lite.js
       - name: Check pinned source files and website links
         run: python scripts/test_lite_early_access.py && python scripts/test_lite_experimental.py
