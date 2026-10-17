@@ -571,7 +571,24 @@ el.install?.addEventListener('click',()=>operate(async()=>{
   msg((prev?'Updated':'Installed')+' v'+info.version+' with '+current().length+' features. '+
     (prev?'Click Reload for your extension in chrome://extensions.':'Select this folder using Load unpacked in chrome://extensions.'));
 }));
-load().catch(e=>{
+const startup=load().catch(e=>{
   console.error('[QoL Custom]',e);msg(e.message||String(e),true);
+  throw e;
 });
+// Only an explicitly initialized local test harness gets access to build
+// planning functions. Normal website visitors do not receive these hooks.
+if(window.__DSQ_CUSTOM_FEATURE_TEST__){
+  Object.assign(window.__DSQ_CUSTOM_FEATURE_TEST__,{
+    ready:startup,
+    choose:ids=>setSelection(ids),
+    selected:()=>current(),
+    sections:()=>catalog?.sections,
+    count:()=>catalog?.featureCount,
+    plan:()=>plannedFiles(current()),
+    manifest:()=>manifestFor(current(),plannedFiles(current())),
+    contentProfile:()=>D.decode(buildProfile(current())),
+    backgroundProfile:()=>D.decode(backgroundProfile(current())),
+    recipe:()=>recipe()
+  });
+}
 })();
