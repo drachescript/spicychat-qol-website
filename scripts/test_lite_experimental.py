@@ -13,7 +13,7 @@ from html.parser import HTMLParser
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = ROOT / 'lite/early-access/experimental-release.json'
 PAGE = ROOT / 'lite/index.html'
-SCRIPT = ROOT / 'assets/js/lite.js'
+SCRIPT = ROOT / 'assets/js/lite-features.js'
 
 
 class HTMLAssets(HTMLParser):
@@ -52,14 +52,16 @@ def main():
         if path.startswith('/'):
             assert (ROOT / path.lstrip('/')).is_file(), path
     page = PAGE.read_text(encoding='utf-8')
-    for control in ('data-mod-list', 'data-mod-download', 'data-mod-install',
-                    'data-mod-export', 'data-mod-share', 'data-mod-import',
-                    'data-mod-recipe-preview', 'data-mod-preset'):
+    for control in ('data-features-list', 'data-features-download', 'data-features-install',
+                    'data-features-export', 'data-features-share', 'data-features-import',
+                    'data-features-recipe-preview', 'data-features-categories'):
         assert control in page, 'Unified Lite builder missing ' + control
     redirect = (ROOT / 'lite/early-access/experimental/index.html').read_text(encoding='utf-8')
     assert "location.search + location.hash" in redirect
     assert "location.replace('/lite/'" in redirect
     assert 'lite-experimental.js' not in page
+    assert 'lite-features.js' in page
+    assert 'lite.js' not in page
     assert 'lite-experimental.js' not in redirect
 
     base = f"https://raw.githubusercontent.com/{release['repository']}/{release['commit']}"
@@ -78,6 +80,13 @@ def main():
     assert all_content_scripts <= owners
     assert all_css == css_owners
     assert owners <= sources
+    catalog = fetch_json(base + '/build/feature-catalog.json')
+    assert catalog['schema'] == 'sqol-custom-feature-catalog/v1'
+    assert catalog['version'] == release['version']
+    assert catalog['featureCount'] == 112
+    names = {f['id'] for f in catalog['features']}
+    assert {'bot-blocking','language-filter','bulk-blocking','ooc','chat-index'} <= names
+    assert {'Blocking','Filtering'} <= set(catalog['sections'])
     assert 'core' in modules['bundleOrder']
     assert len(modules['bundleOrder']) == 9
 
