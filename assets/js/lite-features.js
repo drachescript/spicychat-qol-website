@@ -38,6 +38,7 @@ const el={
   codeInput:document.querySelector('[data-features-code-input]'),
   preview:document.querySelector('[data-features-recipe-preview]')
 };
+const els=el; // Existing trusted folder-updater controls use this alias.
 let info, modules, sourceManifest, treeFiles, catalog;
 let selected=new Set(),dirHandle=null,busy=false;
 let activeCategory='All',searchValue='',onlySelected=false;
