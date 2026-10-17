@@ -140,7 +140,7 @@ async function load(){
   els.version.textContent='v'+info.version+' · '+groups().length+' groups';
   const hash=new URLSearchParams(location.hash.slice(1)).get('build');
   let restored;try{restored=hash?decodeCode(hash):JSON.parse(localStorage.getItem(STORE)||'null');}catch{}
-  const initial=Array.isArray(restored)?restored.filter(x=>modules.bundles[x]):groups();
+  const initial=Array.isArray(restored)?restored.filter(x=>modules.bundles[x]):['core','interface'];
   setSelection(initial);
   els.install.disabled=!('showDirectoryPicker' in window);
   els.folder.disabled=!('showDirectoryPicker' in window);
