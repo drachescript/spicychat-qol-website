@@ -41,7 +41,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.51'
+    assert release['version'] == '0.2.52'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -73,20 +73,22 @@ def main():
     assert manifest['version'] == release['version']
     assert not tree['truncated']
     sources = {item['path'] for item in tree['tree'] if item['type'] == 'blob'}
-    owners = {f for b in modules['bundles'].values() for f in b['files']}
+    # v0.2.52 uses primary-file ownership contracts; the old nine-group
+    # modules.json is a compatibility fallback and no longer a full inventory.
     all_content_scripts = {f for s in manifest['content_scripts'] for f in s.get('js', [])}
-    css_owners = {f for a in modules['runtimeAssets']['styles'].values() for f in a}
     all_css = {f for s in manifest['content_scripts'] for f in s.get('css', [])}
-    assert all_content_scripts <= owners
-    assert all_css == css_owners
-    assert owners <= sources
+    assert all_content_scripts <= sources
+    assert all_css <= sources
     catalog = fetch_json(base + '/build/feature-catalog.json')
     assert catalog['schema'] == 'sqol-custom-feature-catalog/v1'
     assert catalog['version'] == release['version']
-    assert catalog['featureCount'] == 112
+    assert catalog['featureCount'] >= 118
+    assert catalog['featureCount'] == len(catalog['features'])
+    assert all(set(f['requiredFeatures']) <= {x['id'] for x in catalog['features']} for f in catalog['features'])
     names = {f['id'] for f in catalog['features']}
-    assert {'bot-blocking','language-filter','bulk-blocking','ooc','chat-index'} <= names
-    assert {'Blocking','Filtering'} <= set(catalog['sections'])
+    assert {'bot-blocking','auto-blocking','language-filter','bulk-blocking','ooc','chat-index', 'auto-images','auto-voice','character-pictures'} <= names
+    assert {'Blocking','Filtering','Pictures'} <= set(catalog['sections'])
+    assert all(set(f['runtimeScripts'] + f.get('requiredHelpers',[]) + f['cssFiles']) <= sources for f in catalog['features'])
     assert 'core' in modules['bundleOrder']
     assert len(modules['bundleOrder']) == 9
 
