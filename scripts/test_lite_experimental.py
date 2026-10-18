@@ -119,7 +119,7 @@ def main():
     assert 'content/build-profile.js' in sources
     assert 'background/feature-build-profile.js' in sources
     print('PASS experimental module catalog:', len(modules['bundleOrder']),
-          'groups,', len(owners), 'registered runtime scripts,',
+          'groups,', len(all_content_scripts), 'manifest JS,',
           len(all_css), 'CSS; pinned to v' + release['version'])
     print('PASS dependency closure: Core+Interface', len(selected_min),
           'scripts; Chat+Creator', len(selected_combined), 'scripts')
