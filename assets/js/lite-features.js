@@ -224,7 +224,7 @@ async function load(){
   for(const f of allFeatures()){
     if(seen.has(f.id)||!Array.isArray(f.runtimeScripts)||!Array.isArray(f.requiredFeatures))throw Error('Invalid feature contract: '+f.id);
     seen.add(f.id);
-    for(const path of [...f.runtimeScripts,...f.cssFiles]){
+    for(const path of [...f.runtimeScripts,...(f.requiredHelpers||[]),...f.cssFiles,...(f.settingsScripts||[]),...(f.backgroundFiles||[])]){
       if(!treeFiles.has(path))throw Error('Feature source missing: '+path);
     }
   }
@@ -257,12 +257,13 @@ function plannedFiles(active){
   const styles=new Set(catalog.sharedStyles);
   for(const id of active){const f=byId(id);
     for(const p of f.runtimeScripts)runtime.add(p);
+    for(const p of f.requiredHelpers||[])runtime.add(p);
     for(const p of f.cssFiles)styles.add(p);
   }
   const selectedOwned=new Set([...runtime]);
   const chosen=new Set();
   const allDeclared=new Set(catalog.allContentScriptPaths);
-  const allFeatureScripts=new Set(allFeatures().flatMap(f=>f.runtimeScripts));
+  const allFeatureScripts=new Set(allFeatures().flatMap(f=>[...f.runtimeScripts,...(f.requiredHelpers||[])]));
   for(const path of treeFiles.keys()){
     if(EXCLUDED.has(path)||path.startsWith('.github/')||path.startsWith('build/')||
        path.startsWith('scripts/')||path.startsWith('custom/'))continue;
