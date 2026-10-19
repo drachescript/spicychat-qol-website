@@ -4,7 +4,7 @@
   "source": {
     "repository": "https://github.com/drachescript/spicychat-qol-extension",
     "ref": "qol-custom",
-    "version": "0.2.52",
+    "version": "0.2.53",
     "moduleSchema": 1
   },
   "status": "experimental-early-access",
