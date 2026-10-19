@@ -41,7 +41,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.52'
+    assert release['version'] == '0.2.53'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -82,11 +82,11 @@ def main():
     catalog = fetch_json(base + '/build/feature-catalog.json')
     assert catalog['schema'] == 'sqol-custom-feature-catalog/v1'
     assert catalog['version'] == release['version']
-    assert catalog['featureCount'] >= 118
+    assert catalog['featureCount'] >= 123
     assert catalog['featureCount'] == len(catalog['features'])
     assert all(set(f['requiredFeatures']) <= {x['id'] for x in catalog['features']} for f in catalog['features'])
     names = {f['id'] for f in catalog['features']}
-    assert {'bot-blocking','auto-blocking','language-filter','bulk-blocking','ooc','chat-index', 'auto-images','auto-voice','character-pictures'} <= names
+    assert {'bot-blocking','auto-blocking','language-filter','bulk-blocking','ooc','chat-index', 'auto-images','auto-voice','character-pictures', 'model-quick-access', 'chat-lorebook-manager', 'previously-chatted-indicator'} <= names
     assert {'Blocking','Filtering','Pictures'} <= set(catalog['sections'])
     assert all(set(f['runtimeScripts'] + f.get('requiredHelpers',[]) + f['cssFiles']) <= sources for f in catalog['features'])
     assert 'core' in modules['bundleOrder']
