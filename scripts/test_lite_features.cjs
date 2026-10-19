@@ -30,7 +30,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=118,"Expected v0.2.52 independently named feature contracts");
+  assert(test.count()>=123,"Expected v0.2.53 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -90,6 +90,30 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();
   assert(!p.selectedStyles.has("content/styles/chat-search.css"));
   console.log("PASS: feature-owned Chat Search CSS is omitted when not selected");
+
+  test.choose(["model-quick-access"]);
+  p=test.plan();
+  assert(p.activeFiles.has("content/model-quick-access.js"));
+  assert(p.activeFiles.has("content/model-selector.js"));
+  assert(p.selectedStyles.has("content/styles/model-quick-access.css"));
+  assert(test.recipe().selectedFeatures.includes("model-selector"));
+  assert(!p.activeFiles.has("content/chat-lorebook-manager.js"));
+  console.log("PASS: Model Quick Access pulls its Model Selector dependency and dedicated CSS");
+
+  test.choose(["previously-chatted-indicator"]);
+  p=test.plan();
+  assert(p.activeFiles.has("content/previously-chatted-indicator.js"));
+  assert(p.activeFiles.has("content/opened-chats.js"));
+  assert(p.selectedStyles.has("content/styles/previously-chatted-indicator.css"));
+  assert(!p.activeFiles.has("content/model-quick-access.js"));
+  console.log("PASS: Previously Chatted Indicator pulls Opened Chats, not Model Quick Access");
+
+  test.choose(["chat-lorebook-manager"]);
+  p=test.plan();
+  assert(p.activeFiles.has("content/chat-lorebook-manager.js"));
+  assert(p.selectedStyles.has("content/styles/chat-lorebook-manager.css"));
+  assert(!p.activeFiles.has("content/model-quick-access.js"));
+  console.log("PASS: Chat Lorebook Manager has an independent script and stylesheet");
 
   test.choose(["ooc","chat-index"]);
   p=test.plan();
