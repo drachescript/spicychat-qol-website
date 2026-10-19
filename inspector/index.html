@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0709">
+  <meta name="description" content="SpicyChat Inspector is a separate browser extension for investigating lag, Long Tasks, network requests, rendering delays, errors, and QoL performance. Available on Firefox, with Chrome coming soon.">
+  <link rel="icon" href="/assets/icons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/inspector.css">
+  <title>SpicyChat Inspector · SpicyChat QoL</title>
+</head>
+<body class="inspector-page">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community QoL tools</small></span></a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" data-menu-toggle><span></span><span></span><span></span></button>
+    <nav class="site-nav" data-nav aria-label="Main navigation"><a href="/features/">Features</a><a href="/demo/">Demo</a><a href="/extension/">Extension</a><a href="/lite/">Lite</a><a href="/android/">Android</a><a href="/changelog/">Changelog</a><a href="/status/">Status</a><a href="/support/">Support</a><a href="/portfolio/">Portfolio</a><a class="nav-discord" href="/discord/">Discord</a></nav>
+  </div>
+</header>
+<div class="global-notice-wrap" data-global-notice hidden></div>
+<main id="main">
+  <section class="ins-hero">
+    <div class="container ins-hero-layout">
+      <div class="ins-hero-copy">
+        <div class="ins-product-identity">
+          <span class="ins-pulse-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="M4 34h10l7-17 9 32 9-39 8 24h13" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span>Separate browser extension <span class="ins-version">v0.1.0</span></span>
+        </div>
+        <h1>SpicyChat <span>Inspector.</span></h1>
+        <p class="ins-subheadline">Find out what happened when SpicyChat gets slow.</p>
+        <p class="ins-intro">Freezes, stuttering, long loading times, chat replies that seem stuck — Inspector records useful diagnostic signals so you can investigate the problem instead of guessing what's causing it.</p>
+        <div class="button-row ins-hero-buttons">
+          <a class="button primary" href="https://addons.mozilla.org/en-US/firefox/addon/spicychat-inspector/" target="_blank" rel="noopener noreferrer">Get Inspector for Firefox <span aria-hidden="true">↗</span></a>
+          <a class="button secondary" href="https://chromewebstore.google.com/detail/ndmbkkfpffjeobllnknggjchjkejcdep" target="_blank" rel="noopener noreferrer" title="Chrome listing is not public yet">Chrome · coming soon</a>
+          <a class="button secondary" href="https://github.com/drachescript/spicychat-inspector" target="_blank" rel="noopener noreferrer">View source code <span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="ins-release-note">Firefox is available. The Chrome Web Store listing is not live yet.</p>
+      </div>
+      <div class="ins-hero-display" aria-label="Inspector diagnostic areas">
+        <div class="ins-display-top"><div><span class="ins-live-dot"></span><strong>Private diagnostics lab</strong></div><span>Inspector</span></div>
+        <div class="ins-display-wave" aria-hidden="true"><svg viewBox="0 0 520 130" fill="none" preserveAspectRatio="none"><path d="M0 74h53l19-25 20 53 19-85 25 56 22-13 16 14h69l16-19 16 33 19-51 20 37h66l14-12 13 12h110" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ins-display-grid"><div><small>01</small><strong>Performance</strong><span>Long Tasks and slow frames</span></div><div><small>02</small><strong>Page changes</strong><span>DOM and message rendering</span></div><div><small>03</small><strong>Connections</strong><span>Requests and failures</span></div><div><small>04</small><strong>QoL signals</strong><span>Optional deeper checks</span></div></div>
+        <p>Records locally · Examine individual events · Export a sanitized report</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section ins-intro-section tight-top" id="why">
+    <div class="container">
+      <div class="ins-section-head"><span class="eyebrow">What it's for</span><h2>“It lagged.” Okay, but <em>why?</em></h2><p>A page can feel frozen for all sorts of reasons. Inspector gathers the clues and makes it easier to tell whether something happened in the browser, on the page, during a request, or around QoL activity.</p></div>
+      <div class="ins-example-grid">
+        <article><strong>“My chat freezes for a few seconds.”</strong><p>Look at Long Tasks, slow animation frames and nearby DOM activity to see what happened during that time.</p></article>
+        <article><strong>“The reply generated, but nothing showed up.”</strong><p>Compare generation and rendering signals, including when a reply is delayed or can't confidently be matched.</p></article>
+        <article><strong>“It only happens with QoL enabled.”</strong><p>Compare captures with QoL enabled and disabled. Inspector also identifies available QoL-related signals without assuming every slowdown is caused by the extension.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted" id="features">
+    <div class="container">
+      <div class="ins-section-head"><span class="eyebrow">What Inspector records</span><h2>More than a basic performance counter.</h2><p>These are the main diagnostic areas. The details available vary by browser, page activity and the recording options you enable.</p></div>
+      <div class="ins-feature-grid">
+        <article class="ins-feature-card"><span class="ins-feature-mark">01</span><h3>Performance and freezes</h3><p>Long Tasks, long animation frames, blocking time, slow scrolling frames and available script details. Useful when things stutter or the page stops responding.</p></article>
+        <article class="ins-feature-card"><span class="ins-feature-mark">02</span><h3>DOM and page activity</h3><p>How much the page changes, mutation batches, mounted chat messages and periods of heavy rendering — including some measurements of Inspector's own overhead.</p></article>
+        <article class="ins-feature-card"><span class="ins-feature-mark">03</span><h3>Network and loading</h3><p>Request activity, failed requests, bursts, connectivity changes and other network signals. Helps spot when repeated requests or connection trouble are part of a problem.</p></article>
+        <article class="ins-feature-card"><span class="ins-feature-mark">04</span><h3>Chat reply timing</h3><p>Generation and visible-render timing checks, message-history loading and clearer reporting when the timing can't be confirmed instead of making up an exact number.</p></article>
+        <article class="ins-feature-card"><span class="ins-feature-mark">05</span><h3>Errors and lifecycle</h3><p>Page errors, visibility changes, navigation and other browser/page events. You can inspect what happened around a slowdown instead of viewing isolated numbers.</p></article>
+        <article class="ins-feature-card"><span class="ins-feature-mark">06</span><h3>QoL-specific diagnostics</h3><p>QoL version/compatibility signals and optional deeper internal traces for troubleshooting. Detailed QoL internals are off by default.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section ins-screens" id="screenshots">
+    <div class="container">
+      <div class="ins-section-head"><span class="eyebrow">Inside Inspector</span><h2>A recording panel and an event viewer.</h2><p>These are real screenshots of the extension. Click either one to see the original layout at full resolution.</p></div>
+      <figure class="ins-screenshot">
+        <a href="/assets/inspector/inspector-popup.webp" target="_blank" rel="noopener" aria-label="View full Inspector recording options screenshot"><img src="/assets/inspector/inspector-popup.webp" alt="SpicyChat Inspector overview alongside its recording panel, with switches for DOM changes, performance metrics, page errors and optional detailed QoL internals" width="1280" height="800" loading="lazy"></a>
+        <figcaption><strong>Choose what you record.</strong><span>Recording, DOM changes, performance, page errors and optional detailed QoL internals are available from the popup.</span></figcaption>
+      </figure>
+      <figure class="ins-screenshot">
+        <a href="/assets/inspector/inspector-events.webp" target="_blank" rel="noopener" aria-label="View full Inspector event viewer screenshot"><img src="/assets/inspector/inspector-events.webp" alt="Inspector event viewer showing a recording summary, performance and network counts, searchable event list, detail panel and sanitized JSON export control" width="1280" height="800" loading="lazy"></a>
+        <figcaption><strong>Investigate the timeline.</strong><span>Search, filter by event type, look at the summary, inspect individual entries and export the result.</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section-muted" id="steps">
+    <div class="container">
+      <div class="ins-section-head"><span class="eyebrow">Getting started</span><h2>Record the problem, then look at the timeline.</h2><p>You don't need to understand every number. A short capture that includes the slowdown is much more useful than just saying a page felt slow.</p></div>
+      <ol class="ins-steps">
+        <li><span>1</span><div><h3>Install Inspector</h3><p>Use the Firefox add-on page. Chrome will be an option once its store listing is public.</p></div></li>
+        <li><span>2</span><div><h3>Start recording</h3><p>Enable Recording and leave the capture options you need on. Detailed QoL internals can stay off for normal use.</p></div></li>
+        <li><span>3</span><div><h3>Reproduce the issue</h3><p>Go through the same steps that trigger the freeze, slow scroll, failed request or delayed reply.</p></div></li>
+        <li><span>4</span><div><h3>Open Inspector</h3><p>Browse the summary and event timeline, filter to a specific signal, and inspect what happened near the problem.</p></div></li>
+        <li><span>5</span><div><h3>Export if needed</h3><p>Save a sanitized <code>JSON.gz</code> report if you want help investigating. Review any diagnostic file before sharing it.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section ins-privacy-section" id="privacy">
+    <div class="container ins-privacy-layout">
+      <div><span class="eyebrow">Privacy and limitations</span><h2>Diagnostics should be useful without exposing your roleplay.</h2><p>Inspector is built around local recording and a sanitized export. Recent releases improved redaction for Rulebook and Lorebook diagnostic data so authored text and keywords aren't included just to identify an issue.</p><p>That doesn't mean any diagnostic file is automatically safe to post publicly. It can still include technical details about your environment and requests, so check it before you share it with anyone.</p></div>
+      <aside class="ins-privacy-card"><strong>Good to know</strong><ul><li>Recording stays on your device until you choose to export it.</li><li>Detailed QoL internals are optional and off by default.</li><li>Some browser signals don't identify an exact cause.</li><li>Inspector isn't a SpicyChat account or chat-backup tool.</li></ul></aside>
+    </div>
+  </section>
+
+  <section class="section section-muted ins-end">
+    <div class="container ins-end-card">
+      <div><span class="eyebrow">Separate from SpicyChat QoL</span><h2>Need to investigate a slowdown?</h2><p>Inspector is a standalone diagnostic extension. You can use it to investigate regular SpicyChat behavior, or alongside QoL when comparing performance.</p></div>
+      <div class="button-row"><a class="button primary" href="https://addons.mozilla.org/en-US/firefox/addon/spicychat-inspector/" target="_blank" rel="noopener noreferrer">Install on Firefox</a><a class="button secondary" href="https://github.com/drachescript/spicychat-inspector" target="_blank" rel="noopener noreferrer">Source on GitHub</a><a class="button secondary" href="/discord/">QoL Discord</a></div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer"><div class="container footer-main"><div><a class="brand" href="/"><img src="/assets/brand/extension-icon.jpg" alt="" class="brand-icon"><span><strong>SpicyChat QoL</strong><small>independent community project</small></span></a><p>SpicyChat QoL and Inspector are independent community projects. Neither is affiliated with or endorsed by SpicyChat.</p></div><div class="footer-links"><a href="/portfolio/">Portfolio</a><a href="/inspector/">Inspector</a><a href="/lite/">Lite builder</a><a href="/extension/">Extension</a><a href="/support/">Support</a><a href="/discord/">Discord</a><a href="/privacy.html">Privacy</a></div></div><div class="container footer-bottom"><span>© <span data-year></span> SpicyChat QoL</span></div></footer>
+<script src="/assets/js/markdown.js" defer></script>
+<script src="/assets/js/content-source.js" defer></script>
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>
