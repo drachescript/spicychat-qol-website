@@ -41,7 +41,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.53'
+    assert release['version'] == '0.2.54'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -88,6 +88,10 @@ def main():
     names = {f['id'] for f in catalog['features']}
     assert {'bot-blocking','auto-blocking','language-filter','bulk-blocking','ooc','chat-index', 'auto-images','auto-voice','character-pictures', 'model-quick-access', 'chat-lorebook-manager', 'previously-chatted-indicator'} <= names
     assert {'Blocking','Filtering','Pictures'} <= set(catalog['sections'])
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 20
+    assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 21
+    for expected in ['ooc','story-day-tracker','wiki-lorebook-importer']:
+        assert next(f for f in catalog['features'] if f['id']==expected)['cssFiles']
     assert all(set(f['runtimeScripts'] + f.get('requiredHelpers',[]) + f['cssFiles']) <= sources for f in catalog['features'])
     assert 'core' in modules['bundleOrder']
     assert len(modules['bundleOrder']) == 9
