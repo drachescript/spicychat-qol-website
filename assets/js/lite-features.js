@@ -19,6 +19,10 @@ const el={
   summary:document.querySelector('[data-features-summary]'),
   version:document.querySelector('[data-features-version]'),
   categories:document.querySelector('[data-features-categories]'),
+  categoryActions:document.querySelector('[data-features-category-actions]'),
+  categoryAdd:document.querySelector('[data-features-category-add]'),
+  categoryClear:document.querySelector('[data-features-category-clear]'),
+  buildStats:document.querySelector('[data-features-build-stats]'),
   search:document.querySelector('[data-features-search]'),
   onlySelected:document.querySelector('[data-features-only-selected]'),
   details:document.querySelector('[data-features-details]'),
@@ -164,6 +168,9 @@ function render(){
       el.categories.appendChild(b);
     }
   }
+  if(el.categoryActions)el.categoryActions.hidden=activeCategory==='All';
+  if(el.categoryAdd)el.categoryAdd.textContent='Add all '+activeCategory+' tools';
+  if(el.categoryClear)el.categoryClear.textContent='Clear '+activeCategory+' tools';
   if(el.list){
     el.list.replaceChildren();
     const matching=features.filter(f=>
@@ -191,7 +198,22 @@ function render(){
   }
   const count=current().length;
   if(el.count)el.count.textContent=count+' of '+features.length+' features selected';
-  if(el.summary)el.summary.textContent=count+' features · '+currentBundles().length+' required groups';
+  if(el.summary)el.summary.textContent=count+' selected '+(count===1?'feature':'features');
+  if(el.buildStats && packageIndex){
+    el.buildStats.replaceChildren();
+    const inUse=packageIndex.features.filter(f=>selected.has(f.id));
+    const totals=[
+      ['Settings panels',new Set(inUse.flatMap(f=>f.settings)).size,new Set(packageIndex.features.flatMap(f=>f.settings)).size],
+      ['Feature styles',new Set(inUse.flatMap(f=>f.styles)).size,new Set(packageIndex.features.flatMap(f=>f.styles)).size],
+      ['Optional services',Object.values(SAFE_BACKGROUND_OWNERS).filter(id=>selected.has(id)).length,Object.keys(SAFE_BACKGROUND_OWNERS).length]
+    ];
+    for(const [name,number,total] of totals){
+      const row=document.createElement('div');row.className='ea-build-stat';
+      const label=document.createElement('span');label.textContent=name;
+      const amount=document.createElement('strong');amount.textContent=number+' / '+total;
+      row.append(label,amount);el.buildStats.append(row);
+    }
+  }
   if(el.preview)el.preview.textContent=JSON.stringify(recipe(),null,2);
 }
 function showDetails(f){
@@ -200,7 +222,8 @@ function showDetails(f){
   el.details.replaceChildren();
   const head=document.createElement('h3');head.textContent=f.label;
   const desc=document.createElement('p');desc.textContent=f.description;
-  const context=document.createElement('p');context.textContent='Category: '+f.section+'. '+(f.runtimeScripts.length?'Includes '+f.runtimeScripts.length+' feature script(s).':'Uses shared Settings/background services.');
+  const owned=packageIndex?.features.find(x=>x.id===f.id);
+  const context=document.createElement('p');context.textContent='Category: '+f.section+'. '+(owned?.settings.length?'Includes its own Settings panel. ':'')+(owned?.styles.length?'Includes its own styles. ':'')+(owned?.background.length?'Uses an extra background service. ':'');
   const deps=document.createElement('p');deps.textContent=f.requiredFeatures.length?'Requires: '+f.requiredFeatures.map(id=>byId(id)?.label||id).join(', '):'No extra feature dependencies declared.';
   const readiness=document.createElement('p');readiness.textContent=f.customBuildStatus==='validated'?'Custom build checks passed for this feature.':'Experimental: independent browser behavior has not been validated.';
   const x=document.createElement('button');x.type='button';x.className='button secondary';x.textContent='Close';x.addEventListener('click',()=>{el.details.hidden=true;});
@@ -602,6 +625,25 @@ el.list?.addEventListener('change',e=>{
 });
 el.search?.addEventListener('input',e=>{searchValue=String(e.target.value||'').toLowerCase().trim();render();});
 el.onlySelected?.addEventListener('change',e=>{onlySelected=!!e.target.checked;render();});
+el.categoryAdd?.addEventListener('click',()=>{
+  if(activeCategory==='All')return;
+  setSelection([...selected,...allFeatures().filter(f=>f.section===activeCategory).map(f=>f.id)]);
+});
+el.categoryClear?.addEventListener('click',()=>{
+  if(activeCategory==='All')return;
+  const excluded=new Set(allFeatures().filter(f=>f.section===activeCategory).map(f=>f.id));
+  const next=new Set([...selected].filter(id=>!excluded.has(id)));
+  let changed=true;
+  while(changed){
+    changed=false;
+    for(const id of [...next])
+      if((byId(id)?.requiredFeatures||[]).some(dep=>!next.has(dep))){
+        next.delete(id);changed=true;
+      }
+  }
+  setSelection([...next]);
+  msg('Cleared '+activeCategory+'. Tools that depended on removed features were also unselected.');
+});
 el.all?.addEventListener('click',()=>setSelection(allFeatures().map(f=>f.id)));
 el.none?.addEventListener('click',()=>{importedUnknown=[];setSelection([]);});
 el.recommended?.addEventListener('click',()=>setSelection(
