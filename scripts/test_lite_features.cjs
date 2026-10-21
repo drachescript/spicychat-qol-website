@@ -24,7 +24,9 @@ const context={
   atob,btoa,crypto:webcrypto,console,Promise,setTimeout,clearTimeout,
   fetch:async (url,options)=>String(url)==="/lite/early-access/experimental-release.json"
     ?new Response(release,{status:200,headers:{"content-type":"application/json"}})
-    :fetch(url,options)
+    :fetch(url, String(url).startsWith("https://api.github.com/")&&process.env.GITHUB_TOKEN
+      ? {...options,headers:{...(options?.headers||{}),Authorization:"Bearer "+process.env.GITHUB_TOKEN}}
+      :options)
 };
 vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
