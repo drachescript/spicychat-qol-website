@@ -1,4 +1,64 @@
 (async () => {
+  function mountProjectNavigation() {
+    // Run before remote release/version requests; all pages share the same links.
+    const current = location.pathname.replace(/\/index\.html$/, '/');
+    const isActive = href => href === '/' ? current === '/' : current === href || current.startsWith(href);
+    const item = (href, label, css = '') => `<a href="${href}"${css ? ` class="${css}"` : ''}${isActive(href) ? ' aria-current="page"' : ''}>${label}</a>`;
+    const mainNav = document.querySelector('[data-nav]');
+    if (mainNav) {
+      mainNav.innerHTML = [
+        item('/features/', 'Features'),
+        item('/extension/', 'Extension'),
+        item('/lite/', 'Lite'),
+        item('/android/', 'Android'),
+        item('/safari/', 'Safari'),
+        item('/inspector/', 'Inspector'),
+        '<details class="nav-more"><summary>More</summary><div class="nav-more-panel">',
+        item('/demo/', 'Interactive demo'),
+        item('/bot/', 'QoL Discord bot'),
+        item('/changelog/', 'Changelog'),
+        item('/status/', 'Status'),
+        item('/support/', 'Support'),
+        item('/portfolio/', 'Portfolio'),
+        item('/reviews/', 'Reviews & feedback'),
+        item('/credits/', 'Credits'),
+        item('/privacy.html', 'Privacy'),
+        '</div></details>',
+        item('/discord/', 'Discord', 'nav-discord')
+      ].join('');
+      document.addEventListener('click', event => {
+        if (!event.target.closest('.nav-more')) mainNav.querySelector('.nav-more[open]')?.removeAttribute('open');
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key !== 'Escape') return;
+        mainNav.querySelector('.nav-more[open]')?.removeAttribute('open');
+        mainNav.classList.remove('open');
+        document.querySelector('[data-menu-toggle]')?.setAttribute('aria-expanded', 'false');
+      });
+    }
+    document.querySelectorAll('.site-footer .footer-links').forEach(container => {
+      container.innerHTML = [
+        item('/extension/', 'Extension'),
+        item('/lite/', 'Lite builder'),
+        item('/android/', 'Android'),
+        item('/safari/', 'Safari Lite'),
+        item('/inspector/', 'Inspector'),
+        item('/features/', 'Features'),
+        item('/demo/', 'Demo'),
+        item('/bot/', 'QoL Bot'),
+        item('/changelog/', 'Changelog'),
+        item('/status/', 'Status'),
+        item('/portfolio/', 'Portfolio'),
+        item('/reviews/', 'Reviews'),
+        item('/support/', 'Support'),
+        item('/discord/', 'Discord'),
+        item('/credits/', 'Credits'),
+        item('/privacy.html', 'Privacy')
+      ].join('');
+    });
+  }
+  mountProjectNavigation();
+
   const header = document.querySelector('[data-header]');
   if (header) {
     const update = () => header.classList.toggle('scrolled', scrollY > 10);
