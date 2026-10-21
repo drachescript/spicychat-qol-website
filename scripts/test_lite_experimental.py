@@ -64,6 +64,9 @@ def main():
     assert "location.replace('/lite/'" in redirect
     assert 'lite-experimental.js' not in page
     assert 'lite-features.js' in page
+    for control in ('data-features-category-add','data-features-category-clear',
+                    'data-features-build-stats'):
+        assert control in page, 'Missing Custom builder usability control: '+control
     assert 'lite.js' not in page
     assert 'lite-experimental.js' not in redirect
 
