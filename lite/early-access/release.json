@@ -1,10 +1,10 @@
 {
   "schema": "sqol-lite-early-access/v1",
   "channel": "core-ooc-ea",
-  "version": "0.2.54",
+  "version": "0.2.55",
   "source": {
     "repository": "drachescript/spicychat-qol-extension",
-    "commit": "4fa5a5a461304e159b253a82779e390d571f1107"
+    "commit": "9d0fa42cc0ea28b04097df029b5bf4029b99a97e"
   },
   "name": "SpicyChat QoL — Core + OOC (test)",
   "files": {
