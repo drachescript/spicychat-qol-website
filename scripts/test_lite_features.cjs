@@ -30,7 +30,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=123,"Expected v0.2.54 individually named feature contracts");
+  assert(test.count()>=123,"Expected v0.2.55 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -139,6 +139,14 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();
   assert(!p.selectedStyles.has("content/styles/ooc.css"));
   console.log("PASS: v0.2.54 OOC styles no longer required in unrelated builds");
+
+  test.choose(["soundscapes"]);
+  p=test.plan();
+  assert(p.selectedStyles.has("content/styles/soundscapes.css"));
+  test.choose([]);
+  p=test.plan();
+  assert(!p.selectedStyles.has("content/styles/soundscapes.css"));
+  console.log("PASS: Soundscapes styles can be omitted independently in v0.2.55");
 
   test.choose(["ooc","chat-index"]);
   p=test.plan();
