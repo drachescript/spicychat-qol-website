@@ -96,3 +96,9 @@
   .site-footer .footer-main{gap:25px}
   .site-footer .footer-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 15px;justify-items:start;width:100%}
 }
+
+
+/* Four product choices on the homepage without squeezing them into narrow cards. */
+.home-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.home-product-grid .product-card:last-child{grid-column:auto}
+@media(max-width:800px){.home-product-grid{grid-template-columns:1fr}.home-product-grid .product-card:last-child{grid-column:1/-1}}
