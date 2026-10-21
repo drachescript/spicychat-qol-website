@@ -22,6 +22,10 @@ jobs:
       - name: Check installer JavaScript syntax
         run: node --check assets/js/lite-early-access.js && node --check assets/js/lite-features.js && node --check scripts/test_lite_features.cjs
       - name: Check pinned source files and website links
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/test_lite_early_access.py && python scripts/test_lite_experimental.py
       - name: Verify individual feature package closure
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/test_lite_features.cjs
