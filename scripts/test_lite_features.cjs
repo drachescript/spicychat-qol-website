@@ -172,5 +172,56 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   const features=test.recipe().selectedFeatures;
   assert.deepEqual([...features],["bot-blocking","language-filter"]);
   console.log("PASS: saved individual-feature recipe =",features.join(", "));
+
+  // Test package transformations on real, pinned Full-source HTML/worker files.
+  const base="https://raw.githubusercontent.com/"+data.repository+"/"+data.commit+"/";
+  const [optionsRes,entryRes]=await Promise.all([fetch(base+"options.html"),fetch(base+"background-entry.js")]);
+  assert(optionsRes.ok&&entryRes.ok,"Pinned source HTML/worker should be downloadable");
+  const originalOptions=await optionsRes.text(),originalWorker=await entryRes.text();
+  const index=test.getPackageIndex();
+  const ownedSettings=[...new Set(index.features.flatMap(x=>x.settings))];
+  assert(ownedSettings.length>=29,"Expected at least 29 Settings panels with declared owners");
+  assert(index.features.every(f=>!f.defaultSelected&&!f.defaultUpdatesEnabled));
+  test.choose([]);
+  p=test.plan();
+  for(const file of ownedSettings)assert(!p.chosen.has(file),"Unselected Settings script physically retained: "+file);
+  for(const file of ["background/background-translation.js","background/background-wiki-fetch.js"])
+    assert(!p.chosen.has(file),"Unselected message-only background service retained: "+file);
+  const emptySettings=test.pruneSettings(originalOptions);
+  const emptyWorker=test.pruneBackground(originalWorker);
+  for(const file of ownedSettings)assert(!emptySettings.includes('src="'+file+'"'),"Settings HTML still imports "+file);
+  assert(!emptySettings.includes('data-dsq-feature-panel="translation"'));
+  assert(!emptySettings.includes('data-dsq-feature-panel="context-keeper"'));
+  assert(!emptyWorker.includes('"background/background-translation.js"'));
+  assert(!emptyWorker.includes('"background/background-wiki-fetch.js"'));
+  assert(emptyWorker.includes('"background/background-events.js"'));
+  console.log("PASS: all 29 owned Settings panels and two safe optional background services are omitted when OFF");
+
+  test.choose(["translation","context-keeper"]);
+  p=test.plan();
+  assert(p.chosen.has("settings/feature-panels/translation.js"));
+  assert(p.chosen.has("settings/feature-panels/context-keeper.js"));
+  assert(!p.chosen.has("settings/feature-panels/soundscapes.js"));
+  assert(p.chosen.has("background/background-translation.js"));
+  assert(!p.chosen.has("background/background-wiki-fetch.js"));
+  const selectedSettings=test.pruneSettings(originalOptions);
+  assert(selectedSettings.includes('src="settings/feature-panels/translation.js"'));
+  assert(selectedSettings.includes('src="settings/feature-panels/context-keeper.js"'));
+  assert(!selectedSettings.includes('src="settings/feature-panels/soundscapes.js"'));
+  assert(selectedSettings.includes('data-dsq-feature-panel="translation"'));
+  assert(!selectedSettings.includes('data-dsq-feature-panel="soundscapes"'));
+  const selectedWorker=test.pruneBackground(originalWorker);
+  assert(selectedWorker.includes('"background/background-translation.js"'));
+  assert(!selectedWorker.includes('"background/background-wiki-fetch.js"'));
+  assert.throws(()=>test.pruneSettings(originalOptions.replace(
+    '<script src="settings/feature-panels/translation.js"></script>','')),
+    /Cannot safely isolate Settings panel/,"A missing known panel must fail closed");
+  console.log("PASS: selected Settings panels and Translation background remain, unselected ones are removed");
+  test.choose(["wiki-lorebook-importer"]);
+  const wikiWorker=test.pruneBackground(originalWorker);
+  assert(wikiWorker.includes('"background/background-wiki-fetch.js"'));
+  assert(!wikiWorker.includes('"background/background-translation.js"'));
+  console.log("PASS: Wiki Fetch can be included without Translation background");
+
   console.log("Verified v"+data.version+" with "+test.count()+" real feature contracts");
 })().catch(err=>{console.error(err);process.exitCode=1;});
