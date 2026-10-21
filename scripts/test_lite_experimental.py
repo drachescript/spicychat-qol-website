@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import urllib.request
+import os
 from pathlib import Path
 from html.parser import HTMLParser
 
@@ -31,7 +32,9 @@ class HTMLAssets(HTMLParser):
 
 def fetch_json(url):
     with urllib.request.urlopen(
-        urllib.request.Request(url, headers={'User-Agent':'SQoL-Custom-Experimental-CI'}),
+        urllib.request.Request(url, headers={**{'User-Agent':'SQoL-Custom-Experimental-CI'},
+            **({'Authorization':'Bearer '+os.environ['GITHUB_TOKEN']} if
+               url.startswith('https://api.github.com/') and os.environ.get('GITHUB_TOKEN') else {})}),
         timeout=35
     ) as response:
         return json.load(response)
