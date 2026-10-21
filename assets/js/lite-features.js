@@ -40,6 +40,10 @@ const el={
 };
 const els=el; // Existing trusted folder-updater controls use this alias.
 let info, modules, sourceManifest, treeFiles, catalog, packageIndex;
+const SAFE_BACKGROUND_OWNERS=Object.freeze({
+  'background/background-translation.js':'translation',
+  'background/background-wiki-fetch.js':'wiki-lorebook-importer'
+});
 let selected=new Set(),dirHandle=null,busy=false;
 let activeCategory='All',searchValue='',onlySelected=false;
 let importedUnknown=[],updateModes={default:'manual',overrides:{}};
@@ -272,7 +276,62 @@ async function load(){
   render();
   msg('Ready: choose individual features, then download or update your Custom build.');
 }
+
+/** Remove only explicitly feature-owned Settings panels. Shared Settings stays. */
+function pruneFeatureSettings(html,active){
+  const activeIds=new Set(active);
+  const allOwnedSettings=new Map();
+  for(const feature of packageIndex.features){
+    for(const file of feature.settings){
+      if(!allOwnedSettings.has(file))allOwnedSettings.set(file,new Set());
+      allOwnedSettings.get(file).add(feature.id);
+    }
+  }
+  const found=new Map();
+  const revised=html.replace(/<script\b[^>]*\bsrc\s*=\s*(["'])(settings\/feature-panels\/[^"']+\.js)\1[^>]*>\s*<\/script\s*>/gi,(full,quote,file)=>{
+    if(!allOwnedSettings.has(file))return full;
+    found.set(file,(found.get(file)||0)+1);
+    return [...allOwnedSettings.get(file)].some(id=>activeIds.has(id))?full:'';
+  });
+  for(const file of allOwnedSettings.keys()){
+    if(found.get(file)!==1)throw Error('Cannot safely isolate Settings panel: '+file);
+  }
+  // Only exact empty placeholder mounts belonging to declared feature panels
+  // can be omitted. Never remove a Settings section with user-owned data.
+  const ownedPanelIds=new Set(packageIndex.features.filter(f=>f.settings.length).map(f=>f.id));
+  const cleaned=revised.replace(/<div\b([^>]*)\bdata-dsq-feature-panel\s*=\s*(["'])([a-z0-9-]+)\2([^>]*)>\s*<\/div\s*>/gi,(full,before,q,id)=>{
+    if(!ownedPanelIds.has(id))return full;
+    return activeIds.has(id)?full:'';
+  });
+  for(const [file,owners] of allOwnedSettings){
+    if(![...owners].some(id=>activeIds.has(id))&&cleaned.includes('src="'+file+'"'))
+      throw Error('Omitted Settings panel still referenced: '+file);
+  }
+  return cleaned;
+}
+/** Only prune upstream-approved message-only services with owned routing. */
+function pruneSafeBackground(source,active){
+  const enabled=new Set(active);
+  const match=source.match(/\bimportScripts\s*\(([\s\S]*?)\)\s*;/);
+  if(!match)throw Error('Background worker import list has changed.');
+  const quoted=[...match[1].matchAll(/(["'])([^"']+\.js)\1/g)].map(m=>m[2]);
+  if(quoted.length<10||new Set(quoted).size!==quoted.length)
+    throw Error('Unexpected background worker imports.');
+  for(const file of Object.keys(SAFE_BACKGROUND_OWNERS)){
+    if(quoted.filter(path=>path===file).length!==1)throw Error('Unrecognized optional background service: '+file);
+  }
+  const remaining=quoted.filter(file=>!Object.hasOwn(SAFE_BACKGROUND_OWNERS,file)||
+    enabled.has(SAFE_BACKGROUND_OWNERS[file]));
+  if(remaining.at(-1)!=='background/background-events.js'||
+     remaining.indexOf('background.js')>=remaining.indexOf('background/background-events.js'))
+    throw Error('Background service load order changed.');
+  return source.replace(match[0],'importScripts('+remaining.map(p=>JSON.stringify(p)).join(', ')+');');
+}
+
 function plannedFiles(active){
+  const activeIds=new Set(active);
+  const allSettings=new Set(packageIndex.features.flatMap(f=>f.settings));
+  const selectedSettings=new Set(packageIndex.features.filter(f=>activeIds.has(f.id)).flatMap(f=>f.settings));
   const runtime=new Set(catalog.sharedRuntimeScripts);
   const styles=new Set(catalog.sharedStyles);
   for(const id of active){const f=byId(id);
@@ -292,6 +351,8 @@ function plannedFiles(active){
     if(parts.length===1){if(SOURCE_FILES.has(path))chosen.add(path);continue;}
     if(!SRC_DIRS.has(parts[0]))continue;
     if(path.endsWith('.py')||path.endsWith('.zip')||path.endsWith('.md'))continue;
+    if(parts[0]==='settings' && allSettings.has(path) && !selectedSettings.has(path))continue;
+    if(Object.hasOwn(SAFE_BACKGROUND_OWNERS,path)&&!activeIds.has(SAFE_BACKGROUND_OWNERS[path]))continue;
     if(parts[0]==='content'){
       if(path.endsWith('.js')){
         if(allFeatureScripts.has(path)&&!selectedOwned.has(path))continue;
@@ -303,7 +364,7 @@ function plannedFiles(active){
   }
   for(const path of runtime)chosen.add(path);
   for(const path of styles)chosen.add(path);
-  return {chosen,activeFiles:runtime,selectedStyles:styles};
+  return {chosen,activeFiles:runtime,selectedStyles:styles,selectedSettings};
 }
 function manifestFor(active,plan){
   const m=clone(sourceManifest);
@@ -372,6 +433,9 @@ async function packageBuild(){
     'background/feature-build-profile.js','content/build-profile.js'])needed.add(p);
   for(const p of needed)if(!plan.chosen.has(p))throw Error('Missing required build file: '+p);
   const files=await downloadSource(plan.chosen);
+  if(!files.has('options.html')||!files.has('background-entry.js'))throw Error('Missing Settings or background entry point.');
+  files.set('options.html',T.encode(pruneFeatureSettings(D.decode(files.get('options.html')),selectedIds)));
+  files.set('background-entry.js',T.encode(pruneSafeBackground(D.decode(files.get('background-entry.js')),selectedIds)));
   files.set('content/build-profile.js',buildProfile(selectedIds));
   files.set('background/feature-build-profile.js',backgroundProfile(selectedIds));
   const recipe={schema:'sqol-experimental-install/v1',channel:'group-ea',version:info.version,
@@ -606,6 +670,9 @@ if(window.__DSQ_CUSTOM_FEATURE_TEST__){
     sections:()=>catalog?.sections,
     count:()=>catalog?.featureCount,
     plan:()=>plannedFiles(current()),
+    pruneSettings:(html)=>pruneFeatureSettings(html,current()),
+    pruneBackground:(source)=>pruneSafeBackground(source,current()),
+    getPackageIndex:()=>packageIndex,
     manifest:()=>manifestFor(current(),plannedFiles(current())),
     contentProfile:()=>D.decode(buildProfile(current())),
     backgroundProfile:()=>D.decode(backgroundProfile(current())),
