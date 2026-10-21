@@ -1,0 +1,30 @@
+/* SpicyChat QoL Safari Lite - public landing page */
+.safari-page{--safari-accent:#f4bb89}
+.safari-hero{padding:85px 0 74px;background:radial-gradient(ellipse at 78% 22%,rgba(236,157,118,.11),transparent 52%),radial-gradient(ellipse at 15% 79%,rgba(147,100,177,.08),transparent 55%)}
+.safari-hero-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:40px;align-items:center}
+.safari-hero h1{font-size:clamp(2.8rem,6.2vw,5rem);line-height:1.08;letter-spacing:-.055em;margin:17px 0 18px}
+.safari-hero h1 span{color:var(--safari-accent)}
+.safari-lead{color:#cfc3c9;line-height:1.78;font-size:1.04rem;max-width:720px}
+.safari-badges{display:flex;flex-wrap:wrap;gap:7px;margin:22px 0}
+.safari-badges span{border:1px solid rgba(244,187,137,.24);color:#f2c9a5;background:rgba(244,187,137,.07);padding:5px 10px;border-radius:100px;font-size:.73rem;font-weight:700}
+.safari-disclaimer{color:var(--muted2);font-size:.78rem;max-width:680px;line-height:1.65;margin-top:17px}
+.safari-hero .button-row{justify-content:flex-start;flex-wrap:wrap}
+.safari-aside{background:linear-gradient(160deg,#241920,#130f14);border:1px solid rgba(244,187,137,.25);border-radius:20px;padding:26px}
+.safari-aside-head strong,.safari-aside-head small{display:block}.safari-aside-head strong{font-size:1.16rem}.safari-aside-head small{font-size:.75rem;color:var(--muted2);margin-top:5px}
+.safari-pills{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:23px 0}
+.safari-pills span{padding:13px 9px;background:rgba(255,255,255,.034);border:1px solid var(--border);border-radius:9px;font-size:.78rem}
+.safari-aside p{color:var(--muted2);line-height:1.6;font-size:.81rem}
+.safari-copy-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(270px,.7fr);gap:44px}
+.safari-copy-grid h2{font-size:clamp(1.9rem,3vw,2.8rem);letter-spacing:-.04em;margin:12px 0 20px}
+.safari-copy-grid p{color:var(--muted);line-height:1.78}
+.safari-callout{padding:25px;background:rgba(255,255,255,.023);border:1px solid var(--border2);border-radius:18px;align-self:start}
+.safari-callout strong{color:#f0c8a3}.safari-callout a,.safari-steps a{color:#f1b688}
+.safari-steps{list-style:none;display:grid;gap:10px;padding:0;margin:26px 0}
+.safari-steps li{display:flex;gap:16px;padding:20px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.016)}
+.safari-steps li>b{flex:0 0 36px;width:36px;height:36px;display:grid;place-items:center;border-radius:11px;color:#f3c19b;background:rgba(244,187,137,.12)}
+.safari-steps strong{display:block;margin:0 0 8px}.safari-steps p{color:var(--muted);font-size:.88rem;line-height:1.7;margin:0}
+.safari-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.safari-feature-grid article{padding:22px;border-radius:14px;background:rgba(255,255,255,.018);border:1px solid var(--border)}
+.safari-feature-grid strong{color:#f2d3bb}.safari-feature-grid p{color:var(--muted);font-size:.85rem;line-height:1.7;margin:9px 0 0}
+@media(max-width:900px){.safari-hero-grid,.safari-copy-grid{grid-template-columns:1fr}.safari-aside{max-width:620px}.safari-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.safari-hero{padding:55px 0 35px}.safari-feature-grid{grid-template-columns:1fr}.safari-pills{grid-template-columns:1fr}.safari-steps li{padding:14px;gap:12px}.safari-steps li>b{width:30px;height:30px;flex-basis:30px}}
