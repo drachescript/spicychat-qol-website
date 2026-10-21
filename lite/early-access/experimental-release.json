@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.54",
+  "version": "0.2.55",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "f8e0d3e6aefba6c0d7b304ae0c9031db7d9d93b0",
-  "tree": "7350e278ff876f878d26c97f5e3dab6e87bb77f4",
+  "commit": "ff913c39e64352ec287c18fd6669d81512cb3565",
+  "tree": "5c9acbe39db10db2ae20bc5faafcf1b92590364d",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Early access v0.2.54: 123 selectable feature contracts, more owned Settings and styles, and experimental shared background services. Browser combinations are not yet validated."
+  "warning": "Experimental v0.2.55: 123 selectable features; 29 owned Settings panels and 22 owned stylesheets. Shared Settings/background/runtime are not fully independent or browser verified."
 }
