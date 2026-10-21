@@ -30,7 +30,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=123,"Expected v0.2.53 individually named feature contracts");
+  assert(test.count()>=123,"Expected v0.2.54 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -114,6 +114,31 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(p.selectedStyles.has("content/styles/chat-lorebook-manager.css"));
   assert(!p.activeFiles.has("content/model-quick-access.js"));
   console.log("PASS: Chat Lorebook Manager has an independent script and stylesheet");
+
+  test.choose(["story-day-tracker"]);
+  p=test.plan();m=test.manifest();
+  assert(p.selectedStyles.has("content/styles/story-day-tracker.css"));
+  assert(m.content_scripts.some(cs=>(cs.css||[]).includes("content/styles/story-day-tracker.css")));
+  test.choose([]);
+  p=test.plan();
+  assert(!p.selectedStyles.has("content/styles/story-day-tracker.css"));
+  console.log("PASS: Story Day Tracker owns its v0.2.54 style separately");
+
+  test.choose(["wiki-lorebook-importer"]);
+  p=test.plan();
+  assert(p.selectedStyles.has("content/styles/wiki-lorebook-importer.css"));
+  test.choose([]);
+  p=test.plan();
+  assert(!p.selectedStyles.has("content/styles/wiki-lorebook-importer.css"));
+  console.log("PASS: Wiki Lorebook Importer stylesheet omitted when unselected");
+
+  test.choose(["ooc"]);
+  p=test.plan();
+  assert(p.selectedStyles.has("content/styles/ooc.css"));
+  test.choose([]);
+  p=test.plan();
+  assert(!p.selectedStyles.has("content/styles/ooc.css"));
+  console.log("PASS: v0.2.54 OOC styles no longer required in unrelated builds");
 
   test.choose(["ooc","chat-index"]);
   p=test.plan();
