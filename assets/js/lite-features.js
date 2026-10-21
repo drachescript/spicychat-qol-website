@@ -39,7 +39,7 @@ const el={
   preview:document.querySelector('[data-features-recipe-preview]')
 };
 const els=el; // Existing trusted folder-updater controls use this alias.
-let info, modules, sourceManifest, treeFiles, catalog;
+let info, modules, sourceManifest, treeFiles, catalog, packageIndex;
 let selected=new Set(),dirHandle=null,busy=false;
 let activeCategory='All',searchValue='',onlySelected=false;
 let importedUnknown=[],updateModes={default:'manual',overrides:{}};
@@ -212,14 +212,34 @@ async function load(){
   const root='https://raw.githubusercontent.com/'+info.repository+'/'+info.commit+'/';
   const treeUrl='https://api.github.com/repos/'+info.repository+'/git/trees/'+info.tree+'?recursive=1';
   const requests=await Promise.all([fetch(root+'manifest.json'),fetch(root+'build/modules.json'),
-    fetch(root+'build/feature-catalog.json'),fetch(treeUrl)]);
+    fetch(root+'build/feature-catalog.json'),fetch(root+'build/custom-package-index.json'),fetch(treeUrl)]);
   if(requests.some(r=>!r.ok))throw Error('Could not load the QoL Custom catalog from GitHub.');
   sourceManifest=await requests[0].json();modules=await requests[1].json();
-  catalog=await requests[2].json();const tree=await requests[3].json();
+  catalog=await requests[2].json();packageIndex=await requests[3].json();const tree=await requests[4].json();
   if(!Array.isArray(tree.tree)||tree.truncated||catalog.schema!=='sqol-custom-feature-catalog/v1'||
      sourceManifest.version!==info.version||catalog.version!==info.version||
-     catalog.featureCount!==catalog.features.length||catalog.featureCount<100)throw Error('Incomplete Custom feature catalog.');
+     catalog.featureCount!==catalog.features.length||catalog.featureCount<100||
+     packageIndex.schema!=='spicychat-qol-custom-package-assets/v1'||
+     packageIndex.sourceVersion!==info.version||packageIndex.newFeaturesDefaultOff!==true||
+     !Array.isArray(packageIndex.features))throw Error('Incomplete Custom feature/package catalog.');
   treeFiles=new Map(tree.tree.filter(x=>x.type==='blob'&&safe(x.path)&&/^[a-f0-9]{40}$/.test(x.sha)).map(x=>[x.path,x.sha]));
+  const indexEntries=new Map();
+  for(const entry of packageIndex.features){
+    if(!entry||typeof entry.id!=='string'||indexEntries.has(entry.id)||
+       entry.defaultSelected!==false||entry.defaultUpdatesEnabled!==false||
+       !Array.isArray(entry.dependencies)||!Array.isArray(entry.settings)||
+       !Array.isArray(entry.styles)||!Array.isArray(entry.background)||
+       !Array.isArray(entry.helpers))throw Error('Invalid Custom package ownership index.');
+    indexEntries.set(entry.id,entry);
+  }
+  for(const f of allFeatures()){
+    const entry=indexEntries.get(f.id);
+    if(!entry||entry.runtime!==f.runtimeScripts[0]||
+       JSON.stringify([...entry.dependencies].sort())!==JSON.stringify([...f.requiredFeatures].sort())||
+       JSON.stringify([...entry.styles].sort())!==JSON.stringify([...f.cssFiles].sort())||
+       JSON.stringify([...entry.settings].sort())!==JSON.stringify([...(f.settingsScripts||[])].sort()))
+      throw Error('Custom package ownership mismatch: '+f.id);
+  }
   const seen=new Set();
   for(const f of allFeatures()){
     if(seen.has(f.id)||!Array.isArray(f.runtimeScripts)||!Array.isArray(f.requiredFeatures))throw Error('Invalid feature contract: '+f.id);
