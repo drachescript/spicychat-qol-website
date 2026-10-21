@@ -25,6 +25,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python scripts/test_lite_early_access.py && python scripts/test_lite_experimental.py
+      - name: Check dark-theme contrast without Dark Reader
+        run: python scripts/test_lite_contrast.py
       - name: Verify individual feature package closure
         env:
           GITHUB_TOKEN: ${{ github.token }}
