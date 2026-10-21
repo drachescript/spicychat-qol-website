@@ -70,3 +70,15 @@
 .ea-guide-after{margin-top:20px}
 .ea-guide-after h3{font-size:1.1rem;margin:0 0 10px}
 @media(max-width:680px){.ea-feature-list{grid-template-columns:1fr;max-height:490px}.ea-category-nav{max-height:240px}}
+
+/* Custom feature selection and actual package contents */
+.ea-category-actions{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 15px}
+.ea-category-actions[hidden]{display:none}
+.ea-category-actions .button{font-size:.73rem;min-height:36px}
+.ea-build-breakdown{margin:16px 0;padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--card)}
+.ea-build-breakdown>strong{display:block;margin-bottom:10px;font-size:.82rem}
+.ea-build-breakdown .lite-summary-note{margin-top:12px;margin-bottom:0;font-size:.69rem;line-height:1.5}
+.ea-build-stat{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:7px 0;font-size:.75rem}
+.ea-build-stat+.ea-build-stat{border-top:1px solid var(--border)}
+.ea-build-stat span{color:var(--muted)}
+.ea-build-stat strong{font-variant-numeric:tabular-nums;white-space:nowrap}
