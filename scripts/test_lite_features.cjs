@@ -150,6 +150,20 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.selectedStyles.has("content/styles/soundscapes.css"));
   console.log("PASS: Soundscapes styles can be omitted independently in v0.2.55");
 
+  test.choose(["my-creations-backup"]);
+  p=test.plan();
+  assert(p.chosen.has("content/my-creations-backup.js"));
+  for(const dep of ["bot-backup","card-token-info","lorebook-backup","lorebook-tags"])
+    assert(test.recipe().selectedFeatures.includes(dep),"My Creations Backup dependency missing: "+dep);
+  assert(p.chosen.has("settings/feature-panels/bot-backup.js"));
+  assert(p.chosen.has("settings/feature-panels/lorebook-backup.js"));
+  console.log("PASS: v0.2.56 My Creations Backup pulls Bot/Lorebook Backup and owned Settings");
+
+  test.choose(["bot-archive"]);
+  p=test.plan();
+  assert(p.chosen.has("settings/feature-panels/bot-archive.js"));
+  console.log("PASS: Bot Archive v0.2.56 dedicated Settings panel included on selection");
+
   test.choose(["ooc","chat-index"]);
   p=test.plan();
   assert(p.chosen.has("content/ooc.js"));
@@ -180,7 +194,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   const originalOptions=await optionsRes.text(),originalWorker=await entryRes.text();
   const index=test.getPackageIndex();
   const ownedSettings=[...new Set(index.features.flatMap(x=>x.settings))];
-  assert(ownedSettings.length>=29,"Expected at least 29 Settings panels with declared owners");
+  assert(ownedSettings.length>=33,"Expected 33 v0.2.56 Settings panels with declared owners");
   assert(index.features.every(f=>!f.defaultSelected&&!f.defaultUpdatesEnabled));
   test.choose([]);
   p=test.plan();
@@ -195,7 +209,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!emptyWorker.includes('"background/background-translation.js"'));
   assert(!emptyWorker.includes('"background/background-wiki-fetch.js"'));
   assert(emptyWorker.includes('"background/background-events.js"'));
-  console.log("PASS: all 29 owned Settings panels and two safe optional background services are omitted when OFF");
+  console.log("PASS: all 33 owned Settings panels and two safe optional background services are omitted when OFF");
 
   test.choose(["translation","context-keeper"]);
   p=test.plan();
