@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.55'
+    assert release['version'] == '0.2.56'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -96,6 +96,11 @@ def main():
     assert index['newFeaturesDefaultOff'] is True
     assert len(index['features']) >= catalog['featureCount']
     owned = {row['id']: row for row in index['features']}
+    assert sum(bool(row['settings']) for row in index['features']) >= 33
+    for fid in ['bot-archive','bot-backup','lorebook-backup','bot-status']:
+        assert index['features'][next(i for i,r in enumerate(index['features']) if r['id']==fid)]['settings'], fid
+    assert 'bot-status' not in {f['id'] for f in catalog['features']}, 'Background-only feature requires special packaging; never add it as a content script'
+
     assert all(not row['defaultSelected'] and not row['defaultUpdatesEnabled'] for row in owned.values())
     for feature in catalog['features']:
         row = owned[feature['id']]
@@ -103,7 +108,7 @@ def main():
         assert set(row['settings']) == set(feature['settingsScripts'])
         assert set(row['styles']) == set(feature['cssFiles'])
         assert set(row['dependencies']) == set(feature['requiredFeatures'])
-    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 29
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 32
     assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 22
 
     assert all(set(f['requiredFeatures']) <= {x['id'] for x in catalog['features']} for f in catalog['features'])
