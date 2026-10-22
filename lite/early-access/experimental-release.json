@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.55",
+  "version": "0.2.56",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "ff913c39e64352ec287c18fd6669d81512cb3565",
-  "tree": "5c9acbe39db10db2ae20bc5faafcf1b92590364d",
+  "commit": "8a9659e3008e5360355cb334610181efecbb5b9d",
+  "tree": "8b3a0ad3e96b74d49e3d6bb068b08b5b476f1b42",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Experimental v0.2.55: 123 selectable features; 29 owned Settings panels and 22 owned stylesheets. Shared Settings/background/runtime are not fully independent or browser verified."
+  "warning": "Experimental v0.2.56: 123 selectable content features, 32 owned Settings panels and 22 owned stylesheets. The background-only Bot Status contract is not yet individually selectable; shared Settings/background/runtime remain partly coupled. Browser combinations are unverified."
 }
