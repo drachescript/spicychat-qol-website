@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.56",
+  "version": "0.2.57",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "8a9659e3008e5360355cb334610181efecbb5b9d",
-  "tree": "8b3a0ad3e96b74d49e3d6bb068b08b5b476f1b42",
+  "commit": "182c40a1210b12ba2aa91a05f622ffc66d241b5f",
+  "tree": "9b432c0850c0662eabe83eb4c7bf9f63d007deae",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Experimental v0.2.56: 123 selectable content features, 32 owned Settings panels and 22 owned stylesheets. The background-only Bot Status contract is not yet individually selectable; shared Settings/background/runtime remain partly coupled. Browser combinations are unverified."
+  "warning": "Experimental v0.2.57: 129 individually selectable content features, including new local Lorebook, private Archive, Smart Chat Folders and native Memory diagnostics. 35 feature-owned Settings panels and 24 stylesheets. Shared background/Settings may remain; private Archive is storage only and never attached automatically. Browser combinations are unverified."
 }
