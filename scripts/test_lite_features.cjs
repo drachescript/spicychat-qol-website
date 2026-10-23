@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=129,"Expected v0.2.57 individually named feature contracts");
+  assert(test.count()>=129,"Expected v0.2.58 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -169,6 +169,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   for (const optional of [
     "content/chat-smart-folders.js","content/chat-width-controls.js","content/native-memory-probe.js",
     "content/chat-lorebook-recall.js","content/chat-lorebook-suggestions.js",
+    "settings/feature-panels/native-memory-probe.js",
     "content/private-lorebook-bridge.js","content/private-lorebook-storage.js",
     "content/private-lorebook-auth.js","content/private-lorebook-recovery.js",
     "content/private-lorebook-archive-handoff.js","content/private-lorebook-archive-setup.js",
@@ -177,7 +178,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   }
   assert(!p.selectedStyles.has("content/styles/private-lorebook-bridge.css"));
   assert(!p.selectedStyles.has("content/styles/chat-smart-folders.css"));
-  console.log("PASS: v0.2.57 optional Lorebook/Memory/Smart Folder files omitted by default");
+  console.log("PASS: v0.2.58 optional Lorebook/Memory/Smart Folder files omitted by default");
 
   test.choose(["chat-smart-folders"]);
   p=test.plan();
@@ -209,6 +210,8 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();
   assert(test.recipe().selectedFeatures.includes("generation-metadata"));
   assert(p.chosen.has("content/native-memory-probe.js"));
+  assert(p.chosen.has("settings/feature-panels/native-memory-probe.js"));
+  assert(p.chosen.has("background/features/background-native-memory-probe.js"));
   assert(!p.chosen.has("content/chat-lorebook-recall.js"));
   console.log("PASS: Local recall and native Memory probe can be selected separately");
 
@@ -242,7 +245,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   const originalOptions=await optionsRes.text(),originalWorker=await entryRes.text();
   const index=test.getPackageIndex();
   const ownedSettings=[...new Set(index.features.flatMap(x=>x.settings))];
-  assert(ownedSettings.length>=36,"Expected 36 v0.2.57 Settings panel ownership records");
+  assert(ownedSettings.length>=37,"Expected 37 v0.2.58 Settings panel ownership records");
   assert(index.features.every(f=>!f.defaultSelected&&!f.defaultUpdatesEnabled));
   test.choose([]);
   p=test.plan();
@@ -257,7 +260,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!emptyWorker.includes('"background/background-translation.js"'));
   assert(!emptyWorker.includes('"background/background-wiki-fetch.js"'));
   assert(emptyWorker.includes('"background/background-events.js"'));
-  console.log("PASS: all 36 owned Settings panels and two safe optional background services are omitted when OFF");
+  console.log("PASS: all 37 owned Settings panels and two safe optional background services are omitted when OFF");
 
   test.choose(["translation","context-keeper"]);
   p=test.plan();
