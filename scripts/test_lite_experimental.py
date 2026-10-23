@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.56'
+    assert release['version'] == '0.2.57'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -88,7 +88,7 @@ def main():
     catalog = fetch_json(base + '/build/feature-catalog.json')
     assert catalog['schema'] == 'sqol-custom-feature-catalog/v1'
     assert catalog['version'] == release['version']
-    assert catalog['featureCount'] >= 123
+    assert catalog['featureCount'] >= 129
     assert catalog['featureCount'] == len(catalog['features'])
     index = fetch_json(base + '/build/custom-package-index.json')
     assert index['schema'] == 'spicychat-qol-custom-package-assets/v1'
@@ -108,15 +108,26 @@ def main():
         assert set(row['settings']) == set(feature['settingsScripts'])
         assert set(row['styles']) == set(feature['cssFiles'])
         assert set(row['dependencies']) == set(feature['requiredFeatures'])
-    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 32
-    assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 22
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 35
+    assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 24
 
     assert all(set(f['requiredFeatures']) <= {x['id'] for x in catalog['features']} for f in catalog['features'])
     names = {f['id'] for f in catalog['features']}
     assert {'bot-blocking','auto-blocking','language-filter','bulk-blocking','ooc','chat-index', 'auto-images','auto-voice','character-pictures', 'model-quick-access', 'chat-lorebook-manager', 'previously-chatted-indicator'} <= names
     assert {'Blocking','Filtering','Pictures'} <= set(catalog['sections'])
-    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 29
-    assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 22
+    incoming={'chat-width-controls','chat-smart-folders','native-memory-probe',
+              'chat-lorebook-recall','chat-lorebook-suggestions','private-lorebook-bridge'}
+    assert incoming <= {f['id'] for f in catalog['features']}
+    owned={f['id']: f for f in catalog['features']}
+    assert 'context-keeper' in owned['private-lorebook-bridge']['requiredFeatures']
+    assert 'chat-lorebook-manager' in owned['chat-lorebook-recall']['requiredFeatures']
+    assert 'content/private-lorebook-archive-upload-main.js' in owned['private-lorebook-bridge']['requiredHelpers']
+    assert 'content/styles/private-lorebook-bridge.css' in owned['private-lorebook-bridge']['cssFiles']
+    assert 'content/styles/chat-smart-folders.css' in owned['chat-smart-folders']['cssFiles']
+    assert 'bot-status' not in owned, 'Background-only Bot Status is not a content selector'
+
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 35
+    assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 24
     for expected in ['ooc','story-day-tracker','wiki-lorebook-importer']:
         assert next(f for f in catalog['features'] if f['id']==expected)['cssFiles']
     assert all(set(f['runtimeScripts'] + f.get('requiredHelpers',[]) + f['cssFiles']) <= sources for f in catalog['features'])
