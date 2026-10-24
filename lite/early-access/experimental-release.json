@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.58",
+  "version": "0.2.60",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "4e814628c11799b744b37dbc4402abde0f334f4c",
-  "tree": "3fc53feeed071198d6dee6bfe5efaa1871b7be8b",
+  "commit": "bc974884b7223a9cbba5332d3dee6df6dcc6acc9",
+  "tree": "64d81d78f6d1343712fb466d3c66c8ba84e6fe58",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.58 is experimental. 129 selectable features, with 37 feature-owned Settings panels and 24 stylesheets. Shared Settings/background code remains, and browser combinations are not verified. The private Archive is storage-only and is never automatically attached to a bot."
+  "warning": "Custom v0.2.60 is experimental. 129 selectable features, 37 feature-owned Settings panels and 24 stylesheets. Five message-only background services can be omitted when their features aren't selected, but shared Settings/background code and browser combinations still need testing. The private Archive stays storage-only and is never automatically attached."
 }

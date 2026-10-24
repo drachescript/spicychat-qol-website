@@ -46,7 +46,10 @@ const els=el; // Existing trusted folder-updater controls use this alias.
 let info, modules, sourceManifest, treeFiles, catalog, packageIndex;
 const SAFE_BACKGROUND_OWNERS=Object.freeze({
   'background/background-translation.js':'translation',
-  'background/background-wiki-fetch.js':'wiki-lorebook-importer'
+  'background/background-wiki-fetch.js':'wiki-lorebook-importer',
+  'background/features/background-context-keeper-storage.js':'context-keeper',
+  'background/features/background-chat-lorebook-local.js':'chat-lorebook-manager',
+  'background/features/background-native-memory-probe.js':'native-memory-probe'
 });
 let selected=new Set(),dirHandle=null,busy=false;
 let activeCategory='All',searchValue='',onlySelected=false;
@@ -258,6 +261,10 @@ async function load(){
        !Array.isArray(entry.styles)||!Array.isArray(entry.background)||
        !Array.isArray(entry.helpers))throw Error('Invalid Custom package ownership index.');
     indexEntries.set(entry.id,entry);
+  }
+  for(const [path,id] of Object.entries(SAFE_BACKGROUND_OWNERS)){
+    const entry=indexEntries.get(id);
+    if(!entry||!entry.background.includes(path))throw Error('Invalid optional background owner: '+id);
   }
   for(const f of allFeatures()){
     const entry=indexEntries.get(f.id);

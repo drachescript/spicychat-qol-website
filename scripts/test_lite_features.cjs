@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=129,"Expected v0.2.58 individually named feature contracts");
+  assert(test.count()>=129,"Expected v0.2.60 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -114,6 +114,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();
   assert(p.activeFiles.has("content/chat-lorebook-manager.js"));
   assert(p.selectedStyles.has("content/styles/chat-lorebook-manager.css"));
+  assert(p.chosen.has("background/features/background-chat-lorebook-local.js"));
   assert(!p.activeFiles.has("content/model-quick-access.js"));
   console.log("PASS: Chat Lorebook Manager has an independent script and stylesheet");
 
@@ -178,7 +179,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   }
   assert(!p.selectedStyles.has("content/styles/private-lorebook-bridge.css"));
   assert(!p.selectedStyles.has("content/styles/chat-smart-folders.css"));
-  console.log("PASS: v0.2.58 optional Lorebook/Memory/Smart Folder files omitted by default");
+  console.log("PASS: v0.2.60 optional Lorebook/Memory/Smart Folder files omitted by default");
 
   test.choose(["chat-smart-folders"]);
   p=test.plan();
@@ -212,6 +213,8 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(p.chosen.has("content/native-memory-probe.js"));
   assert(p.chosen.has("settings/feature-panels/native-memory-probe.js"));
   assert(p.chosen.has("background/features/background-native-memory-probe.js"));
+  assert(!p.chosen.has("background/features/background-context-keeper-storage.js"));
+  assert(!p.chosen.has("background/features/background-chat-lorebook-local.js"));
   assert(!p.chosen.has("content/chat-lorebook-recall.js"));
   console.log("PASS: Local recall and native Memory probe can be selected separately");
 
@@ -230,6 +233,10 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/ooc.js"));
   assert(!p.chosen.has("content/chat-index.js"));
   assert(p.chosen.has("content/main.js"));
+  for(const file of ["background/features/background-context-keeper-storage.js",
+    "background/features/background-chat-lorebook-local.js",
+    "background/features/background-native-memory-probe.js"])
+    assert(!p.chosen.has(file),"Unselected v0.2.60 background handler included: "+file);
   console.log("PASS: all optional features OFF leaves shared Core scripts");
 
   test.choose(["bot-blocking","language-filter"]);
@@ -245,7 +252,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   const originalOptions=await optionsRes.text(),originalWorker=await entryRes.text();
   const index=test.getPackageIndex();
   const ownedSettings=[...new Set(index.features.flatMap(x=>x.settings))];
-  assert(ownedSettings.length>=37,"Expected 37 v0.2.58 Settings panel ownership records");
+  assert(ownedSettings.length>=37,"Expected 37 v0.2.60 Settings panel ownership records");
   assert(index.features.every(f=>!f.defaultSelected&&!f.defaultUpdatesEnabled));
   test.choose([]);
   p=test.plan();
@@ -259,6 +266,10 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!emptySettings.includes('data-dsq-feature-panel="context-keeper"'));
   assert(!emptyWorker.includes('"background/background-translation.js"'));
   assert(!emptyWorker.includes('"background/background-wiki-fetch.js"'));
+  for(const file of ["background/features/background-context-keeper-storage.js",
+    "background/features/background-chat-lorebook-local.js",
+    "background/features/background-native-memory-probe.js"])
+    assert(!emptyWorker.includes(JSON.stringify(file)),"Unselected background import remained: "+file);
   assert(emptyWorker.includes('"background/background-events.js"'));
   console.log("PASS: all 37 owned Settings panels and two safe optional background services are omitted when OFF");
 
@@ -266,6 +277,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();
   assert(p.chosen.has("settings/feature-panels/translation.js"));
   assert(p.chosen.has("settings/feature-panels/context-keeper.js"));
+  assert(p.chosen.has("background/features/background-context-keeper-storage.js"));
   assert(!p.chosen.has("settings/feature-panels/soundscapes.js"));
   assert(p.chosen.has("background/background-translation.js"));
   assert(!p.chosen.has("background/background-wiki-fetch.js"));
@@ -277,6 +289,8 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!selectedSettings.includes('data-dsq-feature-panel="soundscapes"'));
   const selectedWorker=test.pruneBackground(originalWorker);
   assert(selectedWorker.includes('"background/background-translation.js"'));
+  assert(selectedWorker.includes('"background/features/background-context-keeper-storage.js"'));
+  assert(!selectedWorker.includes('"background/features/background-chat-lorebook-local.js"'));
   assert(!selectedWorker.includes('"background/background-wiki-fetch.js"'));
   assert.throws(()=>test.pruneSettings(originalOptions.replace(
     '<script src="settings/feature-panels/translation.js"></script>','')),

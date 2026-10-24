@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.58'
+    assert release['version'] == '0.2.60'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -128,6 +128,9 @@ def main():
     assert 'settings/feature-panels/native-memory-probe.js' in owned['native-memory-probe']['settingsScripts']
     assert 'background/features/background-native-memory-probe.js' in owned['native-memory-probe']['backgroundFiles']
     assert 'settings/feature-panels/native-memory-probe.js' in sources
+    assert 'background/features/background-context-keeper-storage.js' in owned['context-keeper']['backgroundFiles']
+    assert 'background/features/background-chat-lorebook-local.js' in owned['chat-lorebook-manager']['backgroundFiles']
+    assert 'background/features/background-native-memory-probe.js' in owned['native-memory-probe']['backgroundFiles']
 
     assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 35
     assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 24
