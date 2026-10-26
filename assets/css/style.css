@@ -102,3 +102,17 @@
 .home-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .home-product-grid .product-card:last-child{grid-column:auto}
 @media(max-width:800px){.home-product-grid{grid-template-columns:1fr}.home-product-grid .product-card:last-child{grid-column:1/-1}}
+
+
+/* Extension and Android feature summaries + GitHub changelog preview. */
+.qol-feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.qol-feature-grid .plain-card{min-width:0;height:100%}
+.qol-feature-grid .plain-card h3{font-size:1.16rem;letter-spacing:-.02em;margin:0 0 12px;line-height:1.35}
+.qol-feature-grid .plain-card p{color:var(--muted);font-size:.89rem;line-height:1.68;margin:0}
+.qol-feature-note{margin:18px 0 22px;font-size:.84rem;line-height:1.7;color:var(--muted2)}
+.qol-recent-changes{margin:15px 0 18px}
+.qol-recent-changes h3{font-size:1.32rem;margin:0 0 15px}
+.qol-recent-changes ul{margin:0;padding-left:22px;display:grid;gap:10px}
+.qol-recent-changes li{color:var(--muted);font-size:.9rem;line-height:1.7}
+@media(max-width:1040px){.qol-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.qol-feature-grid{grid-template-columns:1fr}}
