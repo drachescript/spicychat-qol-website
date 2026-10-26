@@ -167,6 +167,7 @@
   }
 
   if (document.querySelector('[data-features-browser]')) await renderFeatureBrowser();
+  if (document.querySelector('[data-feature-changelog]')) await renderLatestFeatureChanges();
 
   if (document.querySelector('[data-features-content]')) {
     try {
@@ -211,6 +212,24 @@
     const q = search.value.trim().toLowerCase();
     document.querySelectorAll('.release').forEach(el => el.classList.toggle('hidden', q && !el.textContent.toLowerCase().includes(q)));
   });
+
+  async function renderLatestFeatureChanges() {
+    const host = document.querySelector('[data-feature-changelog]');
+    if (!host) return;
+    try {
+      const r = await SQOLSource.text('stable', 'CHANGELOG.md', '/data/fallback/stable/CHANGELOG.md');
+      const release = SQOLMarkdown.versionSections(r.text).find(section => /^v?\d+\.\d+\.\d+(?:\s|$)/.test(section.title));
+      if (!release) throw new Error('No released version entries');
+      const bulletLines = release.lines.filter(line => /^\s*[-*]\s+/.test(line)).slice(0, 9);
+      if (!bulletLines.length) throw new Error('No release changes found');
+      host.innerHTML = `<h3>v${esc(release.title.replace(/^v/i, ''))}</h3>${SQOLMarkdown.render(bulletLines.join('\n'))}`;
+      setSource('feature-changelog', r.source, 'Release changelog');
+    } catch (_) {
+      host.innerHTML = '<p>The recent changes could not be loaded right now. You can still read the full notes on GitHub.</p>';
+      const source = document.querySelector('[data-source-state="feature-changelog"]');
+      if (source) { source.textContent = 'Current release notes unavailable'; source.className = 'source-state fallback'; }
+    }
+  }
 
   async function renderFeatureBrowser() {
     const host = document.querySelector('[data-features-browser]');
