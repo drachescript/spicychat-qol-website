@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.61",
+  "version": "0.2.62",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "6c3e09da7cb05e2501534b490dfb0648b6f389c6",
-  "tree": "27aa9d2bb089ed1f7bbeb9cc3a3e7c321011bd5e",
+  "commit": "7aca995134af8dc00182f9635429ae610590498b",
+  "tree": "e317800dacb7cf00d08dd4d0abd2b6b9f9a886d7",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.61 is experimental. 129 selectable features, 37 feature-owned Settings panels and 24 stylesheets. Five message-only background services can be omitted when their features aren't selected, but shared Settings/background code and browser combinations still need testing. The private Archive stays storage-only and is never automatically attached."
+  "warning": "Custom v0.2.62 is experimental. 129 selectable features, with 37 feature-owned Settings panels and 24 stylesheets. Chat History Navigator ships with Chat Bookmarks and is OFF by default. Five optional message-only background services can be excluded. Shared Settings/background code and browser combinations remain unverified. The private Archive is storage-only and never automatically attached."
 }
