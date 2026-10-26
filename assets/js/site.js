@@ -182,13 +182,34 @@
   }
 
   if (document.querySelector('[data-changelog-content]')) {
-    try {
-      const r = await SQOLSource.text('dev', 'CHANGELOG.md', '/data/fallback/dev/CHANGELOG.md');
-      setSource('changelog', r.source, 'Extension changelog');
-      renderReleases(document.querySelector('[data-changelog-content]'), r.text);
-    } catch (_) {
-      document.querySelector('[data-changelog-content]').innerHTML = '<div class="loading-card">Could not load the extension changelog.</div>';
+    const host = document.querySelector('[data-changelog-content]');
+    const modes = Array.from(document.querySelectorAll('[data-changelog-mode]'));
+    const sourceCache = new Map();
+    async function showExtensionChangelog(project) {
+      host.innerHTML = '<div class="loading-card">Loading GitHub release notes…</div>';
+      modes.forEach(button => {
+        const active = button.dataset.changelogMode === project;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+      try {
+        let r = sourceCache.get(project);
+        if (!r) {
+          r = await SQOLSource.text(project, 'CHANGELOG.md', `/data/fallback/${project === 'stable' ? 'stable' : 'dev'}/CHANGELOG.md`);
+          sourceCache.set(project, r);
+        }
+        setSource('changelog', r.source, project === 'stable' ? 'Stable release changelog' : 'Development changelog');
+        renderReleases(host, r.text);
+        const q = document.querySelector('[data-changelog-search]')?.value.trim().toLowerCase() || '';
+        host.querySelectorAll('.release').forEach(el => el.classList.toggle('hidden', !!q && !el.textContent.toLowerCase().includes(q)));
+      } catch (_) {
+        host.innerHTML = '<div class="loading-card">Could not load the extension changelog. Check the GitHub repository for current notes.</div>';
+        const state = document.querySelector('[data-source-state="changelog"]');
+        if (state) { state.textContent = 'Release notes unavailable'; state.className = 'source-state fallback'; }
+      }
     }
+    modes.forEach(button => button.addEventListener('click', () => showExtensionChangelog(button.dataset.changelogMode)));
+    await showExtensionChangelog('stable');
   }
 
   if (document.querySelector('[data-android-readme]')) {
