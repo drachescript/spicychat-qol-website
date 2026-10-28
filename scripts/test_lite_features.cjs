@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=129,"Expected v0.2.62 individually named feature contracts");
+  assert(test.count()>=131,"Expected v0.2.63 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -110,6 +110,33 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.activeFiles.has("content/model-quick-access.js"));
   console.log("PASS: Previously Chatted Indicator pulls Opened Chats, not Model Quick Access");
 
+  test.choose([]);
+  p=test.plan();m=test.manifest();
+  assert(!p.chosen.has("content/chat-continuation.js"));
+  assert(!p.chosen.has("content/favorites-recovery.js"));
+  assert(!p.chosen.has("settings/feature-panels/chat-continuation.js"));
+  assert(!p.selectedStyles.has("content/styles/chat-continuation.css"));
+  assert(!m.content_scripts.some(cs=>(cs.js||[]).includes("content/chat-continuation.js")));
+  test.choose(["chat-continuation"]);
+  p=test.plan();m=test.manifest();
+  assert(p.chosen.has("content/chat-continuation.js"));
+  assert(p.chosen.has("content/card-token-info.js"));
+  assert(p.chosen.has("settings/feature-panels/chat-continuation.js"));
+  assert(p.selectedStyles.has("content/styles/chat-continuation.css"));
+  assert(m.content_scripts.some(cs=>(cs.js||[]).includes("content/chat-continuation.js")));
+  assert(!p.chosen.has("content/favorites-recovery.js"));
+  test.choose(["favorites-recovery"]);
+  p=test.plan();m=test.manifest();
+  assert(p.chosen.has("content/favorites-recovery.js"));
+  assert(p.chosen.has("content/favorite-bots.js"));
+  assert(p.chosen.has("content/later-bots.js"));
+  assert(test.recipe().selectedFeatures.includes("favorite-bots"));
+  assert(test.recipe().selectedFeatures.includes("later-bots"));
+  assert(!p.chosen.has("content/chat-continuation.js"));
+  assert(!p.selectedStyles.has("content/styles/chat-continuation.css"));
+  assert(m.content_scripts.some(cs=>(cs.js||[]).includes("content/favorites-recovery.js")));
+  console.log("PASS: v0.2.63 Continuation and Favorites Recovery package independently");
+
   test.choose(["chat-bookmarks"]);
   p=test.plan();m=test.manifest();
   assert(p.chosen.has("content/chat-bookmarks.js"));
@@ -121,7 +148,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/chat-bookmarks.js"));
   assert(!p.chosen.has("content/chat-history-navigator.js"));
   assert(!m.content_scripts.some(cs => (cs.js || []).includes("content/chat-history-navigator.js")));
-  console.log("PASS: v0.2.62 History Navigator follows Chat Bookmarks selection");
+  console.log("PASS: v0.2.63 History Navigator follows Chat Bookmarks selection");
 
   test.choose(["chat-lorebook-manager"]);
   p=test.plan();
@@ -193,7 +220,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   }
   assert(!p.selectedStyles.has("content/styles/private-lorebook-bridge.css"));
   assert(!p.selectedStyles.has("content/styles/chat-smart-folders.css"));
-  console.log("PASS: v0.2.62 optional Lorebook/Memory/Smart Folder files omitted by default");
+  console.log("PASS: v0.2.63 optional Lorebook/Memory/Smart Folder files omitted by default");
 
   test.choose(["chat-smart-folders"]);
   p=test.plan();
@@ -250,7 +277,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   for(const file of ["background/features/background-context-keeper-storage.js",
     "background/features/background-chat-lorebook-local.js",
     "background/features/background-native-memory-probe.js"])
-    assert(!p.chosen.has(file),"Unselected v0.2.62 background handler included: "+file);
+    assert(!p.chosen.has(file),"Unselected v0.2.63 background handler included: "+file);
   console.log("PASS: all optional features OFF leaves shared Core scripts");
 
   test.choose(["bot-blocking","language-filter"]);
@@ -266,7 +293,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   const originalOptions=await optionsRes.text(),originalWorker=await entryRes.text();
   const index=test.getPackageIndex();
   const ownedSettings=[...new Set(index.features.flatMap(x=>x.settings))];
-  assert(ownedSettings.length>=37,"Expected 37 v0.2.62 Settings panel ownership records");
+  assert(ownedSettings.length>=38,"Expected 38 v0.2.63 Settings panel ownership records");
   assert(index.features.every(f=>!f.defaultSelected&&!f.defaultUpdatesEnabled));
   test.choose([]);
   p=test.plan();
@@ -285,7 +312,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
     "background/features/background-native-memory-probe.js"])
     assert(!emptyWorker.includes(JSON.stringify(file)),"Unselected background import remained: "+file);
   assert(emptyWorker.includes('"background/background-events.js"'));
-  console.log("PASS: all 37 owned Settings panels and two safe optional background services are omitted when OFF");
+  console.log("PASS: all 38 owned Settings panels and two safe optional background services are omitted when OFF");
 
   test.choose(["translation","context-keeper"]);
   p=test.plan();
