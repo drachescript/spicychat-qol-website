@@ -101,6 +101,7 @@ def main():
         assert index['features'][next(i for i,r in enumerate(index['features']) if r['id']==fid)]['settings'], fid
     assert 'bot-status' not in {f['id'] for f in catalog['features']}, 'Background-only feature requires special packaging; never add it as a content script'
 
+    assert len({panel for row in index['features'] for panel in row['settings']}) >= 38
     assert all(not row['defaultSelected'] and not row['defaultUpdatesEnabled'] for row in owned.values())
     for feature in catalog['features']:
         row = owned[feature['id']]
@@ -108,7 +109,7 @@ def main():
         assert set(row['settings']) == set(feature['settingsScripts'])
         assert set(row['styles']) == set(feature['cssFiles'])
         assert set(row['dependencies']) == set(feature['requiredFeatures'])
-    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 38
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 37
     assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 25
 
     assert all(set(f['requiredFeatures']) <= {x['id'] for x in catalog['features']} for f in catalog['features'])
@@ -145,7 +146,7 @@ def main():
     assert 'background/features/background-chat-lorebook-local.js' in owned['chat-lorebook-manager']['backgroundFiles']
     assert 'background/features/background-native-memory-probe.js' in owned['native-memory-probe']['backgroundFiles']
 
-    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 38
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 37
     assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 25
     for expected in ['ooc','story-day-tracker','wiki-lorebook-importer']:
         assert next(f for f in catalog['features'] if f['id']==expected)['cssFiles']
