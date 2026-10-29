@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=131,"Expected v0.2.63 individually named feature contracts");
+  assert(test.count()>=131,"Expected v0.2.64 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -135,7 +135,20 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/chat-continuation.js"));
   assert(!p.selectedStyles.has("content/styles/chat-continuation.css"));
   assert(m.content_scripts.some(cs=>(cs.js||[]).includes("content/favorites-recovery.js")));
-  console.log("PASS: v0.2.63 Continuation and Favorites Recovery package independently");
+  console.log("PASS: v0.2.64 Continuation and Favorites Recovery package independently");
+
+  test.choose([]);
+  p=test.plan();m=test.manifest();
+  assert(!p.chosen.has("content/text-replacements.js"));
+  test.choose(["text-replacements"]);
+  p=test.plan();m=test.manifest();
+  assert(p.chosen.has("content/text-replacements.js"));
+  assert(m.content_scripts.some(cs => (cs.js || []).includes("content/text-replacements.js")));
+  test.choose(["chat-search"]);
+  p=test.plan();m=test.manifest();
+  assert(!p.chosen.has("content/text-replacements.js"));
+  assert(!m.content_scripts.some(cs => (cs.js || []).includes("content/text-replacements.js")));
+  console.log("PASS: v0.2.64 Text Replacements / Word Censor runtime packages only when selected");
 
   test.choose(["chat-bookmarks"]);
   p=test.plan();m=test.manifest();
@@ -148,7 +161,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/chat-bookmarks.js"));
   assert(!p.chosen.has("content/chat-history-navigator.js"));
   assert(!m.content_scripts.some(cs => (cs.js || []).includes("content/chat-history-navigator.js")));
-  console.log("PASS: v0.2.63 History Navigator follows Chat Bookmarks selection");
+  console.log("PASS: v0.2.64 History Navigator follows Chat Bookmarks selection");
 
   test.choose(["chat-lorebook-manager"]);
   p=test.plan();
@@ -220,7 +233,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   }
   assert(!p.selectedStyles.has("content/styles/private-lorebook-bridge.css"));
   assert(!p.selectedStyles.has("content/styles/chat-smart-folders.css"));
-  console.log("PASS: v0.2.63 optional Lorebook/Memory/Smart Folder files omitted by default");
+  console.log("PASS: v0.2.64 optional Lorebook/Memory/Smart Folder files omitted by default");
 
   test.choose(["chat-smart-folders"]);
   p=test.plan();
@@ -277,7 +290,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   for(const file of ["background/features/background-context-keeper-storage.js",
     "background/features/background-chat-lorebook-local.js",
     "background/features/background-native-memory-probe.js"])
-    assert(!p.chosen.has(file),"Unselected v0.2.63 background handler included: "+file);
+    assert(!p.chosen.has(file),"Unselected v0.2.64 background handler included: "+file);
   console.log("PASS: all optional features OFF leaves shared Core scripts");
 
   test.choose(["bot-blocking","language-filter"]);
@@ -293,7 +306,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   const originalOptions=await optionsRes.text(),originalWorker=await entryRes.text();
   const index=test.getPackageIndex();
   const ownedSettings=[...new Set(index.features.flatMap(x=>x.settings))];
-  assert(ownedSettings.length>=38,"Expected 38 v0.2.63 Settings panel ownership records");
+  assert(ownedSettings.length>=38,"Expected 38 v0.2.64 Settings panel ownership records");
   assert(index.features.every(f=>!f.defaultSelected&&!f.defaultUpdatesEnabled));
   test.choose([]);
   p=test.plan();

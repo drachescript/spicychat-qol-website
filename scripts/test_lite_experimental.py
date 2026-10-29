@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.63'
+    assert release['version'] == '0.2.64'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -126,6 +126,8 @@ def main():
     assert 'content/styles/private-lorebook-bridge.css' in owned['private-lorebook-bridge']['cssFiles']
     assert 'content/styles/chat-smart-folders.css' in owned['chat-smart-folders']['cssFiles']
     assert 'bot-status' not in owned, 'Background-only Bot Status is not a content selector'
+    assert owned['text-replacements']['runtimeScripts'] == ['content/text-replacements.js']
+    assert 'content/text-replacements.js' in sources
     continuation = owned['chat-continuation']
     assert 'content/card-token-info.js' in continuation['requiredHelpers']
     assert 'content/styles/chat-continuation.css' in continuation['cssFiles']
