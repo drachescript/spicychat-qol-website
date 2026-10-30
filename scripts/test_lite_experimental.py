@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.64'
+    assert release['version'] == '0.2.65'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -134,6 +134,9 @@ def main():
     assert 'settings/feature-panels/chat-continuation.js' in continuation['settingsScripts']
     recovery = owned['favorites-recovery']
     assert {'favorite-bots', 'later-bots'} <= set(recovery['requiredFeatures'])
+    assert owned['later-bots']['runtimeScripts'] == ['content/later-bots.js']
+    assert owned['favorite-bots']['runtimeScripts'] == ['content/favorite-bots.js']
+    assert {'content/later-bots.js', 'content/favorite-bots.js', 'content/favorites-recovery.js'} <= sources
     assert {'content/chat-continuation.js', 'content/favorites-recovery.js',
             'content/styles/chat-continuation.css',
             'settings/feature-panels/chat-continuation.js'} <= sources

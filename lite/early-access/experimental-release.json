@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.64",
+  "version": "0.2.65",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "c8facfc1b80a2a450ddd7f605ff7240a0c54932c",
-  "tree": "348f34e7e3b1501b89db09b6920e8994651775f9",
+  "commit": "16121ac456e8ec1592a92370e3ea8a702b3ed4dd",
+  "tree": "6e6841038fa6660b2b9cf1e123ee5acfaabedcfb",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.64 is experimental. 131 selectable features, 38 feature-owned Settings panels and 25 stylesheets. Word Censor uses the existing Text Replacements feature (not a separate selector). Chat Continuation includes reviewed Memory transfers, and Lorebook imports add stronger duplicate/backup safeguards. Five audited message-only background services may be omitted. Shared Settings/background code and browser combinations remain unverified; the private Archive is never automatically attached."
+  "warning": "Custom v0.2.65 is experimental. 131 selectable features, with 38 feature-owned Settings panels and 25 stylesheets. Later and Favorites Recovery now include the expanded views, recovery, and reviewed cleanup; they remain opt-in. The five audited message-only background services can be omitted, but shared Settings/background code and browser combinations remain unverified. The private Archive is storage-only and is never automatically attached."
 }
