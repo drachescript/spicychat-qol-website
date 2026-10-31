@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.65",
+  "version": "0.2.66",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "16121ac456e8ec1592a92370e3ea8a702b3ed4dd",
-  "tree": "6e6841038fa6660b2b9cf1e123ee5acfaabedcfb",
+  "commit": "71f772dc22afa447e9c7ce6d5402ac4ea0f2e03c",
+  "tree": "4c288bff4a21c2b872f9e3df9fc5e8ccd61b5387",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.65 is experimental. 131 selectable features, with 38 feature-owned Settings panels and 25 stylesheets. Later and Favorites Recovery now include the expanded views, recovery, and reviewed cleanup; they remain opt-in. The five audited message-only background services can be omitted, but shared Settings/background code and browser combinations remain unverified. The private Archive is storage-only and is never automatically attached."
+  "warning": "Custom v0.2.66 is experimental. 132 selectable features, 39 Settings panels and 25 stylesheets. Daily message-limit tracking is a separate opt-in feature, with an estimated reset time. This release also updates card feedback, diagnostics, and Lorebook imports. Five optional message-only background services can be omitted, but shared code and browser feature combinations remain unverified. The private Archive stays storage-only."
 }
