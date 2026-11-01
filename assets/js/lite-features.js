@@ -277,6 +277,7 @@ async function load(){
   }
   const seen=new Set();
   for(const f of allFeatures()){
+    const entry=indexEntries.get(f.id);
     if(seen.has(f.id)||!Array.isArray(f.runtimeScripts)||!Array.isArray(f.requiredFeatures))throw Error('Invalid feature contract: '+f.id);
     seen.add(f.id);
     for(const path of [...f.runtimeScripts,...(f.requiredHelpers||[]),...f.cssFiles,...(f.settingsScripts||[]),...(entry.settingsStyles||[]),...(f.backgroundFiles||[])]){
