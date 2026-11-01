@@ -259,6 +259,7 @@ async function load(){
        entry.defaultSelected!==false||entry.defaultUpdatesEnabled!==false||
        !Array.isArray(entry.dependencies)||!Array.isArray(entry.settings)||
        !Array.isArray(entry.styles)||!Array.isArray(entry.background)||
+        !Array.isArray(entry.settingsStyles||[])||
        !Array.isArray(entry.helpers))throw Error('Invalid Custom package ownership index.');
     indexEntries.set(entry.id,entry);
   }
@@ -278,7 +279,7 @@ async function load(){
   for(const f of allFeatures()){
     if(seen.has(f.id)||!Array.isArray(f.runtimeScripts)||!Array.isArray(f.requiredFeatures))throw Error('Invalid feature contract: '+f.id);
     seen.add(f.id);
-    for(const path of [...f.runtimeScripts,...(f.requiredHelpers||[]),...f.cssFiles,...(f.settingsScripts||[]),...(f.backgroundFiles||[])]){
+    for(const path of [...f.runtimeScripts,...(f.requiredHelpers||[]),...f.cssFiles,...(f.settingsScripts||[]),...(entry.settingsStyles||[]),...(f.backgroundFiles||[])]){
       if(!treeFiles.has(path))throw Error('Feature source missing: '+path);
     }
   }
@@ -362,6 +363,8 @@ function plannedFiles(active){
   const activeIds=new Set(active);
   const allSettings=new Set(packageIndex.features.flatMap(f=>f.settings));
   const selectedSettings=new Set(packageIndex.features.filter(f=>activeIds.has(f.id)).flatMap(f=>f.settings));
+  const allSettingsStyles=new Set(packageIndex.features.flatMap(f=>f.settingsStyles||[]));
+  const selectedSettingsStyles=new Set(packageIndex.features.filter(f=>activeIds.has(f.id)).flatMap(f=>f.settingsStyles||[]));
   const runtime=new Set(catalog.sharedRuntimeScripts);
   const styles=new Set(catalog.sharedStyles);
   for(const id of active){const f=byId(id);
@@ -382,6 +385,7 @@ function plannedFiles(active){
     if(!SRC_DIRS.has(parts[0]))continue;
     if(path.endsWith('.py')||path.endsWith('.zip')||path.endsWith('.md'))continue;
     if(parts[0]==='settings' && allSettings.has(path) && !selectedSettings.has(path))continue;
+    if(parts[0]==='settings' && allSettingsStyles.has(path) && !selectedSettingsStyles.has(path))continue;
     if(Object.hasOwn(SAFE_BACKGROUND_OWNERS,path)&&!activeIds.has(SAFE_BACKGROUND_OWNERS[path]))continue;
     if(parts[0]==='content'){
       if(path.endsWith('.js')){
@@ -394,7 +398,7 @@ function plannedFiles(active){
   }
   for(const path of runtime)chosen.add(path);
   for(const path of styles)chosen.add(path);
-  return {chosen,activeFiles:runtime,selectedStyles:styles,selectedSettings};
+  return {chosen,activeFiles:runtime,selectedStyles:styles,selectedSettings,selectedSettingsStyles};
 }
 function manifestFor(active,plan){
   const m=clone(sourceManifest);
