@@ -136,7 +136,7 @@ def main():
         assert key in feature['settingKeys']
         assert f'settings/feature-panels/{fid}.js' in sources
     assert 'translationAutoGreeting' in next(f for f in catalog['features'] if f['id'] == 'translation')['settingKeys']
-    assert owned['soundscapes']['settingsStyles'] == ['settings/styles/soundscapes.css']
+    assert next(row for row in index['features'] if row['id']=='soundscapes')['settingsStyles'] == ['settings/styles/soundscapes.css']
     assert 'settings/styles/soundscapes.css' in sources
     assert all(set(row.get('settingsStyles', [])) <= sources for row in index['features'])
     assert 'settings/features/options-translation.js' not in sources
