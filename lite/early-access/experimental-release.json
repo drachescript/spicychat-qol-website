@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.66",
+  "version": "0.2.67",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "71f772dc22afa447e9c7ce6d5402ac4ea0f2e03c",
-  "tree": "4c288bff4a21c2b872f9e3df9fc5e8ccd61b5387",
+  "commit": "9934eb64cd0044cb1e40d4503104afd7aa388d95",
+  "tree": "c4c469e093d24c17d6360eb44267a263fb262d54",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.66 is experimental. 132 selectable features, 39 Settings panels and 25 stylesheets. Daily message-limit tracking is a separate opt-in feature, with an estimated reset time. This release also updates card feedback, diagnostics, and Lorebook imports. Five optional message-only background services can be omitted, but shared code and browser feature combinations remain unverified. The private Archive stays storage-only."
+  "warning": "Custom v0.2.67 is experimental. 132 selectable features, 39 Settings panels and 25 stylesheets. Memory Packs ships with Memory Manager; Lorebook moderation review ships with Moderation Warnings. Neither is a separate selector. Both remain off unless their parent feature is chosen. Five audited optional background services can be omitted. Shared code and browser feature combinations remain unverified; the private Archive stays storage-only."
 }

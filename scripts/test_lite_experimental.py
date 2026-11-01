@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.66'
+    assert release['version'] == '0.2.67'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -126,6 +126,11 @@ def main():
     assert 'content/styles/private-lorebook-bridge.css' in owned['private-lorebook-bridge']['cssFiles']
     assert 'content/styles/chat-smart-folders.css' in owned['chat-smart-folders']['cssFiles']
     assert 'bot-status' not in owned, 'Background-only Bot Status is not a content selector'
+    assert 'content/memory-packs.js' in owned['memory-manager']['requiredHelpers']
+    assert 'content/lorebook-moderation-review.js' in owned['moderation-warnings']['requiredHelpers']
+    assert 'content/memory-packs.js' in next(row for row in index['features'] if row['id']=='memory-manager')['helpers']
+    assert 'content/lorebook-moderation-review.js' in next(row for row in index['features'] if row['id']=='moderation-warnings')['helpers']
+    assert {'content/memory-packs.js', 'content/lorebook-moderation-review.js'} <= sources
     limit = owned['daily-message-limit']
     assert limit['runtimeScripts'] == ['content/daily-message-limit.js']
     assert limit['settingsScripts'] == ['settings/feature-panels/daily-message-limit.js']
