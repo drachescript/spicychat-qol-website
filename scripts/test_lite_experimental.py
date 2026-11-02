@@ -131,7 +131,7 @@ def main():
         assert key in feature['settingKeys']
         assert f'settings/feature-panels/{fid}.js' in feature['settingsScripts']
         assert f'settings/feature-panels/{fid}.js' in sources
-        assert owned[fid]['settings']==[f'settings/feature-panels/{fid}.js']
+        assert next(row for row in index['features'] if row['id']==fid)['settings']==[f'settings/feature-panels/{fid}.js']
     assert 'chat-list' in next(f for f in catalog['features'] if f['id']=='chat-pins')['requiredFeatures']
     assert 'content/styles/chat-pins.css' in next(f for f in catalog['features'] if f['id']=='chat-pins')['cssFiles']
     assert {'content/chat-pins.js','content/styles/chat-pins.css','content/rulebook-public-qol.js'} <= sources
