@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.68",
+  "version": "0.2.69",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "e582d92b28a16622aa382fd9404836e56f6537e9",
-  "tree": "72adb2864be6525e4864403390e565b9da809698",
+  "commit": "5d79101f63bfa1120307ec68623f3757caf92ba1",
+  "tree": "b47f9ac287859434a28f225443ca89691bc0bfb3",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.68 is experimental. 132 selectable features, 41 Settings panels and 25 feature-owned content stylesheets. Persona counter, Selection Memory, Daily Message Limit, Translation and Soundscapes now have separately owned Settings panels. Soundscapes Settings CSS is only included with Soundscapes. Shared Settings/runtime independence and browser combinations still need testing."
+  "warning": "Custom v0.2.69 is experimental. 134 selectable features, 43 feature-owned Settings panels and 26 feature-owned content stylesheets. Pinned Conversations and local public Rulebook blocking are separate opt-in features with their own Settings panels. Pinned Conversations depends on Chat List. Shared Settings/runtime independence and browser combinations still need testing. Omitted features do not clear saved preferences."
 }

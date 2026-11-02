@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.68'
+    assert release['version'] == '0.2.69'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -88,7 +88,7 @@ def main():
     catalog = fetch_json(base + '/build/feature-catalog.json')
     assert catalog['schema'] == 'sqol-custom-feature-catalog/v1'
     assert catalog['version'] == release['version']
-    assert catalog['featureCount'] >= 132
+    assert catalog['featureCount'] >= 134
     assert catalog['featureCount'] == len(catalog['features'])
     index = fetch_json(base + '/build/custom-package-index.json')
     assert index['schema'] == 'spicychat-qol-custom-package-assets/v1'
@@ -101,7 +101,7 @@ def main():
         assert index['features'][next(i for i,r in enumerate(index['features']) if r['id']==fid)]['settings'], fid
     assert 'bot-status' not in {f['id'] for f in catalog['features']}, 'Background-only feature requires special packaging; never add it as a content script'
 
-    assert len({panel for row in index['features'] for panel in row['settings']}) >= 41
+    assert len({panel for row in index['features'] for panel in row['settings']}) >= 43
     assert all(not row['defaultSelected'] and not row['defaultUpdatesEnabled'] for row in owned.values())
     for feature in catalog['features']:
         row = owned[feature['id']]
@@ -109,7 +109,7 @@ def main():
         assert set(row['settings']) == set(feature['settingsScripts'])
         assert set(row['styles']) == set(feature['cssFiles'])
         assert set(row['dependencies']) == set(feature['requiredFeatures'])
-    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 40
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 42
     assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 25
 
     assert all(set(f['requiredFeatures']) <= {x['id'] for x in catalog['features']} for f in catalog['features'])
@@ -126,6 +126,15 @@ def main():
     assert 'content/styles/private-lorebook-bridge.css' in owned['private-lorebook-bridge']['cssFiles']
     assert 'content/styles/chat-smart-folders.css' in owned['chat-smart-folders']['cssFiles']
     assert 'bot-status' not in owned, 'Background-only Bot Status is not a content selector'
+    for fid, key in [('chat-pins','enableChatPins'),('rulebook-public-qol','rulebookBlockingEnabled')]:
+        feature=next(row for row in catalog['features'] if row['id']==fid)
+        assert key in feature['settingKeys']
+        assert f'settings/feature-panels/{fid}.js' in feature['settingsScripts']
+        assert f'settings/feature-panels/{fid}.js' in sources
+        assert owned[fid]['settings']==[f'settings/feature-panels/{fid}.js']
+    assert 'chat-list' in next(f for f in catalog['features'] if f['id']=='chat-pins')['requiredFeatures']
+    assert 'content/styles/chat-pins.css' in next(f for f in catalog['features'] if f['id']=='chat-pins')['cssFiles']
+    assert {'content/chat-pins.js','content/styles/chat-pins.css','content/rulebook-public-qol.js'} <= sources
     for fid, key in [('daily-message-limit','dailyMessageLimitTrackerEnabled'),
                      ('personas','showPersonaLimitIndicator'),
                      ('selection-memory','enableSelectionRemember'),
@@ -176,7 +185,7 @@ def main():
     assert 'background/features/background-chat-lorebook-local.js' in owned['chat-lorebook-manager']['backgroundFiles']
     assert 'background/features/background-native-memory-probe.js' in owned['native-memory-probe']['backgroundFiles']
 
-    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 40
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 42
     assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 25
     for expected in ['ooc','story-day-tracker','wiki-lorebook-importer']:
         assert next(f for f in catalog['features'] if f['id']==expected)['cssFiles']
