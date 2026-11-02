@@ -1,0 +1,38 @@
+/* The iPhone/iPad overview shares the main site's palette and navigation. */
+.ios-hero{padding:84px 0 78px;background:radial-gradient(circle at 82% 20%,rgba(236,61,104,.13),transparent 30rem)}
+.ios-hero-inner{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);align-items:center;gap:55px}
+.ios-hero-copy h1{font-size:clamp(3.1rem,6vw,5.2rem);line-height:1.04;letter-spacing:-.055em;margin:17px 0 23px}
+.ios-hero-copy h1 span{color:#fb7592}
+.ios-hero-copy p{color:var(--muted);max-width:740px}
+.ios-hero-copy .ios-lead{font-size:1.13rem;color:var(--text)}
+.ios-hero-copy .button-row{margin-top:29px}
+.ios-hero-aside,.ios-about-aside{padding:27px;border:1px solid var(--border2);border-radius:22px;background:linear-gradient(160deg,rgba(236,61,104,.09),var(--card) 62%)}
+.ios-hero-aside h2{font-size:1.6rem;margin:15px 0 22px}
+.ios-hero-row{border-top:1px solid var(--border);padding:14px 0;display:grid;gap:4px}
+.ios-hero-row strong{color:#fff}
+.ios-hero-row span,.ios-hero-aside p,.ios-about-aside p{color:var(--muted);font-size:.88rem}
+.ios-hero-aside p{margin:15px 0 0}
+.ios-option-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:stretch}
+.ios-option{border:1px solid var(--border);border-radius:20px;background:var(--card);padding:28px;display:flex;flex-direction:column;scroll-margin-top:100px}
+.ios-option-header{display:flex;align-items:center;gap:15px;margin-bottom:12px}
+.ios-option-symbol{flex:0 0 52px;width:52px;height:52px;border-radius:15px;display:grid;place-items:center;color:#ff829d;background:var(--card2);border:1px solid var(--border2);font-size:1.3rem;font-weight:800}
+.ios-option h3{font-size:1.55rem;margin:6px 0 0;line-height:1.2;letter-spacing:-.035em}
+.ios-option>p,.ios-steps{color:var(--muted)}
+.ios-steps{padding-left:23px;margin:12px 0 18px}
+.ios-steps li{padding-left:4px;margin:0 0 13px}
+.ios-steps li::marker{color:#fa849e;font-weight:800}
+.ios-option a:not(.button){text-decoration:underline;text-underline-offset:3px}
+.ios-option a:not(.button):hover{color:#fff}
+.ios-option code{word-break:break-word}
+.ios-option .ios-caution{font-size:.88rem;margin:0 0 20px;padding:15px 16px;background:rgba(255,255,255,.026);border-left:3px solid #ec3d68;border-radius:0 10px 10px 0}
+.ios-option .button-row{margin-top:auto;gap:9px}
+.ios-about{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:44px;align-items:center}
+.ios-about h2,.ios-help h2{font-size:clamp(2rem,4vw,3.15rem);line-height:1.1;margin:12px 0 20px;letter-spacing:-.04em}
+.ios-about p,.ios-help p{color:var(--muted)}
+.ios-about-aside strong{color:#fff;font-size:1.2rem}
+.ios-about-aside .text-link{display:inline-block;margin-top:12px}
+.ios-help{display:flex;align-items:center;justify-content:space-between;gap:35px}
+.ios-help>div:first-child{max-width:730px}
+.ios-help .button-row{flex:0 0 auto}
+@media(max-width:900px){.ios-hero-inner,.ios-about{grid-template-columns:1fr;gap:25px}.ios-option-grid{grid-template-columns:1fr}.ios-hero{padding:54px 0}.ios-help{align-items:flex-start;flex-direction:column;gap:14px}}
+@media(max-width:560px){.ios-option{padding:21px}.ios-hero-aside,.ios-about-aside{padding:22px}.ios-option .button-row,.ios-hero-copy .button-row{display:grid}.ios-option .button-row .button,.ios-hero-copy .button-row .button{width:100%}}
