@@ -1,3 +1,19 @@
+## 0.2.71
+- Improved performance when browsing Rulebooks by reducing unnecessary repeated checks.
+- Reduced background work in long chats, especially when messages reload or update.
+- Improved Settings and saved bot list performance by avoiding unnecessary reloads.
+- Improved support reports when SpicyChat tabs aren't responding properly.
+- Fixed long delays between Bulk Dislikes when Settings is running in the background.
+- Improved Bulk Dislike progress messages and reduced unnecessary processing.
+- Improved Settings search with better results, individual options like More Like This, and clearer descriptions.
+
+## 0.2.70
+- Reduced Android support-export stalls by skipping unused compression, avoiding repeated storage-size checks, and collecting history alongside other report sections.
+- Fixed short bot descriptions keeping the scroll box when full card descriptions are enabled.
+- Applied local Rulebook blocking and quick Block buttons to Attach Rulebook → Discover in chats.
+- Added optional message image links to chat exports when SpicyChat exposes them.
+- Fixed generation details disappearing on newer chat layouts and retrying after message metadata loads.
+
 ## 0.2.69
 - Added optional pinned conversations at the top of Chats, including older chats no longer loaded in the list.
 - Shortened Settings descriptions and clarified bot folders versus conversation folders.
