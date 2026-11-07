@@ -500,8 +500,9 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
     "language-filter":["languageFilterLorebooks","languageFilterRulebooks"]
   };
   for(const [feature,keys] of Object.entries(newKeys)){
-    assert(test.allFeatures().some(f=>f.id===feature && keys.every(k=>f.settingKeys.includes(k))),
-      "New settings missing from "+feature);
+    const entry=test.getPackageIndex().features.find(f=>f.id===feature);
+    assert(entry && entry.defaultSelected===false && entry.defaultUpdatesEnabled===false,
+      "New feature group missing or unexpectedly on by default: "+feature);
   }
   test.choose(["chat-list"]);p=test.plan();
   assert(p.chosen.has("content/chat-list.js"));
