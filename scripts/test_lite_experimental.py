@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.69'
+    assert release['version'] == '0.2.73'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -126,6 +126,20 @@ def main():
     assert 'content/styles/private-lorebook-bridge.css' in owned['private-lorebook-bridge']['cssFiles']
     assert 'content/styles/chat-smart-folders.css' in owned['chat-smart-folders']['cssFiles']
     assert 'bot-status' not in owned, 'Background-only Bot Status is not a content selector'
+    language=owned['language-filter']
+    assert {'languageFilterLorebooks','languageFilterRulebooks'} <= set(language['settingKeys'])
+    assert {'content/lorebook-public-qol.js','content/rulebook-public-qol.js'} <= set(language['requiredHelpers'])
+    assert {'content/lorebook-public-qol.js','content/rulebook-public-qol.js'} <= set(next(row for row in index['features'] if row['id']=='language-filter')['helpers'])
+    for fid, keys in {
+        'chat-list': ['chatListTwoColumns','chatListPopoutShortcut','chatListRenameShortcut'],
+        'chat-topbar': ['chatAlwaysShowProfileLink','chatJumpToStartShortcut',
+                        'chatOpenWindowShortcut','chatGenerationSettingsShortcut'],
+        'message-options': ['messageBottomMenuShortcut'],
+        'chat-export': ['chatExportIncludeImageLinks'],
+        'exact-message-counts': ['showNewBotBadge'],
+        'my-creations-backup': ['enableAccountMigrationAssistant']
+    }.items():
+        assert set(keys) <= set(owned[fid]['settingKeys']), fid
     for fid, key in [('chat-pins','enableChatPins'),('rulebook-public-qol','rulebookBlockingEnabled')]:
         feature=next(row for row in catalog['features'] if row['id']==fid)
         assert key in feature['settingKeys']

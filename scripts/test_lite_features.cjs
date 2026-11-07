@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=134,"Expected v0.2.69 individually named feature contracts");
+  assert(test.count()>=134,"Expected v0.2.73 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -55,7 +55,12 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/bot-blocking.js"));
   assert(!m.content_scripts.some(cs=>(cs.js||[]).includes("content/bot-blocking.js")));
   assert(test.backgroundProfile().includes('"language-filter"'));
-  console.log("PASS: Language Filter does not select Bot Blocking");
+  assert(p.chosen.has("content/lorebook-public-qol.js"),"Language Filter must ship public Lorebook handler");
+  assert(p.chosen.has("content/rulebook-public-qol.js"),"Language Filter must ship public Rulebook handler");
+  assert(!p.chosen.has("settings/feature-panels/rulebook-public-qol.js"),"Language Filter must not enable Rulebook blocking Settings");
+  assert(m.content_scripts.some(cs=>(cs.js||[]).includes("content/lorebook-public-qol.js")));
+  assert(m.content_scripts.some(cs=>(cs.js||[]).includes("content/rulebook-public-qol.js")));
+  console.log("PASS: Language Filter includes public listing helpers without enabling blocking controls");
 
   test.choose(["auto-blocking"]);
   p=test.plan();m=test.manifest();
@@ -140,7 +145,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();m=test.manifest();
   for(const filename of ["content/later-bots.js","content/favorite-bots.js","content/favorites-recovery.js"])
     assert(!p.chosen.has(filename),"Unselected Favorites or Later script included: "+filename);
-  console.log("PASS: v0.2.69 Later, native Favorites and Recovery remain separately selectable");
+  console.log("PASS: v0.2.73 Later, native Favorites and Recovery remain separately selectable");
 
   test.choose(["favorites-recovery"]);
   p=test.plan();m=test.manifest();
@@ -152,7 +157,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/chat-continuation.js"));
   assert(!p.selectedStyles.has("content/styles/chat-continuation.css"));
   assert(m.content_scripts.some(cs=>(cs.js||[]).includes("content/favorites-recovery.js")));
-  console.log("PASS: v0.2.69 Continuation and Favorites Recovery package independently");
+  console.log("PASS: v0.2.73 Continuation and Favorites Recovery package independently");
 
   test.choose([]);
   p=test.plan();m=test.manifest();
@@ -165,7 +170,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();m=test.manifest();
   assert(!p.chosen.has("content/text-replacements.js"));
   assert(!m.content_scripts.some(cs => (cs.js || []).includes("content/text-replacements.js")));
-  console.log("PASS: v0.2.69 Text Replacements / Word Censor runtime packages only when selected");
+  console.log("PASS: v0.2.73 Text Replacements / Word Censor runtime packages only when selected");
 
   test.choose([]);
   p=test.plan();m=test.manifest();
@@ -182,7 +187,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/daily-message-limit.js"));
   assert(!p.chosen.has("settings/feature-panels/daily-message-limit.js"));
   assert(!m.content_scripts.some(cs=>(cs.js||[]).includes("content/daily-message-limit.js")));
-  console.log("PASS: v0.2.69 daily message limit packages only when selected");
+  console.log("PASS: v0.2.73 daily message limit packages only when selected");
 
   test.choose([]);
   p=test.plan();m=test.manifest();
@@ -204,7 +209,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();
   assert(!p.chosen.has("content/memory-packs.js"));
   assert(!p.chosen.has("content/lorebook-moderation-review.js"));
-  console.log("PASS: v0.2.69 Memory Packs and Lorebook Review follow their parent features");
+  console.log("PASS: v0.2.73 Memory Packs and Lorebook Review follow their parent features");
 
   test.choose(["chat-bookmarks"]);
   p=test.plan();m=test.manifest();
@@ -217,7 +222,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/chat-bookmarks.js"));
   assert(!p.chosen.has("content/chat-history-navigator.js"));
   assert(!m.content_scripts.some(cs => (cs.js || []).includes("content/chat-history-navigator.js")));
-  console.log("PASS: v0.2.69 History Navigator follows Chat Bookmarks selection");
+  console.log("PASS: v0.2.73 History Navigator follows Chat Bookmarks selection");
 
   test.choose(["chat-lorebook-manager"]);
   p=test.plan();
@@ -289,7 +294,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   }
   assert(!p.selectedStyles.has("content/styles/private-lorebook-bridge.css"));
   assert(!p.selectedStyles.has("content/styles/chat-smart-folders.css"));
-  console.log("PASS: v0.2.69 optional Lorebook/Memory/Smart Folder files omitted by default");
+  console.log("PASS: v0.2.73 optional Lorebook/Memory/Smart Folder files omitted by default");
 
   test.choose(["chat-smart-folders"]);
   p=test.plan();
@@ -346,7 +351,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   for(const file of ["background/features/background-context-keeper-storage.js",
     "background/features/background-chat-lorebook-local.js",
     "background/features/background-native-memory-probe.js"])
-    assert(!p.chosen.has(file),"Unselected v0.2.69 background handler included: "+file);
+    assert(!p.chosen.has(file),"Unselected v0.2.73 background handler included: "+file);
   console.log("PASS: all optional features OFF leaves shared Core scripts");
 
   test.choose(["bot-blocking","language-filter"]);
@@ -362,7 +367,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   const originalOptions=await optionsRes.text(),originalWorker=await entryRes.text();
   const index=test.getPackageIndex();
   const ownedSettings=[...new Set(index.features.flatMap(x=>x.settings))];
-  assert(ownedSettings.length>=43,"Expected 43 v0.2.69 Settings panel ownership records");
+  assert(ownedSettings.length>=43,"Expected 43 v0.2.73 Settings panel ownership records");
   assert(index.features.every(f=>!f.defaultSelected&&!f.defaultUpdatesEnabled));
   test.choose([]);
   p=test.plan();
@@ -406,7 +411,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
     '<script src="settings/feature-panels/translation.js"></script>','')),
     /Cannot safely isolate Settings panel/,"A missing known panel must fail closed");
   console.log("PASS: selected Settings panels and Translation background remain, unselected ones are removed");
-  // Test source-level inclusion/omission after the v0.2.69 Settings split.
+  // Test source-level inclusion/omission after the v0.2.73 Settings split.
   for(const fid of ["personas","selection-memory","daily-message-limit","soundscapes","translation"]){
     const panel="settings/feature-panels/"+fid+".js";
     test.choose([fid]);
@@ -434,7 +439,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert.throws(()=>test.pruneSettings(originalOptions.replace(
     '<script src="settings/feature-panels/personas.js"></script>','')),
     /Cannot safely isolate Settings panel/);
-  console.log("PASS: v0.2.69 Settings isolation for Personas, Selection Memory, daily limit, Soundscapes and Translation");
+  console.log("PASS: v0.2.73 Settings isolation for Personas, Selection Memory, daily limit, Soundscapes and Translation");
 
   test.choose(["wiki-lorebook-importer"]);
   const wikiWorker=test.pruneBackground(originalWorker);
@@ -443,7 +448,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   console.log("PASS: Wiki Fetch can be included without Translation background");
 
 
-  // v0.2.69 pins and local Rulebook blocking are independent, opt-in features.
+  // v0.2.73 pins and local Rulebook blocking are independent, opt-in features.
   test.choose([]);
   p=test.plan();m=test.manifest();
   for(const item of ["content/chat-pins.js","content/styles/chat-pins.css",
@@ -481,7 +486,30 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   test.choose(["chat-search"]);p=test.plan();
   assert(!p.chosen.has("content/chat-pins.js"));
   assert(!p.chosen.has("content/rulebook-public-qol.js"));
-  console.log("PASS: v0.2.69 Chat Pins and Rulebook blocking package independently");
+  console.log("PASS: v0.2.73 Chat Pins and Rulebook blocking package independently");
+
+
+  // Newly added 0.2.70–0.2.73 controls belong to their existing top-level feature.
+  const newKeys={
+    "chat-list":["chatListTwoColumns","chatListPopoutShortcut","chatListRenameShortcut"],
+    "chat-topbar":["chatAlwaysShowProfileLink","chatJumpToStartShortcut","chatOpenWindowShortcut","chatGenerationSettingsShortcut"],
+    "message-options":["messageBottomMenuShortcut"],
+    "chat-export":["chatExportIncludeImageLinks"],
+    "exact-message-counts":["showNewBotBadge"],
+    "my-creations-backup":["enableAccountMigrationAssistant"],
+    "language-filter":["languageFilterLorebooks","languageFilterRulebooks"]
+  };
+  for(const [feature,keys] of Object.entries(newKeys)){
+    assert(test.allFeatures().some(f=>f.id===feature && keys.every(k=>f.settingKeys.includes(k))),
+      "New settings missing from "+feature);
+  }
+  test.choose(["chat-list"]);p=test.plan();
+  assert(p.chosen.has("content/chat-list.js"));
+  assert(!p.chosen.has("content/chat-pins.js"),"Chat List should not automatically enable Pins");
+  test.choose(["chat-export"]);p=test.plan();
+  assert(p.chosen.has("content/chat-export.js"));
+  assert(!p.chosen.has("content/language-filter.js"));
+  console.log("PASS: v0.2.73 new options stay grouped with their feature owners");
 
   console.log("Verified v"+data.version+" with "+test.count()+" real feature contracts");
 })().catch(err=>{console.error(err);process.exitCode=1;});
