@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.73'
+    assert release['version'] == '0.2.74'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -101,7 +101,7 @@ def main():
         assert index['features'][next(i for i,r in enumerate(index['features']) if r['id']==fid)]['settings'], fid
     assert 'bot-status' not in {f['id'] for f in catalog['features']}, 'Background-only feature requires special packaging; never add it as a content script'
 
-    assert len({panel for row in index['features'] for panel in row['settings']}) >= 43
+    assert len({panel for row in index['features'] for panel in row['settings']}) >= 76
     assert all(not row['defaultSelected'] and not row['defaultUpdatesEnabled'] for row in owned.values())
     for feature in catalog['features']:
         row = owned[feature['id']]
@@ -109,7 +109,7 @@ def main():
         assert set(row['settings']) == set(feature['settingsScripts'])
         assert set(row['styles']) == set(feature['cssFiles'])
         assert set(row['dependencies']) == set(feature['requiredFeatures'])
-    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 42
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 75
     assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 25
 
     assert all(set(f['requiredFeatures']) <= {x['id'] for x in catalog['features']} for f in catalog['features'])
@@ -126,6 +126,16 @@ def main():
     assert 'content/styles/private-lorebook-bridge.css' in owned['private-lorebook-bridge']['cssFiles']
     assert 'content/styles/chat-smart-folders.css' in owned['chat-smart-folders']['cssFiles']
     assert 'bot-status' not in owned, 'Background-only Bot Status is not a content selector'
+    for fid in ['accessibility','chat-bubbles','chat-list','quick-panel','sidebar','text-replacements','language-filter']:
+        feature=owned[fid]
+        panel=f'settings/feature-panels/{fid}.js'
+        assert panel in feature['settingsScripts'], fid
+        assert panel in sources, fid
+    for fid in ['android-app','quick-panel','top-bar']:
+        assert f'settings/feature-panels/{fid}.js' in owned[fid]['settingsScripts']
+    assert 'content/main-chat-startup-guard.js' in sources
+    assert 'content/main-refresh-trackers.js' in sources
+    assert 'content/cards-safety.js' in sources
     language=owned['language-filter']
     assert {'languageFilterLorebooks','languageFilterRulebooks'} <= set(language['settingKeys'])
     assert {'content/lorebook-public-qol.js','content/rulebook-public-qol.js'} <= set(language['requiredHelpers'])
@@ -199,7 +209,7 @@ def main():
     assert 'background/features/background-chat-lorebook-local.js' in owned['chat-lorebook-manager']['backgroundFiles']
     assert 'background/features/background-native-memory-probe.js' in owned['native-memory-probe']['backgroundFiles']
 
-    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 42
+    assert sum(bool(f.get('settingsScripts')) for f in catalog['features']) >= 75
     assert sum(bool(f.get('cssFiles')) for f in catalog['features']) >= 25
     for expected in ['ooc','story-day-tracker','wiki-lorebook-importer']:
         assert next(f for f in catalog['features'] if f['id']==expected)['cssFiles']

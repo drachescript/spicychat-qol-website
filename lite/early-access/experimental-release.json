@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.73",
+  "version": "0.2.74",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "dc47d191ad0738a7f2201fd2aeda8fd0be572ade",
-  "tree": "f1d34cb8762b96841f866621c23886b7e4d11d6f",
+  "commit": "9cfd0f4859ba30710692cc9b9eb8ed34e5ee14f3",
+  "tree": "9b40652a02c56ab0e61984d032dc7a87b0c153e3",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.73 is experimental. 134 selectable features, 43 feature-owned Settings panels and 26 feature-owned content stylesheets. Includes Full QoL v0.2.70–v0.2.73 fixes and grouped chat shortcuts, message bookmarks, language filtering on public Lorebooks/Rulebooks, and reviewed account migration backups. Language Filter includes both public-card helpers without enabling blocking controls. All selectors default OFF. Shared Settings/runtime independence and browser combinations are not fully verified."
+  "warning": "Custom v0.2.74 is experimental. 134 selectable features and 76 owned Settings panels, including new Stage 5 feature panels and chat runtime helpers. Pinned Conversations, Rulebook Blocking and Daily Message Limit remain separate opt-in features. All selectors default OFF and saved preferences are preserved. Shared runtime independence and browser feature combinations still need testing."
 }
