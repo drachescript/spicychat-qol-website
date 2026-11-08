@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-07T17:45:48Z",
+  "updatedAt": "2026-11-08T17:57:39Z",
   "chrome": {
     "users": 27,
     "status": "cached",
@@ -11,7 +11,7 @@
     }
   },
   "firefox": {
-    "users": 47,
+    "users": 48,
     "status": "cached",
     "source": "https://addons.mozilla.org/en-US/firefox/addon/dragonscript-spicychat-qol-dev/",
     "metric": "average daily users / public listing user count"
@@ -166,6 +166,11 @@
       "date": "2026-11-07",
       "chromeUsers": 27,
       "firefoxUsers": 47
+    },
+    {
+      "date": "2026-11-08",
+      "chromeUsers": 27,
+      "firefoxUsers": 48
     }
   ]
 }
