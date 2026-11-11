@@ -49,6 +49,9 @@ def main():
     assert data['channel'] == 'core-ooc-ea'
     assert data['features'] == ['ooc']
     assert data['status'] == 'experimental-test-only'
+    current = json.loads((ROOT / 'lite/early-access/experimental-release.json').read_text(encoding='utf-8'))
+    assert data['version'] == current['version'], 'Core + OOC Lite version is behind the Custom builder'
+    assert data['source']['commit'] == current['commit'], 'Core + OOC Lite source is behind the Custom builder'
     assert data['source']['repository'] == 'drachescript/spicychat-qol-extension'
     assert re.fullmatch(r'[0-9a-f]{40}', data['source']['commit'])
     assert set(data['files']) == MINIMAL
