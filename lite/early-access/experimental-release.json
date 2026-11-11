@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.74",
+  "version": "0.2.77",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "9cfd0f4859ba30710692cc9b9eb8ed34e5ee14f3",
-  "tree": "9b40652a02c56ab0e61984d032dc7a87b0c153e3",
+  "commit": "8338dec0d8b98b6d24c88487c20c4678490757f0",
+  "tree": "135b2e40aefdcabf95f4663d5c1fe3c9dbd289d8",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.74 is experimental. 134 selectable features and 76 owned Settings panels, including new Stage 5 feature panels and chat runtime helpers. Pinned Conversations, Rulebook Blocking and Daily Message Limit remain separate opt-in features. All selectors default OFF and saved preferences are preserved. Shared runtime independence and browser feature combinations still need testing."
+  "warning": "Custom v0.2.77 (Modularization Stage 8) is experimental. 135 individually selectable features, including Open in Archive, newer memory tools, Settings ownership and performance fixes. All feature selectors default OFF, and existing preferences are preserved. Independent browser behavior and all feature combinations are not yet certified."
 }
