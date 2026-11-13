@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.77",
+  "version": "0.2.79",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "8338dec0d8b98b6d24c88487c20c4678490757f0",
-  "tree": "135b2e40aefdcabf95f4663d5c1fe3c9dbd289d8",
+  "commit": "5e8f84cd1887131f96d84416017e47e7c5a258b5",
+  "tree": "5129f0764a7a29973fe5c8736fdc85c666c0abaa",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.77 (Modularization Stage 8) is experimental. 135 individually selectable features, including Open in Archive, newer memory tools, Settings ownership and performance fixes. All feature selectors default OFF, and existing preferences are preserved. Independent browser behavior and all feature combinations are not yet certified."
+  "warning": "Custom v0.2.79 (Modularization Stage 9) is experimental. 135 selectable features, including Memory Manager, Open in Archive and per-device cloud-sync controls. This version incorporates V2 Memory Manager safety checks, Quick Copy formatting fixes, Android Settings navigation improvements and Stage 9 runtime/Settings modularization. All feature selectors default OFF and saved preferences are preserved. Browser combinations are not fully certified."
 }
