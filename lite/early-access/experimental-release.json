@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.79",
+  "version": "0.2.80",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "5e8f84cd1887131f96d84416017e47e7c5a258b5",
-  "tree": "5129f0764a7a29973fe5c8736fdc85c666c0abaa",
+  "commit": "932a36e02bd953656fd7bf637cb16e234a03257b",
+  "tree": "d117bc57c826016717b7f96ba58f1ba7c1b6b4f5",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.79 (Modularization Stage 9) is experimental. 135 selectable features, including Memory Manager, Open in Archive and per-device cloud-sync controls. This version incorporates V2 Memory Manager safety checks, Quick Copy formatting fixes, Android Settings navigation improvements and Stage 9 runtime/Settings modularization. All feature selectors default OFF and saved preferences are preserved. Browser combinations are not fully certified."
+  "warning": "Custom v0.2.80 is experimental. 135 individually selectable features, all OFF by default. Performance improvements include reduced listing refreshes, deferred Favorites recovery, lazy desktop Tab Cleanup Settings and less Memory Manager observation work. Includes native Select bots, Quick Edit, RP Format Repair, chat export Rulebook state, cloud sync reporting and message toolbar fixes. Saved preferences are preserved; arbitrary feature combinations still require browser testing."
 }
