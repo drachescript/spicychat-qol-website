@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.80",
+  "version": "0.2.82",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "932a36e02bd953656fd7bf637cb16e234a03257b",
-  "tree": "d117bc57c826016717b7f96ba58f1ba7c1b6b4f5",
+  "commit": "7219e4e574dbd6701016714d4cbc0a8a2e54e51d",
+  "tree": "a28789080d3d823d264c38f73568e4ee62633ab1",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.80 is experimental. 135 individually selectable features, all OFF by default. Performance improvements include reduced listing refreshes, deferred Favorites recovery, lazy desktop Tab Cleanup Settings and less Memory Manager observation work. Includes native Select bots, Quick Edit, RP Format Repair, chat export Rulebook state, cloud sync reporting and message toolbar fixes. Saved preferences are preserved; arbitrary feature combinations still require browser testing."
+  "warning": "Custom v0.2.82 is experimental. 135 individually selectable features, all OFF by default. Includes v0.2.81–0.2.82 performance improvements for listing card filtering and blocked-card actions, updated bookmark and RP Format Repair controls, safer Quick Edit/three-dot menus, enhanced runtime diagnostic readiness and SpicyChat V2 composer/background fixes. Saved feature preferences are preserved, but arbitrary feature combinations require independent browser testing."
 }
