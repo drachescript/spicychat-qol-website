@@ -128,7 +128,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(p.chosen.has("content/card-token-info.js"));
   assert(p.chosen.has("settings/feature-panels/chat-continuation.js"));
   assert(p.selectedStyles.has("content/styles/chat-continuation.css"));
-  assert(m.content_scripts.some(cs=>(cs.js||[]).includes("content/chat-continuation.js")));
+  assert(m.web_accessible_resources?.some(row=>(row.resources||[]).includes("content/chat-continuation.js")), "Selected Chat Continuation must be importable on demand");
   assert(!p.chosen.has("content/favorites-recovery.js"));
   test.choose(["later-bots"]);
   p=test.plan();m=test.manifest();
