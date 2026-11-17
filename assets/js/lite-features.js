@@ -381,6 +381,7 @@ function pruneSafeBackground(source,active){
     if(!enabled.has(owner))pruned=pruned.replace(statement,'');
   }
   return pruned;
+}
 
 function plannedFiles(active){
   const activeIds=new Set(active);
