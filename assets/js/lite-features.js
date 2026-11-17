@@ -348,27 +348,39 @@ function pruneFeatureSettings(html,active){
 /** Only prune upstream-approved message-only services with owned routing. */
 function pruneSafeBackground(source,active){
   const enabled=new Set(active);
-  const match=source.match(/\bimportScripts\s*\(([\s\S]*?)\)\s*;/);
-  if(!match)throw Error('Background worker import list has changed.');
-  const quoted=[...match[1].matchAll(/(["'])([^"']+\.js)\1/g)].map(m=>m[2]);
-  if(quoted.length<10||new Set(quoted).size!==quoted.length)
-    throw Error('Unexpected background worker imports.');
-  for(const file of Object.keys(SAFE_BACKGROUND_OWNERS)){
-    if(quoted.filter(path=>path===file).length!==1)throw Error('Unrecognized optional background service: '+file);
-  }
-  const remaining=quoted.filter(file=>!Object.hasOwn(SAFE_BACKGROUND_OWNERS,file)||
+  const calls=[...source.matchAll(/\bimportScripts\s*\(([\s\S]*?)\)\s*;/g)];
+  // Full QoL Stage 16 loads initial background services, then conditionally
+  // loads Community Themes, then registers the ordered background event handlers.
+  if(calls.length!==3)throw Error('Background worker import layout has changed.');
+  const paths=call=>[...call[1].matchAll(/(["'])([^"']+\.js)\1/g)].map(m=>m[2]);
+  const initial=paths(calls[0]), optional=paths(calls[1]), events=paths(calls[2]);
+  if(initial.length<20||new Set(initial).size!==initial.length||
+     initial[0]!=='background/feature-build-profile.js'||
+     !initial.includes('background.js'))
+    throw Error('Background setup script order changed.');
+  if(events[0]!=='background/events/runtime-messages.js'||
+     events.at(-1)!=='background/background-events.js'||
+     new Set(events).size!==events.length)
+    throw Error('Background event order changed.');
+  for(const file of Object.keys(SAFE_BACKGROUND_OWNERS))
+    if(initial.filter(path=>path===file).length!==1)
+      throw Error('Unrecognized optional background service: '+file);
+  const conditionalFiles=Object.keys(CONDITIONAL_BACKGROUND_OWNERS);
+  if(optional.length!==conditionalFiles.length||
+     optional.some(file=>!Object.hasOwn(CONDITIONAL_BACKGROUND_OWNERS,file))||
+     new Set(optional).size!==optional.length)
+    throw Error('Conditional background service layout changed.');
+  const remaining=initial.filter(file=>!Object.hasOwn(SAFE_BACKGROUND_OWNERS,file)||
     enabled.has(SAFE_BACKGROUND_OWNERS[file]));
-  if(remaining.at(-1)!=='background/background-events.js'||
-     remaining.indexOf('background.js')>=remaining.indexOf('background/background-events.js'))
-    throw Error('Background service load order changed.');
-  let pruned=source.replace(match[0],'importScripts('+remaining.map(p=>JSON.stringify(p)).join(', ')+');');
+  let pruned=source.replace(calls[0][0],
+    'importScripts('+remaining.map(path=>JSON.stringify(path)).join(', ')+');');
   for(const [file,owner] of Object.entries(CONDITIONAL_BACKGROUND_OWNERS)){
     const statement='if (dsqBackgroundHasFeature('+JSON.stringify(owner)+')) importScripts('+JSON.stringify(file)+');';
-    if(pruned.split(statement).length!==2)throw Error('Unrecognized conditional background service: '+file);
+    if(pruned.split(statement).length!==2)
+      throw Error('Unrecognized conditional background service: '+file);
     if(!enabled.has(owner))pruned=pruned.replace(statement,'');
   }
   return pruned;
-}
 
 function plannedFiles(active){
   const activeIds=new Set(active);
