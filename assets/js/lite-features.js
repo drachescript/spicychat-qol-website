@@ -52,6 +52,9 @@ const SAFE_BACKGROUND_OWNERS=Object.freeze({
   'background/features/background-native-memory-probe.js':'native-memory-probe',
   'background/features/background-research-memory-export.js':'bulk-chat-research'
 });
+const CONDITIONAL_BACKGROUND_OWNERS=Object.freeze({
+  'background/features/background-community-themes.js':'archive-community-themes'
+});
 let selected=new Set(),dirHandle=null,busy=false;
 let activeCategory='All',searchValue='',onlySelected=false;
 let importedUnknown=[],updateModes={default:'manual',overrides:{}};
@@ -358,7 +361,13 @@ function pruneSafeBackground(source,active){
   if(remaining.at(-1)!=='background/background-events.js'||
      remaining.indexOf('background.js')>=remaining.indexOf('background/background-events.js'))
     throw Error('Background service load order changed.');
-  return source.replace(match[0],'importScripts('+remaining.map(p=>JSON.stringify(p)).join(', ')+');');
+  let pruned=source.replace(match[0],'importScripts('+remaining.map(p=>JSON.stringify(p)).join(', ')+');');
+  for(const [file,owner] of Object.entries(CONDITIONAL_BACKGROUND_OWNERS)){
+    const statement='if (dsqBackgroundHasFeature('+JSON.stringify(owner)+')) importScripts('+JSON.stringify(file)+');';
+    if(pruned.split(statement).length!==2)throw Error('Unrecognized conditional background service: '+file);
+    if(!enabled.has(owner))pruned=pruned.replace(statement,'');
+  }
+  return pruned;
 }
 
 function plannedFiles(active){
@@ -388,7 +397,8 @@ function plannedFiles(active){
     if(path.endsWith('.py')||path.endsWith('.zip')||path.endsWith('.md'))continue;
     if(parts[0]==='settings' && allSettings.has(path) && !selectedSettings.has(path))continue;
     if(parts[0]==='settings' && allSettingsStyles.has(path) && !selectedSettingsStyles.has(path))continue;
-    if(Object.hasOwn(SAFE_BACKGROUND_OWNERS,path)&&!activeIds.has(SAFE_BACKGROUND_OWNERS[path]))continue;
+    const backgroundOwner=SAFE_BACKGROUND_OWNERS[path]||CONDITIONAL_BACKGROUND_OWNERS[path];
+    if(backgroundOwner&&!activeIds.has(backgroundOwner))continue;
     if(parts[0]==='content'){
       if(path.endsWith('.js')){
         if(allFeatureScripts.has(path)&&!selectedOwned.has(path))continue;

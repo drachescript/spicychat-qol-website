@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=136,"Expected v0.2.85 individually named feature contracts");
+  assert(test.count()>=138,"Expected v0.2.86 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -145,7 +145,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();m=test.manifest();
   for(const filename of ["content/later-bots.js","content/favorite-bots.js","content/favorites-recovery.js"])
     assert(!p.chosen.has(filename),"Unselected Favorites or Later script included: "+filename);
-  console.log("PASS: v0.2.85 Later, native Favorites and Recovery remain separately selectable");
+  console.log("PASS: v0.2.86 Later, native Favorites and Recovery remain separately selectable");
 
   test.choose(["favorites-recovery"]);
   p=test.plan();m=test.manifest();
@@ -157,7 +157,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/chat-continuation.js"));
   assert(!p.selectedStyles.has("content/styles/chat-continuation.css"));
   assert(m.web_accessible_resources?.some(row=>(row.resources||[]).includes("content/favorites-recovery.js")), "Selected Favorites Recovery must be importable on demand");
-  console.log("PASS: v0.2.85 Continuation and Favorites Recovery package independently");
+  console.log("PASS: v0.2.86 Continuation and Favorites Recovery package independently");
 
   test.choose([]);
   p=test.plan();m=test.manifest();
@@ -170,7 +170,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();m=test.manifest();
   assert(!p.chosen.has("content/text-replacements.js"));
   assert(!m.content_scripts.some(cs => (cs.js || []).includes("content/text-replacements.js")));
-  console.log("PASS: v0.2.85 Text Replacements / Word Censor runtime packages only when selected");
+  console.log("PASS: v0.2.86 Text Replacements / Word Censor runtime packages only when selected");
 
   test.choose([]);
   p=test.plan();m=test.manifest();
@@ -187,7 +187,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/daily-message-limit.js"));
   assert(!p.chosen.has("settings/feature-panels/daily-message-limit.js"));
   assert(!m.content_scripts.some(cs=>(cs.js||[]).includes("content/daily-message-limit.js")));
-  console.log("PASS: v0.2.85 daily message limit packages only when selected");
+  console.log("PASS: v0.2.86 daily message limit packages only when selected");
 
   test.choose([]);
   p=test.plan();m=test.manifest();
@@ -209,7 +209,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();
   assert(!p.chosen.has("content/memory-packs.js"));
   assert(!p.chosen.has("content/lorebook-moderation-review.js"));
-  console.log("PASS: v0.2.85 Memory Packs and Lorebook Review follow their parent features");
+  console.log("PASS: v0.2.86 Memory Packs and Lorebook Review follow their parent features");
 
   test.choose(["chat-bookmarks"]);
   p=test.plan();m=test.manifest();
@@ -222,7 +222,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!p.chosen.has("content/chat-bookmarks.js"));
   assert(!p.chosen.has("content/chat-history-navigator.js"));
   assert(!m.content_scripts.some(cs => (cs.js || []).includes("content/chat-history-navigator.js")));
-  console.log("PASS: v0.2.85 History Navigator follows Chat Bookmarks selection");
+  console.log("PASS: v0.2.86 History Navigator follows Chat Bookmarks selection");
 
   test.choose(["chat-lorebook-manager"]);
   p=test.plan();
@@ -294,7 +294,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   }
   assert(!p.selectedStyles.has("content/styles/private-lorebook-bridge.css"));
   assert(!p.selectedStyles.has("content/styles/chat-smart-folders.css"));
-  console.log("PASS: v0.2.85 optional Lorebook/Memory/Smart Folder files omitted by default");
+  console.log("PASS: v0.2.86 optional Lorebook/Memory/Smart Folder files omitted by default");
 
   test.choose(["chat-smart-folders"]);
   p=test.plan();
@@ -351,7 +351,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   for(const file of ["background/features/background-context-keeper-storage.js",
     "background/features/background-chat-lorebook-local.js",
     "background/features/background-native-memory-probe.js"])
-    assert(!p.chosen.has(file),"Unselected v0.2.85 background handler included: "+file);
+    assert(!p.chosen.has(file),"Unselected v0.2.86 background handler included: "+file);
   console.log("PASS: all optional features OFF leaves shared Core scripts");
 
   test.choose(["bot-blocking","language-filter"]);
@@ -367,7 +367,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   const originalOptions=await optionsRes.text(),originalWorker=await entryRes.text();
   const index=test.getPackageIndex();
   const ownedSettings=[...new Set(index.features.flatMap(x=>x.settings))];
-  assert(ownedSettings.length>=76,"Expected 76 v0.2.85 Settings panel ownership records");
+  assert(ownedSettings.length>=76,"Expected 76 v0.2.86 Settings panel ownership records");
   assert(index.features.every(f=>!f.defaultSelected&&!f.defaultUpdatesEnabled));
   test.choose([]);
   p=test.plan();
@@ -411,7 +411,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
     '<script src="settings/feature-panels/translation.js"></script>','')),
     /Cannot safely isolate Settings panel/,"A missing known panel must fail closed");
   console.log("PASS: selected Settings panels and Translation background remain, unselected ones are removed");
-  // Test source-level inclusion/omission after the v0.2.85 Settings split.
+  // Test source-level inclusion/omission after the v0.2.86 Settings split.
   for(const fid of ["personas","selection-memory","daily-message-limit","soundscapes","translation"]){
     const panel="settings/feature-panels/"+fid+".js";
     test.choose([fid]);
@@ -439,7 +439,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert.throws(()=>test.pruneSettings(originalOptions.replace(
     '<script src="settings/feature-panels/personas.js"></script>','')),
     /Cannot safely isolate Settings panel/);
-  console.log("PASS: v0.2.85 Settings isolation for Personas, Selection Memory, daily limit, Soundscapes and Translation");
+  console.log("PASS: v0.2.86 Settings isolation for Personas, Selection Memory, daily limit, Soundscapes and Translation");
 
   test.choose(["wiki-lorebook-importer"]);
   const wikiWorker=test.pruneBackground(originalWorker);
@@ -448,7 +448,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   console.log("PASS: Wiki Fetch can be included without Translation background");
 
 
-  // v0.2.85 pins and local Rulebook blocking are independent, opt-in features.
+  // v0.2.86 pins and local Rulebook blocking are independent, opt-in features.
   test.choose([]);
   p=test.plan();m=test.manifest();
   for(const item of ["content/chat-pins.js","content/styles/chat-pins.css",
@@ -486,7 +486,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   test.choose(["chat-search"]);p=test.plan();
   assert(!p.chosen.has("content/chat-pins.js"));
   assert(!p.chosen.has("content/rulebook-public-qol.js"));
-  console.log("PASS: v0.2.85 Chat Pins and Rulebook blocking package independently");
+  console.log("PASS: v0.2.86 Chat Pins and Rulebook blocking package independently");
 
 
   // Newly added 0.2.70–0.2.73 controls belong to their existing top-level feature.
@@ -510,7 +510,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   test.choose(["chat-export"]);p=test.plan();
   assert(p.chosen.has("content/chat-export.js"));
   assert(!p.chosen.has("content/language-filter.js"));
-  console.log("PASS: v0.2.85 new options stay grouped with their feature owners");
+  console.log("PASS: v0.2.86 new options stay grouped with their feature owners");
 
 
   // Full QoL Stage 5 Settings splits must remain removable in Custom packages.
@@ -543,10 +543,10 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   }
   assert(!stripped.includes('id="chatListTwoColumns"'),
     "Chat List shortcut controls must be feature-owned, not shared inline controls");
-  console.log("PASS: v0.2.85 owned Settings modules and multi-mount pruning");
+  console.log("PASS: v0.2.86 owned Settings modules and multi-mount pruning");
 
 
-  // New optional v0.2.85 archive shortcuts remain opt-in in Custom packages.
+  // New optional v0.2.86 archive shortcuts remain opt-in in Custom packages.
   test.choose([]);
   assert(!test.plan().chosen.has("content/archive-website-link.js"),
     "Archive shortcut must not load unless selected");
@@ -557,10 +557,10 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(archivePlan.chosen.has("settings/feature-panels/archive-website-link.js"),
     "Selected archive shortcut Settings missing");
   test.choose([]);
-  console.log("PASS: v0.2.85 Archive shortcut is independently selectable");
+  console.log("PASS: v0.2.86 Archive shortcut is independently selectable");
 
 
-  // v0.2.85: Research Export stays off until selected, including its worker
+  // v0.2.86: Research Export stays off until selected, including its worker
   // and read-only background memory helper.
   test.choose([]);
   let researchPlan=test.plan(), researchManifest=test.manifest();
@@ -580,7 +580,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   const researchIndex=test.getPackageIndex().features.find(f=>f.id==="bulk-chat-research");
   assert(researchIndex && researchIndex.defaultSelected===false && researchIndex.defaultUpdatesEnabled===false);
   test.choose([]);
-  console.log("PASS: v0.2.85 Research Export runtime, worker, Settings and background are independently packaged");
+  console.log("PASS: v0.2.86 Research Export runtime, worker, Settings and background are independently packaged");
 
 
   // Stage 15: optional modules are intentionally absent from startup scripts.
@@ -606,7 +606,42 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
     assert(selectedManifest.web_accessible_resources?.some(row=>(row.resources||[]).includes(file)), "Selected lazy module unavailable for import: "+file);
     test.choose([]);
   }
-  console.log("PASS: v0.2.85 Stage 15 on-demand runtime packaging and omission");
+  console.log("PASS: v0.2.86 Stage 15 on-demand runtime packaging and omission");
+
+
+  // Stage 16: separately owned optional community data and creator optimizer.
+  test.choose([]);
+  let stage16Plan=test.plan(), stage16Manifest=test.manifest();
+  for(const file of ["content/archive-community-themes.js","content/character-token-optimizer.js",
+                     "background/features/background-community-themes.js",
+                     "settings/feature-panels/archive-community-themes.js",
+                     "settings/feature-panels/character-token-optimizer.js"]){
+    assert(!stage16Plan.chosen.has(file), "Unselected Stage 16 feature included: "+file);
+  }
+  assert(!test.pruneBackground(originalWorker).includes("background/features/background-community-themes.js"),
+    "Unselected community theme worker must be removed entirely");
+  assert(!test.pruneSettings(originalOptions).includes('data-dsq-feature-panel="archive-community-themes"'));
+  assert(!test.pruneSettings(originalOptions).includes('data-dsq-feature-panel="character-token-optimizer"'));
+  test.choose(["archive-community-themes"]);
+  stage16Plan=test.plan();stage16Manifest=test.manifest();
+  assert(test.recipe().selectedFeatures.includes("cards"), "Community Themes requires Cards");
+  for(const file of ["content/archive-community-themes.js","background/features/background-community-themes.js",
+                     "settings/feature-panels/archive-community-themes.js"])
+    assert(stage16Plan.chosen.has(file),"Selected Community Themes asset missing: "+file);
+  assert(test.pruneBackground(originalWorker).includes('if (dsqBackgroundHasFeature("archive-community-themes")) importScripts("background/features/background-community-themes.js");'));
+  assert(stage16Manifest.web_accessible_resources?.some(row=>(row.resources||[]).includes("content/archive-community-themes.js")));
+  assert(!stage16Manifest.content_scripts.some(cs=>(cs.js||[]).includes("content/archive-community-themes.js")));
+  assert(test.pruneSettings(originalOptions).includes('data-dsq-feature-panel="archive-community-themes"'));
+  test.choose(["character-token-optimizer"]);
+  stage16Plan=test.plan();stage16Manifest=test.manifest();
+  assert(stage16Plan.chosen.has("content/character-token-optimizer.js"));
+  assert(stage16Plan.chosen.has("settings/feature-panels/character-token-optimizer.js"));
+  assert(!stage16Plan.chosen.has("background/features/background-community-themes.js"));
+  assert(stage16Manifest.web_accessible_resources?.some(row=>(row.resources||[]).includes("content/character-token-optimizer.js")));
+  assert(!stage16Manifest.content_scripts.some(cs=>(cs.js||[]).includes("content/character-token-optimizer.js")));
+  assert(test.pruneSettings(originalOptions).includes('data-dsq-feature-panel="character-token-optimizer"'));
+  test.choose([]);
+  console.log("PASS: Stage 16 community themes and creator optimizer package independently");
 
   console.log("Verified v"+data.version+" with "+test.count()+" real feature contracts");
 })().catch(err=>{console.error(err);process.exitCode=1;});

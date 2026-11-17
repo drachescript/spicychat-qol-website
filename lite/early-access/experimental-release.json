@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.85",
+  "version": "0.2.86",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "69c7a00c7872b372e81022ecddab63013e8f764f",
-  "tree": "fa69f7ba8937dc1257af27da7f7081b8d7d0f68c",
+  "commit": "5d3e2a4bbcd8c73b37c7faaa7cfa51b7ef5a58e4",
+  "tree": "2fe25225f758697d1fe1c4d854d9ef5a62e28375",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.85 (Stage 15) remains experimental. 136 individually selectable features, OFF by default. Extends route- and settings-based lazy-loading to optional tools, adds off-by-default Implied Blocked Themes filtering, improves Favorites, Bot Status and Memory checks, adds Settings guidance and expands manual Research Export completeness reporting. Feature-specific on-demand scripts are packaged only when selected, with matching web-accessible resources. Saved preferences are preserved; arbitrary feature combinations still require browser testing."
+  "warning": "Custom v0.2.86 (Stage 16) remains experimental. 138 individually selectable features, OFF by default. Adds independent, optional Archive Community Themes and Character Token Optimizer, extends on-demand creator, chat, Persona, Lorebook and filtering modules, defers heavy Settings Diagnostics, and improves Research Export progress and metadata recovery. The Community Themes background service and both feature-specific Settings panels are omitted when not selected. Custom saved settings are preserved. Browser-specific feature combinations still require testing."
 }
