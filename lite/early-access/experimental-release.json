@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.82",
+  "version": "0.2.84",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "7219e4e574dbd6701016714d4cbc0a8a2e54e51d",
-  "tree": "a28789080d3d823d264c38f73568e4ee62633ab1",
+  "commit": "b3b425c875b06fcaf47606a473c16aa5b7441637",
+  "tree": "b36942d6c07d6dc37c30a854c601993dd0d006bb",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.82 is experimental. 135 individually selectable features, all OFF by default. Includes v0.2.81–0.2.82 performance improvements for listing card filtering and blocked-card actions, updated bookmark and RP Format Repair controls, safer Quick Edit/three-dot menus, enhanced runtime diagnostic readiness and SpicyChat V2 composer/background fixes. Saved feature preferences are preserved, but arbitrary feature combinations require independent browser testing."
+  "warning": "Custom v0.2.84 is experimental. 136 individually selectable features, OFF by default. Adds optional Bulk Chat & Memory Research Export, configurable chat-header visibility and native formatting shortcut hiding, selective Context Keeper updates, matched user-message background opacity, Memory Manager V2 layout refinements, and clearer cloud-sync audits. All optional Research Export worker/background files are included only when the exporter is selected. Saved settings are preserved; arbitrary feature combinations require browser testing."
 }

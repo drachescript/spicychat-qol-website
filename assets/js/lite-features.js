@@ -49,7 +49,8 @@ const SAFE_BACKGROUND_OWNERS=Object.freeze({
   'background/background-wiki-fetch.js':'wiki-lorebook-importer',
   'background/features/background-context-keeper-storage.js':'context-keeper',
   'background/features/background-chat-lorebook-local.js':'chat-lorebook-manager',
-  'background/features/background-native-memory-probe.js':'native-memory-probe'
+  'background/features/background-native-memory-probe.js':'native-memory-probe',
+  'background/features/background-research-memory-export.js':'bulk-chat-research'
 });
 let selected=new Set(),dirHandle=null,busy=false;
 let activeCategory='All',searchValue='',onlySelected=false;
