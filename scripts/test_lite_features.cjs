@@ -197,7 +197,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();m=test.manifest();
   assert(p.chosen.has("content/memory-manager.js"));
   assert(p.chosen.has("content/memory-packs.js"));
-  assert(m.content_scripts.some(cs => (cs.js || []).includes("content/memory-packs.js")));
+  assert(m.web_accessible_resources?.some(row=>(row.resources||[]).includes("content/memory-packs.js")), "Selected Memory Packs must remain available for on-demand import");
   assert(!p.chosen.has("content/lorebook-moderation-review.js"));
   test.choose(["moderation-warnings"]);
   p=test.plan();m=test.manifest();
