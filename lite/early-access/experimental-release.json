@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.84",
+  "version": "0.2.85",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "b3b425c875b06fcaf47606a473c16aa5b7441637",
-  "tree": "b36942d6c07d6dc37c30a854c601993dd0d006bb",
+  "commit": "69c7a00c7872b372e81022ecddab63013e8f764f",
+  "tree": "fa69f7ba8937dc1257af27da7f7081b8d7d0f68c",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.84 is experimental. 136 individually selectable features, OFF by default. Adds optional Bulk Chat & Memory Research Export, configurable chat-header visibility and native formatting shortcut hiding, selective Context Keeper updates, matched user-message background opacity, Memory Manager V2 layout refinements, and clearer cloud-sync audits. All optional Research Export worker/background files are included only when the exporter is selected. Saved settings are preserved; arbitrary feature combinations require browser testing."
+  "warning": "Custom v0.2.85 (Stage 15) remains experimental. 136 individually selectable features, OFF by default. Extends route- and settings-based lazy-loading to optional tools, adds off-by-default Implied Blocked Themes filtering, improves Favorites, Bot Status and Memory checks, adds Settings guidance and expands manual Research Export completeness reporting. Feature-specific on-demand scripts are packaged only when selected, with matching web-accessible resources. Saved preferences are preserved; arbitrary feature combinations still require browser testing."
 }
