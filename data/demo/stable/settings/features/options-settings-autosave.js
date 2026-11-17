@@ -415,6 +415,12 @@ function readSettingsFromPage() {
     blockCards: checked("blockCards"),
     autoBlockWordMatches: checked("autoBlockWordMatches"),
     autoBlockTagMatches: checked("autoBlockTagMatches"),
+    filterImpliedBlockedTags: checked("filterImpliedBlockedTags"),
+    archiveCommunityThemesEnabled: checked("archiveCommunityThemesEnabled"),
+    archiveCommunityThemesMode: value("archiveCommunityThemesMode") === "candidates" ? "candidates" : "reviewed",
+    archiveCommunityThemesRiskWarnings: checked("archiveCommunityThemesRiskWarnings"),
+    archiveCommunityThemesExtraTags: value("archiveCommunityThemesExtraTags", "").slice(0, 5000),
+    archiveCommunityThemesAllowIds: value("archiveCommunityThemesAllowIds", "").slice(0, 8000),
     hideHomeForYouCards: checked("hideHomeForYouCards"),
     expandLongCardDescriptions: checked("expandLongCardDescriptions"),
     showCardGreetingTokenInfo: checked("showCardGreetingTokenInfo"),
@@ -919,6 +925,12 @@ function readSingleSettingFromPage(settingKey) {
     case "blockCards": return (checked("blockCards"));
     case "autoBlockWordMatches": return (checked("autoBlockWordMatches"));
     case "autoBlockTagMatches": return (checked("autoBlockTagMatches"));
+    case "filterImpliedBlockedTags": return (checked("filterImpliedBlockedTags"));
+    case "archiveCommunityThemesEnabled": return checked("archiveCommunityThemesEnabled");
+    case "archiveCommunityThemesMode": return value("archiveCommunityThemesMode") === "candidates" ? "candidates" : "reviewed";
+    case "archiveCommunityThemesRiskWarnings": return checked("archiveCommunityThemesRiskWarnings");
+    case "archiveCommunityThemesExtraTags": return value("archiveCommunityThemesExtraTags", "").slice(0,5000);
+    case "archiveCommunityThemesAllowIds": return value("archiveCommunityThemesAllowIds", "").slice(0,8000);
     case "hideHomeForYouCards": return (checked("hideHomeForYouCards"));
     case "expandLongCardDescriptions": return (checked("expandLongCardDescriptions"));
     case "showCardGreetingTokenInfo": return (checked("showCardGreetingTokenInfo"));

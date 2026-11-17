@@ -1,6 +1,35 @@
+## 0.2.86
+- Improved Research Export responsiveness with fewer progress redraws and a dedicated lightweight export tab.
+- Fixed Example Dialogue metadata availability and repaired previously saved character records without extra profile requests.
+- Added retries for partially retrieved linked Lorebooks and clearer export phase timings and API diagnostics.
+- Added clearer initial synchronous-call timing for runtime steps without changing chat scheduling or recovery.
+- Added an optional Character Token Optimizer to chatbot creation, with per-field estimates, reviewable suggestions and manual Apply actions.
+- Added step-by-step Bulk Research Export progress with a live, stage-specific ETA for bot discovery, conversation scanning, and export.
+- Improved startup performance by deferring more optional creator, Persona, chat, Lorebook, and Smart Filter tools until needed.
+- Reduced delays from loading independent optional modules while preserving their required dependencies.
+- Delayed the heavy Diagnostics/Support Settings code until those tools are used.
+- Kept saved export checkpoints, enabled-feature behavior, and native rating/recovery safeguards unchanged.
+- Added optional Archive Community Themes with reviewed/candidate trust choices, historical-only warnings, per-bot exceptions and batched, version-cached public bot-ID lookups.
+- Kept local Implied Themes independent and added explicit human-review suggestions without uploading private data.
+
+## 0.2.85
+- Improved startup performance by loading more optional features only when needed.
+- Added guides and clearer explanations for Memory, Context Keeper, Lorebooks, Rulebooks, and creator tools.
+- Added adjustable native Memory checks and a manual Check now action.
+- Made backup, import, Replace, and cloud sync safety information clearer.
+- Improved Creation Audit explanations and browser/platform support guidance.
+- Added Implied Blocked Themes for bots with untagged cheating, emotional affairs, NTR, cuckolding, or suspicious relationship dynamics.
+- Improved implied-theme detection using audited examples, including wedding-weekend and hidden relationship-history scenarios, while reducing false positives.
+- Expanded bulk research exports with separate character metadata files, accessible linked content, and better retry and completeness reporting.
+- Fixed Tab Cleanup Settings failing to load after startup optimizations.
+- Reduced unnecessary Bot Status storage reads and improved storage performance diagnostics without changing saved checkpoints.
+- Reduced repeat Dislike helper checks and unnecessary chatbot card updates while preserving native rating verification.
+- Improved Favorites scanning and browsing by avoiding repeated filtering, imports and unchanged history writes.
+- Clarified Favorites listing, account and locally saved counts, with authenticated verification when available.
+
 ## 0.2.84
 - Kept SpicyChat's native chat header visible while typing by default, with an independent option to restore native hiding.
-- Added an option to hide SpicyChat's new * / quote formatting shortcut beside Send
+- Added an option to hide SpicyChat's new * / quote formatting shortcut beside Send, without hiding Send or the + menu.
 - Added more selective, balanced Context Keeper continuity capture
 - Added matching chat background opacity for user messages while keeping their original bubble color.
 - Added cloud sync storage estimates and clearer Blocked/Later sync status, including local and cloud list counts.
