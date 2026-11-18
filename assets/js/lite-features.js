@@ -53,7 +53,8 @@ const SAFE_BACKGROUND_OWNERS=Object.freeze({
   'background/features/background-research-memory-export.js':'bulk-chat-research'
 });
 const CONDITIONAL_BACKGROUND_OWNERS=Object.freeze({
-  'background/features/background-community-themes.js':'archive-community-themes'
+  'background/features/background-community-themes.js':'archive-community-themes',
+  'background/features/background-blocking-presets.js':'archive-blocking-presets'
 });
 let selected=new Set(),dirHandle=null,busy=false;
 let activeCategory='All',searchValue='',onlySelected=false;
@@ -349,11 +350,12 @@ function pruneFeatureSettings(html,active){
 function pruneSafeBackground(source,active){
   const enabled=new Set(active);
   const calls=[...source.matchAll(/\bimportScripts\s*\(([\s\S]*?)\)\s*;/g)];
-  // Full QoL Stage 16 loads initial background services, then conditionally
-  // loads Community Themes, then registers the ordered background event handlers.
-  if(calls.length!==3)throw Error('Background worker import layout has changed.');
+  // Full QoL Stage 17 loads initial services, reviewed independent optional
+  // handlers, then the ordered event handlers. Fail closed on unknown layouts.
+  const conditionalFiles=Object.keys(CONDITIONAL_BACKGROUND_OWNERS);
+  if(calls.length!==conditionalFiles.length+2)throw Error('Background worker import layout has changed.');
   const paths=call=>[...call[1].matchAll(/(["'])([^"']+\.js)\1/g)].map(m=>m[2]);
-  const initial=paths(calls[0]), optional=paths(calls[1]), events=paths(calls[2]);
+  const initial=paths(calls[0]), optional=calls.slice(1,-1).flatMap(paths), events=paths(calls.at(-1));
   if(initial.length<20||new Set(initial).size!==initial.length||
      initial[0]!=='background/feature-build-profile.js'||
      !initial.includes('background.js'))
@@ -365,7 +367,6 @@ function pruneSafeBackground(source,active){
   for(const file of Object.keys(SAFE_BACKGROUND_OWNERS))
     if(initial.filter(path=>path===file).length!==1)
       throw Error('Unrecognized optional background service: '+file);
-  const conditionalFiles=Object.keys(CONDITIONAL_BACKGROUND_OWNERS);
   if(optional.length!==conditionalFiles.length||
      optional.some(file=>!Object.hasOwn(CONDITIONAL_BACKGROUND_OWNERS,file))||
      new Set(optional).size!==optional.length)

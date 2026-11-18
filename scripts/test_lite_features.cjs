@@ -381,6 +381,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!emptySettings.includes('data-dsq-feature-panel="context-keeper"'));
   assert(!emptyWorker.includes('"background/background-translation.js"'));
   assert(!emptyWorker.includes('"background/background-wiki-fetch.js"'));
+  assert(!emptyWorker.includes('"background/features/background-blocking-presets.js"'), "Unselected Archive Blocking Presets background handler retained");
   for(const file of ["background/features/background-context-keeper-storage.js",
     "background/features/background-chat-lorebook-local.js",
     "background/features/background-native-memory-probe.js"])
@@ -411,6 +412,19 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
     '<script src="settings/feature-panels/translation.js"></script>','')),
     /Cannot safely isolate Settings panel/,"A missing known panel must fail closed");
   console.log("PASS: selected Settings panels and Translation background remain, unselected ones are removed");
+
+  test.choose(["archive-blocking-presets"]);
+  p=test.plan();
+  assert(p.chosen.has("background/features/background-blocking-presets.js"));
+  assert(p.chosen.has("settings/feature-panels/archive-blocking-presets.js"));
+  const presetWorker=test.pruneBackground(originalWorker);
+  const presetSettings=test.pruneSettings(originalOptions);
+  assert(presetWorker.includes('"background/features/background-blocking-presets.js"'));
+  assert(!presetWorker.includes('"background/features/background-community-themes.js"'));
+  assert(presetSettings.includes('src="settings/feature-panels/archive-blocking-presets.js"'));
+  test.choose([]);
+  assert(!test.pruneBackground(originalWorker).includes('"background/features/background-blocking-presets.js"'));
+  console.log("PASS: v0.2.87 Archive Blocking Presets background and Settings are independently optional");
   // Test source-level inclusion/omission after the v0.2.86 Settings split.
   for(const fid of ["personas","selection-memory","daily-message-limit","soundscapes","translation"]){
     const panel="settings/feature-panels/"+fid+".js";
