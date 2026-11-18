@@ -203,7 +203,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   p=test.plan();m=test.manifest();
   assert(p.chosen.has("content/moderation-warnings.js"));
   assert(p.chosen.has("content/lorebook-moderation-review.js"));
-  assert(m.content_scripts.some(cs => (cs.js || []).includes("content/lorebook-moderation-review.js")));
+  assert(m.web_accessible_resources?.some(row=>(row.resources||[]).includes("content/lorebook-moderation-review.js")), "Selected Lorebook Review must remain available for on-demand import");
   assert(!p.chosen.has("content/memory-packs.js"));
   test.choose(["chat-search"]);
   p=test.plan();
