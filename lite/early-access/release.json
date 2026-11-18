@@ -4,7 +4,7 @@
   "version": "0.2.87",
   "source": {
     "repository": "drachescript/spicychat-qol-extension",
-    "commit": "32929a2cc36f251e117185e643ced89ca2abd1c0"
+    "commit": "c410e6f72b567ce7f37bdd5d814d9ffbbcec30f6"
   },
   "name": "SpicyChat QoL — Core + OOC (test)",
   "files": {

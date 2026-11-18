@@ -2,8 +2,8 @@
   "schema": "sqol-experimental-modules/v1",
   "version": "0.2.87",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "32929a2cc36f251e117185e643ced89ca2abd1c0",
-  "tree": "cb1763460f8eee7045dd7980fd806de03c7189c2",
+  "commit": "c410e6f72b567ce7f37bdd5d814d9ffbbcec30f6",
+  "tree": "25c2983cf6d63e9b449eb7f9c32865eed077e534",
   "browser": "chrome",
   "status": "experimental-unvalidated",
   "warning": "Custom v0.2.87 remains experimental. 139 individually selectable features, all OFF by default. Adds optional Archive Blocking Presets with isolated background and Settings ownership, improved listing and Later processing, research export and Lorebook safeguards, and Stage 17 on-demand startup changes. Existing Custom settings are preserved. Browser-specific feature combinations still require independent testing."
