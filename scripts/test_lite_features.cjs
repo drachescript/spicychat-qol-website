@@ -481,8 +481,8 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(p.chosen.has("settings/feature-panels/chat-pins.js"));
   assert(!p.chosen.has("content/rulebook-public-qol.js"));
   assert(!p.chosen.has("settings/feature-panels/rulebook-public-qol.js"));
-  assert(m.content_scripts.some(cs=>(cs.js||[]).includes("content/chat-pins.js")
-    && (cs.css||[]).includes("content/styles/chat-pins.css")));
+  assert(m.web_accessible_resources?.some(row=>(row.resources||[]).includes("content/chat-pins.js")), "Chat Pins must remain available for on-demand import");
+  assert(m.content_scripts.some(cs=>(cs.css||[]).includes("content/styles/chat-pins.css")), "Selected Chat Pins CSS must remain in manifest");
   const pinOptions=test.pruneSettings(originalOptions);
   assert(pinOptions.includes('data-dsq-feature-panel="chat-pins"'));
   assert(!pinOptions.includes('data-dsq-feature-panel="rulebook-public-qol"'));
