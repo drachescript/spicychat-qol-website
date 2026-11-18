@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.86'
+    assert release['version'] == '0.2.87'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -88,8 +88,9 @@ def main():
     catalog = fetch_json(base + '/build/feature-catalog.json')
     assert catalog['schema'] == 'sqol-custom-feature-catalog/v1'
     assert catalog['version'] == release['version']
-    assert catalog['featureCount'] >= 138
+    assert catalog['featureCount'] >= 139
     assert catalog['featureCount'] == len(catalog['features'])
+    assert 'archive-blocking-presets' in {f['id'] for f in catalog['features']}
     index = fetch_json(base + '/build/custom-package-index.json')
     assert index['schema'] == 'spicychat-qol-custom-package-assets/v1'
     assert index['sourceVersion'] == release['version']
