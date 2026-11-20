@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.87",
+  "version": "0.2.88",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "c410e6f72b567ce7f37bdd5d814d9ffbbcec30f6",
-  "tree": "25c2983cf6d63e9b449eb7f9c32865eed077e534",
+  "commit": "10580c40b15b56165567f5b2dbde5008ccb7eaa3",
+  "tree": "c813407fec2bfd305fb516e3844a7e6ec83388d4",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.87 remains experimental. 139 individually selectable features, all OFF by default. Adds optional Archive Blocking Presets with isolated background and Settings ownership, improved listing and Later processing, research export and Lorebook safeguards, and Stage 17 on-demand startup changes. Existing Custom settings are preserved. Browser-specific feature combinations still require independent testing."
+  "warning": "Custom v0.2.88 remains experimental. 139 individually selectable features, all OFF by default. Adds optional GitHub backups alongside QoL Cloud, encrypted and incremental snapshot recovery, selective restores, improved research scanning and verified history recovery, RP Format Repair editing previews, native Memory JSON fixes, and reduced unnecessary listing work. GitHub authorization is user-initiated and backup provider settings remain opt-in. Custom-only controls and existing saved settings are preserved. Browser-specific feature combinations still require independent testing."
 }

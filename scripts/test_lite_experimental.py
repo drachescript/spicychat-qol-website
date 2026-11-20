@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.87'
+    assert release['version'] == '0.2.88'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -91,6 +91,7 @@ def main():
     assert catalog['featureCount'] >= 139
     assert catalog['featureCount'] == len(catalog['features'])
     assert 'archive-blocking-presets' in {f['id'] for f in catalog['features']}
+    assert {'settings/options-github-backup.js', 'shared/github-backup-service.js'} <= sources, 'Missing v0.2.88 GitHub backup runtime assets'
     index = fetch_json(base + '/build/custom-package-index.json')
     assert index['schema'] == 'spicychat-qol-custom-package-assets/v1'
     assert index['sourceVersion'] == release['version']

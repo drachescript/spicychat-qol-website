@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=138,"Expected v0.2.86 individually named feature contracts");
+  assert(test.count()>=139,"Expected v0.2.88 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -424,7 +424,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(presetSettings.includes('src="settings/feature-panels/archive-blocking-presets.js"'));
   test.choose([]);
   assert(!test.pruneBackground(originalWorker).includes('"background/features/background-blocking-presets.js"'));
-  console.log("PASS: v0.2.87 Archive Blocking Presets background and Settings are independently optional");
+  console.log("PASS: v0.2.88 Archive Blocking Presets background and Settings are independently optional");
   // Test source-level inclusion/omission after the v0.2.86 Settings split.
   for(const fid of ["personas","selection-memory","daily-message-limit","soundscapes","translation"]){
     const panel="settings/feature-panels/"+fid+".js";
