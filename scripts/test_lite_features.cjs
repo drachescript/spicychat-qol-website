@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=139,"Expected v0.2.91 individually named feature contracts");
+  assert(test.count()>=140,"Expected v0.2.92 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -376,6 +376,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
     assert(!p.chosen.has(file),"Unselected message-only background service retained: "+file);
   const emptySettings=test.pruneSettings(originalOptions);
   const emptyWorker=test.pruneBackground(originalWorker);
+  assert(!emptySettings.includes('id="reportLinkCollectorSettingsCard"'),"Unselected Report Link Collector Settings should be omitted");
   for(const file of ownedSettings)assert(!emptySettings.includes('src="'+file+'"'),"Settings HTML still imports "+file);
   assert(!emptySettings.includes('data-dsq-feature-panel="translation"'));
   assert(!emptySettings.includes('data-dsq-feature-panel="context-keeper"'));
@@ -408,10 +409,22 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(selectedWorker.includes('"background/features/background-context-keeper-storage.js"'));
   assert(!selectedWorker.includes('"background/features/background-chat-lorebook-local.js"'));
   assert(!selectedWorker.includes('"background/background-wiki-fetch.js"'));
-  assert.throws(()=>test.pruneSettings(originalOptions.replace(
-    '<script src="settings/feature-panels/translation.js"></script>','')),
+  const missingTranslation=originalOptions.replace(/<script\b[^>]*\bsrc="settings\/feature-panels\/translation\.js"[^>]*><\/script>/i,'');
+  assert(missingTranslation!==originalOptions,"Missing Translation script declaration in source fixture");
+  assert.throws(()=>test.pruneSettings(missingTranslation),
     /Cannot safely isolate Settings panel/,"A missing known panel must fail closed");
   console.log("PASS: selected Settings panels and Translation background remain, unselected ones are removed");
+
+  test.choose(["report-link-collector"]);
+  p=test.plan();m=test.manifest();
+  assert(test.recipe().selectedFeatures.includes("cards"),"Report Link Collector depends on Cards");
+  assert(p.chosen.has("content/report-link-collector.js"),"Selected Report Link Collector module missing");
+  assert(!m.content_scripts.some(cs=>(cs.js||[]).includes("content/report-link-collector.js")),"Collector must stay on demand");
+  assert(m.web_accessible_resources?.some(row=>(row.resources||[]).includes("content/report-link-collector.js")),"Collector lazy module not accessible");
+  assert(test.pruneSettings(originalOptions).includes('id="reportLinkCollectorSettingsCard"'),"Collector Settings card missing");
+  test.choose([]);
+  assert(!test.plan().chosen.has("content/report-link-collector.js"));
+  console.log("PASS: v0.2.92 Report Link Collector remains independently optional");
 
   test.choose(["archive-blocking-presets"]);
   p=test.plan();
@@ -424,7 +437,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(presetSettings.includes('src="settings/feature-panels/archive-blocking-presets.js"'));
   test.choose([]);
   assert(!test.pruneBackground(originalWorker).includes('"background/features/background-blocking-presets.js"'));
-  console.log("PASS: v0.2.91 Archive Blocking Presets background and Settings are independently optional");
+  console.log("PASS: v0.2.92 Archive Blocking Presets background and Settings are independently optional");
   // Test source-level inclusion/omission after the v0.2.86 Settings split.
   for(const fid of ["personas","selection-memory","daily-message-limit","soundscapes","translation"]){
     const panel="settings/feature-panels/"+fid+".js";
@@ -450,8 +463,9 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
     assert(!offPlan.chosen.has("settings/feature-panels/"+fid+".js"),"Unselected panel included: "+fid);
     assert(!offHtml.includes('data-dsq-feature-panel="'+fid+'"'),"Unselected placeholder remains: "+fid);
   }
-  assert.throws(()=>test.pruneSettings(originalOptions.replace(
-    '<script src="settings/feature-panels/personas.js"></script>','')),
+  const missingPersonas=originalOptions.replace(/<script\b[^>]*\bsrc="settings\/feature-panels\/personas\.js"[^>]*><\/script>/i,'');
+  assert(missingPersonas!==originalOptions,"Missing Personas script declaration in source fixture");
+  assert.throws(()=>test.pruneSettings(missingPersonas),
     /Cannot safely isolate Settings panel/);
   console.log("PASS: v0.2.86 Settings isolation for Personas, Selection Memory, daily limit, Soundscapes and Translation");
 

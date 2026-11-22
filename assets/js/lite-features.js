@@ -344,7 +344,15 @@ function pruneFeatureSettings(html,active){
     if(![...owners].some(id=>activeIds.has(id))&&cleaned.includes('src="'+file+'"'))
       throw Error('Omitted Settings panel still referenced: '+file);
   }
-  return cleaned;
+  // v0.2.92 collector has an independent Settings card, not a panel mount.
+  // Keep the popup's saved-link recovery controls for all build profiles.
+  const collectorCard='<section class="card" id="reportLinkCollectorSettingsCard">';
+  const parts=cleaned.split(collectorCard);
+  if(parts.length!==2)throw Error('Report Link Collector Settings markup changed.');
+  const closing=parts[1].indexOf('</section>');
+  if(closing<0)throw Error('Report Link Collector Settings section is incomplete.');
+  return activeIds.has('report-link-collector') ? cleaned :
+    parts[0]+parts[1].slice(closing+'</section>'.length);
 }
 /** Only prune upstream-approved message-only services with owned routing. */
 function pruneSafeBackground(source,active){
