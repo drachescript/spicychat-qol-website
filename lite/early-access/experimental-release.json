@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.90",
+  "version": "0.2.91",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "89859b84047d1b77a93ad0d9e81a88dfec72614c",
-  "tree": "d55ba2926508b1d9a7475839bb04e35405c0ddc5",
+  "commit": "58642e19113888bcb06518f7842b8aac7dc096d1",
+  "tree": "30834d4cd369e02272ee0ec01a219675b3ffe285",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.90 remains experimental. 139 selectable features, OFF by default. Adds the v0.2.89–v0.2.90 changes including changed-message and card queues, deferred heavy Settings tools, persona-quota detection improvements, Lorebook count fixes, and incremental Research Export discovery, history verification, indexes, and GitHub staging. Existing Custom settings and saved data are preserved. Independent browser feature combinations still require testing."
+  "warning": "Custom v0.2.91 remains experimental. 139 selectable features, all OFF by default. Includes Full QoL v0.2.91 changes for native chat-message text safety, targeted RP Format Repair and replacement observers, efficient Settings storage reads and Saved Bots Hub lists, safer Bot Status and Archive transfers, Research Export incremental history verification and checkpoints, S.AI Toolkit compatibility, and generation metadata corrections. Existing Custom settings, export checkpoints and saved data are preserved. Browser feature combinations are not yet independently certified."
 }
