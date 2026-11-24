@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=140,"Expected v0.2.92 individually named feature contracts");
+  assert(test.count()>=140,"Expected v0.2.97 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -165,7 +165,8 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   test.choose(["text-replacements"]);
   p=test.plan();m=test.manifest();
   assert(p.chosen.has("content/text-replacements.js"));
-  assert(m.content_scripts.some(cs => (cs.js || []).includes("content/text-replacements.js")));
+  assert(!m.content_scripts.some(cs => (cs.js || []).includes("content/text-replacements.js")), "Text Replacements should load on demand");
+  assert(m.web_accessible_resources?.some(row => (row.resources || []).includes("content/text-replacements.js")), "Selected Text Replacements module must remain importable");
   test.choose(["chat-search"]);
   p=test.plan();m=test.manifest();
   assert(!p.chosen.has("content/text-replacements.js"));
@@ -425,7 +426,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(test.pruneSettings(originalOptions).includes('id="reportLinkCollectorSettingsCard"'),"Collector Settings card missing");
   test.choose([]);
   assert(!test.plan().chosen.has("content/report-link-collector.js"));
-  console.log("PASS: v0.2.92 Report Link Collector remains independently optional");
+  console.log("PASS: v0.2.97 Report Link Collector remains independently optional");
 
   test.choose(["archive-blocking-presets"]);
   p=test.plan();
@@ -438,7 +439,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(presetSettings.includes('src="settings/feature-panels/archive-blocking-presets.js"'));
   test.choose([]);
   assert(!test.pruneBackground(originalWorker).includes('"background/features/background-blocking-presets.js"'));
-  console.log("PASS: v0.2.92 Archive Blocking Presets background and Settings are independently optional");
+  console.log("PASS: v0.2.97 Archive Blocking Presets background and Settings are independently optional");
   // Test source-level inclusion/omission after the v0.2.86 Settings split.
   for(const fid of ["personas","selection-memory","daily-message-limit","soundscapes","translation"]){
     const panel="settings/feature-panels/"+fid+".js";

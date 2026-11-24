@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.92",
+  "version": "0.2.97",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "9f121d3fa5cf02bd0795d6c5c301db83af0fda06",
-  "tree": "a83ba6ab9652308ef415f4ecdb1c0d63c6ec20ca",
+  "commit": "ba44dd50f7c6602e89a9ff07a1f90aa7c2740255",
+  "tree": "abc948d89c13adafa455e39575daca7c3d8c7a98",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.92 remains experimental. 140 individually selectable features, all OFF by default. Includes deferred Settings panels and optional chat/listing/creator helpers, the opt-in Report Link Collector, faster Settings navigation and card processing, and Orion/iOS WebExtension compatibility. Custom-only controls and existing saved settings remain preserved. Browser-specific combinations still require independent certification."
+  "warning": "Custom v0.2.97 remains experimental. 140 individually selectable features, all OFF by default. Includes v0.2.93–v0.2.97 improvements: deferred Settings and optional tools, faster large saved lists and listings, Archive blocking presets, Bot Status held-check explanations and safe resumable scans, Android startup compatibility, and read-only diagnostics. Custom-only controls and existing saved data are preserved. Independent browser feature combinations remain unverified."
 }
