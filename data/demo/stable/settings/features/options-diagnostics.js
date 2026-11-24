@@ -32,7 +32,11 @@ function runtimeDiagnosticPhaseLine(context) {
   if (status === "runtime-startup-incomplete") return "Live runtime diagnostic state: startup incomplete; lightweight transport responded.";
   if (["runtime-lightweight-ok-full-snapshot-timeout", "runtime-full-snapshot-error"].includes(status)) return "Live runtime diagnostic state: lightweight transport responded; full snapshot unavailable.";
   if (["light-probe-unreachable", "current-runtime-ping-ok-lightweight-unavailable"].includes(status)) return "Live runtime diagnostic state: lightweight diagnostic transport did not return a response; runtime health is unknown.";
-  if (["no-spicychat-tab", "page-found-runtime-unreachable", "runtime-version-mismatch", "runtime-marked-stale-after-update"].includes(status)) return "Live runtime diagnostic state: no verified current live runtime; this does not establish that QoL is disabled.";
+  if (status === "runtime-tab-loading") return "Live runtime diagnostic state: tab loading; no finished document has been verified.";
+  if (status === "runtime-content-script-unavailable") return "Live runtime diagnostic state: content script receiver unavailable; runtime health is unverified.";
+  if (status === "runtime-messaging-failure") return "Live runtime diagnostic state: diagnostic message transport error or timeout; runtime health is unverified.";
+  if (status === "runtime-marked-stale-after-update") return "Live runtime diagnostic state: tabs marked stale after an extension update; manually refresh one tab and recheck. Stale is not failure.";
+  if (["no-spicychat-tab", "page-found-runtime-unreachable", "runtime-version-mismatch"].includes(status)) return "Live runtime diagnostic state: no verified current live runtime; this does not establish that QoL is disabled.";
   return "Live runtime diagnostic state: unverified; live page counters are unavailable.";
 }
 
@@ -553,7 +557,7 @@ async function copyDiagnostics({ returnOnly = false } = {}) {
     formatNativeMemoryImportResult(result[DS_MEMORY_IMPORT_RESULT_KEY]),
     `Runtime data: ${context?.runtimeAvailable && context?.pageDiagnostics ? "available" : `unavailable — ${context?.runtimeStatus || "runtime-unreachable"}${context?.runtimeError ? ` (${context.runtimeError})` : ""}; runtime counters below are omitted or unavailable`}`,
     ...(context?.probe ? [`Runtime check: ${Number(context.probe.pingsAnswered || 0)}/${Number(context.probe.tabsPinged || 0)} tab pings answered; lightweight runtime ${context.probe.lightRuntimeAnswered ? "answered" : "unavailable"}; full snapshot ${context.probe.snapshotsAnswered ? "answered" : "unavailable"}.` ] : []),
-    (() => { const q = context?.probe; return q ? `Runtime probe: ping ${Number(q.pingsAnswered || 0)}/${Number(q.tabsPinged || 0)} replied; current-version ${Number(q.currentVersionPings ?? q.pingsAnswered ?? 0)}; lightweight ${Number(q.lightProbesAnswered || 0)}/${Number(q.lightProbesAttempted || 0)}; snapshots ${Number(q.snapshotsAnswered || 0)}/${Number(q.snapshotsAttempted || 0)}; ${Number(q.tabsFlaggedStale || 0)} stored stale markers (not confirmed failures), ${Number(q.sampledPausedTabs || 0)} sampled paused` : "Runtime probe: no result"; })(),
+    (() => { const q = context?.probe; return q ? `Runtime probe: ping ${Number(q.pingsAnswered || 0)}/${Number(q.tabsPinged || 0)} replied; current-version ${Number(q.currentVersionPings ?? q.pingsAnswered ?? 0)}; lightweight ${Number(q.lightProbesAnswered || 0)}/${Number(q.lightProbesAttempted || 0)}; snapshots ${Number(q.snapshotsAnswered || 0)}/${Number(q.snapshotsAttempted || 0)}; ${Number(q.tabsFlaggedStale || 0)} stored stale markers (not confirmed failures), ${Number(q.sampledPausedTabs || 0)} sampled paused; ping failures ${Number(q.pingNoReceiver || 0)} no receiver / ${Number(q.pingTimeouts || 0)} timeout / ${Number(q.pingMessagingErrors || 0)} messaging error` : "Runtime probe: no result"; })(),
     ...(runtimeProbeStageLine(context) ? [runtimeProbeStageLine(context)] : []),
     runtimeDiagnosticPhaseLine(context),
     (() => { const p = context?.pageDiagnostics?.diagnosticProtocol; return p ? `Dragon's SpicyChat Diagnostic Extension protocol: v${Number(p.protocolVersion || 1)}; ${p.inspectorConnected ? `paired${p.inspectorVersion ? ` with Inspector ${p.inspectorVersion}` : " with Inspector"}` : "Inspector not currently paired"}; QoL ${p.runState || "unknown"}` : "Dragon's SpicyChat Diagnostic Extension protocol: unavailable with runtime data"; })(),
@@ -652,7 +656,7 @@ async function copyDiagnostics({ returnOnly = false } = {}) {
     diagnosticLines.push(`Saved/opened lane: ${Number(runtime.savedOpenedLaneSchedules || 0)} schedules; ${Number(runtime.savedOpenedLaneRuns || 0)} runs; last source ${runtime.lastSavedOpenedLaneSource || "none"}`);
     const blockBatchRemaining = runtime.blockedBotRefreshPending ? Math.max(0, Math.ceil((Number(runtime.blockedBotRefreshSettleAt || 0) - Date.now()) / 1000)) : 0;
     diagnosticLines.push(`Blocked-bot refresh batching: ${Number(runtime.blockedBotRefreshDeferrals || 0)} deferred single-block changes; ${Number(runtime.blockedBotRefreshFlushes || 0)} settled refreshes; ${runtime.blockedBotRefreshPending ? `pending (${blockBatchRemaining}s remaining)` : "idle"}`);
-    diagnosticLines.push(`Listing name sort: ${runtime.listingSortMode || "native"}; ${Number(runtime.listingSortLoadedCards || 0)} loaded cards; ${Number(runtime.listingSortReorders || 0)} DOM reorders`);
+    diagnosticLines.push(`Listing name sort: ${runtime.listingSortMode || "native"}; ${Number(runtime.listingSortLoadedCards || 0)} loaded cards; ${Number(runtime.listingSortReorders || 0)} DOM reorders; ${Number(runtime.listingSortRevisionSkips || 0)} unchanged-revision scans skipped`);
     diagnosticLines.push(`Notification auto-read: ${Number(runtime.notificationAutoReadAttempts || 0)} attempts; ${Number(runtime.notificationAutoReadClicks || 0)} native clicks; ${Number(runtime.notificationAutoReadSuccesses || 0)} cleared; ${Number(runtime.notificationAutoReadUncleared || 0)} still unread; ${Number(runtime.notificationAutoReadMissingButtons || 0)} missing-button checks; ${Number(runtime.notificationAutoReadFailures || 0)} failures; last source ${runtime.notificationAutoReadLastSource || "none"}`);
     diagnosticLines.push(`Incremental chat work: search ${Number(runtime.chatSearchIncrementalUpdates || 0)} updates / ${Number(runtime.chatSearchFullPasses || 0)} full passes; message actions ${Number(runtime.messageOptionsIncrementalUpdates || 0)}; alternate dialogue ${Number(runtime.alternateDialogueIncrementalUpdates || 0)}; translation ${Number(runtime.translationIncrementalUpdates || 0)}`);
     diagnosticLines.push(`Installed desktop-app performance guard: ${runtime.desktopAppGuardActive ? "active" : "inactive"}`);
@@ -792,7 +796,7 @@ async function copyPerformanceReport({ returnOnly = false } = {}) {
     (() => { const p = context?.pageDiagnostics?.buildProfile; return context?.runtimeAvailable && context?.pageDiagnostics ? `Build profile: ${p?.label || p?.id || "Full"}; bundles ${(p?.bundles || []).join(", ") || "unknown"}` : "Build profile: unavailable with runtime data"; })(),
     `SpicyChat page: ${sanitizeDiagnosticPath(context?.url || "")}`,
     `Runtime data: ${runtimeAvailable ? "available" : `unavailable — ${context?.runtimeStatus || "snapshot-request-timeout"}; Options-page measurements below are still valid`}`,
-    (() => { const q = context?.probe; return q ? `Runtime probe: ${Number(q.tabsPinged || 0)}/${Number(q.tabsFound || 0)} tabs pinged; ${Number(q.pingsAnswered || 0)} replies, ${Number(q.currentVersionPings ?? q.pingsAnswered ?? 0)} current-version; ${Number(q.lightProbesAnswered || 0)}/${Number(q.lightProbesAttempted || 0)} lightweight; ${Number(q.snapshotsAnswered || 0)}/${Number(q.snapshotsAttempted || 0)} full snapshots; ${Number(q.tabsFlaggedStale || 0)} stored stale markers (not confirmed failures); ${Number(q.tabsDiscarded || 0)} discarded, ${Number(q.tabsLoading || 0)} loading, ${Number(q.tabsNoPingReply || 0)} no reply (not proof of failure)` : "Runtime probe: no results received"; })(),
+    (() => { const q = context?.probe; return q ? `Runtime probe: ${Number(q.tabsPinged || 0)}/${Number(q.tabsFound || 0)} tabs pinged; ${Number(q.pingsAnswered || 0)} replies, ${Number(q.currentVersionPings ?? q.pingsAnswered ?? 0)} current-version; ${Number(q.lightProbesAnswered || 0)}/${Number(q.lightProbesAttempted || 0)} lightweight; ${Number(q.snapshotsAnswered || 0)}/${Number(q.snapshotsAttempted || 0)} full snapshots; ${Number(q.tabsFlaggedStale || 0)} stored stale markers (not confirmed failures); ${Number(q.tabsDiscarded || 0)} discarded, ${Number(q.tabsLoading || 0)} loading, ${Number(q.tabsNoPingReply || 0)} no reply (not proof of failure); ping failures ${Number(q.pingNoReceiver || 0)} no receiver / ${Number(q.pingTimeouts || 0)} timeout / ${Number(q.pingMessagingErrors || 0)} messaging error` : "Runtime probe: no results received"; })(),
     ...(runtimeProbeStageLine(context) ? [runtimeProbeStageLine(context)] : []),
     runtimeDiagnosticPhaseLine(context),
     ...(runtimeAvailable && listingLongTaskReportLine(runtime, sampledPath) ? [listingLongTaskReportLine(runtime, sampledPath)] : []),
@@ -833,7 +837,7 @@ async function copyPerformanceReport({ returnOnly = false } = {}) {
     `Blocked-bot refresh batching: ${Number(runtime.blockedBotRefreshDeferrals || 0)} deferred single-block changes; ${Number(runtime.blockedBotRefreshFlushes || 0)} settled refreshes; ${Number(runtime.blockedBotMutationSkips || 0)} immediate listing mutations skipped; ${runtime.blockedBotRefreshPending ? `pending (${Math.max(0, Math.ceil((Number(runtime.blockedBotRefreshSettleAt || 0) - Date.now()) / 1000))}s remaining)` : "idle"}`,
     `Slow-step throttle: ${Number(runtime.throttledStepRuns || 0)} permitted checks; ${Number(runtime.slowStepThrottleSkips || 0)} repeated checks prevented (not completed scans); by group ${Object.entries(runtime.slowStepThrottleCategories || {}).filter(([k]) => ["layout", "listing", "profile", "other"].includes(k)).map(([k,v]) => `${k} ${Number(v) || 0}`).join(", ") || "none"}`,
     `Listing workload guard: ${Number(runtime.listingNonCardCriticalSkips || 0)} non-card critical passes skipped; ${Number(runtime.listingScheduleDeferrals || 0)} mutation bursts coalesced; ${Number(runtime.listingDuplicateRefillCardsRemoved || 0)} duplicate refill cards removed; ${Number(runtime.cardTokenHiddenQueuePauses || 0)} hidden-tab token queue pauses`,
-    `Listing name sort: ${runtime.listingSortMode || "native"}; ${Number(runtime.listingSortLoadedCards || 0)} loaded cards; ${Number(runtime.listingSortReorders || 0)} DOM reorders; ${Number(runtime.listingSortNoopSkips || 0)} identical passes skipped; ${Number(runtime.listingSortAlreadyOrdered || 0)} first-pass no-ops`,
+    `Listing name sort: ${runtime.listingSortMode || "native"}; ${Number(runtime.listingSortLoadedCards || 0)} loaded cards; ${Number(runtime.listingSortReorders || 0)} DOM reorders; ${Number(runtime.listingSortNoopSkips || 0)} identical passes skipped; ${Number(runtime.listingSortAlreadyOrdered || 0)} first-pass no-ops; ${Number(runtime.listingSortRevisionSkips || 0)} unchanged-revision scans skipped`,
     `Notification auto-read: ${Number(runtime.notificationAutoReadAttempts || 0)} attempts; ${Number(runtime.notificationAutoReadClicks || 0)} native clicks; ${Number(runtime.notificationAutoReadSuccesses || 0)} cleared; ${Number(runtime.notificationAutoReadUncleared || 0)} still unread; ${Number(runtime.notificationAutoReadMissingButtons || 0)} missing-button checks; ${Number(runtime.notificationAutoReadFailures || 0)} failures; last source ${runtime.notificationAutoReadLastSource || "none"}`,
     `Message cache: ${Number(runtime.messageCacheHits || 0)} hits; ${Number(runtime.messageCacheMisses || 0)} misses; ${Number(runtime.messageCacheInvalidations || 0)} actual invalidations; ${Number(runtime.messageCacheInvalidationRequests || 0)} requests; ${Number(runtime.messageCacheInvalidationDeduped || 0)} duplicates avoided; ${Number(runtime.messageCacheNonTextSkips || 0)} non-text mutations kept cached; ${Number(runtime.messageCacheFingerprintSkips || 0)} unchanged-text invalidations skipped; observer collapsed ${Number(runtime.messageCacheMutationCandidateNodes || 0)} changed nodes to ${Number(runtime.messageCacheMutationRoots || 0)} message-root targets (${Number(runtime.messageCacheMutationNodesCollapsed || 0)} node walks avoided)`,
     `Browser long tasks: ${Number(runtime.longTasks || 0)}; max ${Number(runtime.maxLongTaskMs || 0)} ms; last ${Number(runtime.lastLongTaskMs || 0)} ms; QoL-overlap ${Number(runtime.longTasksWithQolOverlap || 0)}; no-QoL-overlap ${Number(runtime.longTasksWithoutQolOverlap || 0)}; last overlap ${runtime.lastLongTaskOverlap || "none"}`,
@@ -843,6 +847,8 @@ async function copyPerformanceReport({ returnOnly = false } = {}) {
     `Options page: load ${OPTIONS_PERFORMANCE.loadMs.toFixed(1)} ms; DOM ${document.getElementsByTagName("*").length} nodes; storage reads ${OPTIONS_PERFORMANCE.storageReads} avg ${readAvg.toFixed(2)} ms max ${OPTIONS_PERFORMANCE.storageReadMaxMs.toFixed(2)} ms; writes ${OPTIONS_PERFORMANCE.storageWrites} avg ${writeAvg.toFixed(2)} ms max ${OPTIONS_PERFORMANCE.storageWriteMaxMs.toFixed(2)} ms`,
     ...(OPTIONS_PERFORMANCE.slowStorageReads.length ? [`Options slow storage reads (wall time, not CPU or browser-internal execution time): ${OPTIONS_PERFORMANCE.slowStorageReads.map(item => `${item.keys} ${item.ms} ms${item.bytes ? ` (${(item.bytes / 1024).toFixed(1)} KB)` : ""} [large-store messaging/paging ${item.largeMs ?? "n/a"} ms; Chrome callback incl. browser queue ${item.localMs ?? "n/a"} ms; other wrapper work/wait ${item.otherMs ?? "n/a"} ms]`).join("; ")}`] : []),
     ...(OPTIONS_PERFORMANCE.slowStorageWrites.length ? [`Options slow storage writes (Chrome callback wall time, includes browser queue; no payload serialization performed for diagnostics): ${OPTIONS_PERFORMANCE.slowStorageWrites.map(item => `${item.keys} ${item.ms} ms`).join("; ")}`] : []),
+    `Options Settings phases (wall timings unless named CPU/construct/commit; frame proxy is not measured input latency; browser Long Tasks are not attributed to QoL): ${Object.entries(OPTIONS_PERFORMANCE.phases || {}).sort((a,b) => b[1].maxMs - a[1].maxMs).map(([name,v]) => `${name}: ${v.count} calls, max ${v.maxMs.toFixed(1)} ms, last ${v.lastMs.toFixed(1)} ms, total ${v.totalMs.toFixed(1)} ms`).join("; ") || "none"}`,
+    `Settings Long Task API: ${OPTIONS_PERFORMANCE.longTaskSupported ? "available" : "not supported"}`,
     `Options search renders: settings ${OPTIONS_PERFORMANCE.searchRenders}; feature catalogue ${OPTIONS_PERFORMANCE.featureRenders}`,
     `Options heavy UI: ${OPTIONS_PERFORMANCE.heavyManagerIdleSlices} idle slices; ${OPTIONS_PERFORMANCE.savedManagerRefreshBatches} saved-manager refresh batches covering ${OPTIONS_PERFORMANCE.savedManagerRefreshKinds} manager kinds; ${OPTIONS_PERFORMANCE.blockedManagerRefreshBatches} blocked-manager refresh batches`,
     `Warnings: ${warnings.length}`,
@@ -1253,6 +1259,17 @@ async function downloadAllSupportInfo() {
   }
 }
 
+async function recheckRefreshedSpicyChatTab() {
+  const status = $("diagnosticsStatus");
+  if (status) status.textContent = "Rechecking current SpicyChat tabs (read-only; no tabs will be reloaded)…";
+  const response = await runtimeMessageWithTimeout({type:"DS_GET_DIAGNOSTIC_CONTEXT"},
+    supportDiagnosticRuntimeTimeoutMs()).catch(() => null);
+  if (status) status.textContent = response
+    ? `${runtimeDiagnosticPhaseLine(response)} ${response.runtimeError || ""}`.trim()
+    : "Diagnostic relay did not answer. No tabs were reloaded; try again after manually refreshing one SpicyChat tab.";
+  return !!response?.runtimeAvailable;
+}
+
 async function runPerformanceSelfCheck({ returnOnly = false } = {}) {
   const status = $("diagnosticsStatus");
   if (status && !returnOnly) status.textContent = "Running local performance self-check...";
@@ -1297,6 +1314,7 @@ async function resetPerformanceCounters() {
   OPTIONS_PERFORMANCE.blockedManagerRefreshBatches = 0;
   OPTIONS_PERFORMANCE.slowStorageReads = [];
   OPTIONS_PERFORMANCE.slowStorageWrites = [];
+  OPTIONS_PERFORMANCE.phases = {};
   if (status) status.textContent = response?.ok ? "Performance counters reset for Settings and the source SpicyChat tab." : "Settings counters reset. No reachable SpicyChat source tab responded.";
 }
 

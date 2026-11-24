@@ -1,5 +1,6 @@
 
 async function load() {
+  startOptionsLongTaskTiming();
   settingsAutosaveReady = false;
   const loadStarted = typeof performance !== "undefined" ? performance.now() : 0;
   setVersionText();
@@ -548,6 +549,7 @@ async function load() {
   setChecked("failedMessageHelper", !!settings.failedMessageHelper);
   setChecked("autoRetryFailedMessageSends", !!settings.autoRetryFailedMessageSends);
   setChecked("chatPerformanceMode", !!settings.chatPerformanceMode);
+  setChecked("showChatWindowControls", settings.showChatWindowControls !== false);
   setValue("runtimePerformanceMode", ["normal", "adaptive", "aggressive", "maximum"].includes(settings.runtimePerformanceMode) ? settings.runtimePerformanceMode : "adaptive");
   setChecked("desktopAppPerformanceGuard", settings.desktopAppPerformanceGuard !== false);
   setChecked("pauseQolInHiddenTabs", !!settings.pauseQolInHiddenTabs);
@@ -687,6 +689,8 @@ async function load() {
   updateBubbleContrastWarnings?.();
   if (activeOptionsTab() === "appearance") renderMiniPanelPreview?.();
   settingsAutosaveReady = true;
+  optionsPhaseSample("settings:core-controls-ready", performance.now() - OPTIONS_PERFORMANCE.bootStartedAt);
+  optionsAfterPaint().then(() => optionsPhaseSample("settings:controls-ready-frame-proxy", performance.now() - OPTIONS_PERFORMANCE.bootStartedAt));
   dsqRefreshHeavyToolsForTab(activeOptionsTab());
   initializeMaximumPerformancePreset();
   // Blocking actions are hydrated only after that tab is selected.
