@@ -44,7 +44,7 @@ def main():
     release = json.loads(RELEASE.read_text(encoding='utf-8'))
     assert release['schema'] == 'sqol-experimental-modules/v1'
     assert release['status'] == 'experimental-unvalidated'
-    assert release['version'] == '0.2.97'
+    assert release['version'] == '0.3.0'
     assert release['repository'] == 'drachescript/spicychat-qol-extension'
     assert len(release['commit']) == len(release['tree']) == 40
     assert SCRIPT.is_file() and PAGE.is_file()
@@ -92,6 +92,7 @@ def main():
     assert catalog['featureCount'] == len(catalog['features'])
     assert 'archive-blocking-presets' in {f['id'] for f in catalog['features']}
     assert 'report-link-collector' in {f['id'] for f in catalog['features']}, 'Missing independent v0.2.92 feature'
+    assert 'background/features/background-lorebook-import.js' in next(f['backgroundFiles'] for f in catalog['features'] if f['id'] == 'lorebook-backup'), 'v0.3 Lorebook import ownership missing'
     assert {'settings/options-github-backup.js', 'shared/github-backup-service.js'} <= sources, 'Missing v0.2.88 GitHub backup runtime assets'
     index = fetch_json(base + '/build/custom-package-index.json')
     assert index['schema'] == 'spicychat-qol-custom-package-assets/v1'

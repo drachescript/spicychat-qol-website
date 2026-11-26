@@ -1,10 +1,10 @@
 {
   "schema": "sqol-experimental-modules/v1",
-  "version": "0.2.97",
+  "version": "0.3.0",
   "repository": "drachescript/spicychat-qol-extension",
-  "commit": "ba44dd50f7c6602e89a9ff07a1f90aa7c2740255",
-  "tree": "abc948d89c13adafa455e39575daca7c3d8c7a98",
+  "commit": "9b2c27702c562d4311ece0d869233f0a14d692a1",
+  "tree": "bd8edef34c3472878e59f5ba680985c115a99d66",
   "browser": "chrome",
   "status": "experimental-unvalidated",
-  "warning": "Custom v0.2.97 remains experimental. 140 individually selectable features, all OFF by default. Includes v0.2.93–v0.2.97 improvements: deferred Settings and optional tools, faster large saved lists and listings, Archive blocking presets, Bot Status held-check explanations and safe resumable scans, Android startup compatibility, and read-only diagnostics. Custom-only controls and existing saved data are preserved. Independent browser feature combinations remain unverified."
+  "warning": "Custom Lite v0.3.0 is experimental. 140 selectable features, all OFF by default. Includes the v0.2.98–v0.3.0 milestone: improved Settings discovery, layouts, presets and Performance Center; Bot Status scan workspace; large Chat Export resume, JSON.GZ and incremental history reuse; Lorebook import recovery; three-hour optional cross-device sync; and Toolkit compatibility fixes. Custom-only controls and saved data remain preserved. Independent browser feature combinations still require testing."
 }

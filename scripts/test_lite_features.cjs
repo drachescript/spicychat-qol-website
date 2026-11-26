@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=140,"Expected v0.2.97 individually named feature contracts");
+  assert(test.count()>=140,"Expected v0.3.0 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -385,6 +385,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!emptyWorker.includes('"background/background-translation.js"'));
   assert(!emptyWorker.includes('"background/background-wiki-fetch.js"'));
   assert(!emptyWorker.includes('"background/features/background-blocking-presets.js"'), "Unselected Archive Blocking Presets background handler retained");
+  assert(!emptyWorker.includes('"background/features/background-lorebook-import.js"'), "Unselected Lorebook import background handler retained");
   for(const file of ["background/features/background-context-keeper-storage.js",
     "background/features/background-chat-lorebook-local.js",
     "background/features/background-native-memory-probe.js"])
@@ -417,6 +418,15 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
     /Cannot safely isolate Settings panel/,"A missing known panel must fail closed");
   console.log("PASS: selected Settings panels and Translation background remain, unselected ones are removed");
 
+  test.choose(["lorebook-backup"]);
+  p=test.plan();
+  assert(p.chosen.has("background/features/background-lorebook-import.js"),"Selected Lorebook Backup requires its import handler");
+  assert(test.pruneBackground(originalWorker).includes('"background/features/background-lorebook-import.js"'),"Selected Lorebook import handler removed");
+  test.choose([]);
+  assert(!test.plan().chosen.has("background/features/background-lorebook-import.js"));
+  assert(!test.pruneBackground(originalWorker).includes('"background/features/background-lorebook-import.js"'));
+  console.log("PASS: v0.3.0 Lorebook import background handler is opt-in");
+
   test.choose(["report-link-collector"]);
   p=test.plan();m=test.manifest();
   assert(test.recipe().selectedFeatures.includes("cards"),"Report Link Collector depends on Cards");
@@ -426,7 +436,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(test.pruneSettings(originalOptions).includes('id="reportLinkCollectorSettingsCard"'),"Collector Settings card missing");
   test.choose([]);
   assert(!test.plan().chosen.has("content/report-link-collector.js"));
-  console.log("PASS: v0.2.97 Report Link Collector remains independently optional");
+  console.log("PASS: v0.3.0 Report Link Collector remains independently optional");
 
   test.choose(["archive-blocking-presets"]);
   p=test.plan();
@@ -439,7 +449,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(presetSettings.includes('src="settings/feature-panels/archive-blocking-presets.js"'));
   test.choose([]);
   assert(!test.pruneBackground(originalWorker).includes('"background/features/background-blocking-presets.js"'));
-  console.log("PASS: v0.2.97 Archive Blocking Presets background and Settings are independently optional");
+  console.log("PASS: v0.3.0 Archive Blocking Presets background and Settings are independently optional");
   // Test source-level inclusion/omission after the v0.2.86 Settings split.
   for(const fid of ["personas","selection-memory","daily-message-limit","soundscapes","translation"]){
     const panel="settings/feature-panels/"+fid+".js";

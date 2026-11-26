@@ -50,7 +50,8 @@ const SAFE_BACKGROUND_OWNERS=Object.freeze({
   'background/features/background-context-keeper-storage.js':'context-keeper',
   'background/features/background-chat-lorebook-local.js':'chat-lorebook-manager',
   'background/features/background-native-memory-probe.js':'native-memory-probe',
-  'background/features/background-research-memory-export.js':'bulk-chat-research'
+  'background/features/background-research-memory-export.js':'bulk-chat-research',
+  'background/features/background-lorebook-import.js':'lorebook-backup'
 });
 const CONDITIONAL_BACKGROUND_OWNERS=Object.freeze({
   'background/features/background-community-themes.js':'archive-community-themes',
