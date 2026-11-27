@@ -32,7 +32,7 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
 
 (async()=>{
   await test.ready;
-  assert(test.count()>=140,"Expected v0.3.0 individually named feature contracts");
+  assert(test.count()>=141,"Expected v0.3.2 individually named feature contracts");
   assert(test.sections().includes("Blocking"));
   assert(test.sections().includes("Filtering"));
   test.choose(["bot-blocking"]);
@@ -426,6 +426,38 @@ vm.runInNewContext(code,context,{filename:"lite-features.js",timeout:10000});
   assert(!test.plan().chosen.has("background/features/background-lorebook-import.js"));
   assert(!test.pruneBackground(originalWorker).includes('"background/features/background-lorebook-import.js"'));
   console.log("PASS: v0.3.0 Lorebook import background handler is opt-in");
+
+  // v0.3.2 Creator Tools requires the shared gate, but its Inspector factory is optional.
+  test.choose([]);
+  p=test.plan();
+  const sctFactory="background/features/background-sct-inspector.js";
+  const sctGate="background/sct-inspector-gate.js";
+  assert(p.chosen.has(sctGate),"Shared SCT routing gate is required even in a minimal build");
+  assert(!p.chosen.has(sctFactory),"Unselected SCT factory must not be packaged");
+  assert(!p.chosen.has("content/creator-tools-integration.js"));
+  assert(!p.chosen.has("settings/feature-panels/creator-tools-integration.js"));
+  const noSct=test.pruneBackground(originalWorker);
+  assert(noSct.includes('importScripts("'+sctGate+'");'));
+  assert(!noSct.includes(sctFactory));
+  test.choose(["creator-tools-integration"]);
+  p=test.plan();m=test.manifest();
+  assert(p.chosen.has(sctGate)&&p.chosen.has(sctFactory));
+  for(const dep of ["bot-backup","lorebook-backup","lorebook-tags"])
+    assert(test.recipe().selectedFeatures.includes(dep),"Creator Tools dependency missing: "+dep);
+  assert(p.chosen.has("content/creator-tools-integration.js"));
+  assert(p.chosen.has("settings/feature-panels/creator-tools-integration.js"));
+  assert(m.web_accessible_resources.some(row=>(row.resources||[]).includes("content/creator-tools-integration.js")));
+  const withSct=test.pruneBackground(originalWorker);
+  assert(withSct.includes('if (dsqBackgroundHasFeature("creator-tools-integration")) importScripts("'+sctFactory+'");'));
+  assert(withSct.indexOf(sctGate)<withSct.indexOf(sctFactory));
+  test.choose([]);
+  assert(!test.plan().chosen.has("content/sidebar-redesign.js"));
+  test.choose(["sidebar"]);
+  p=test.plan();m=test.manifest();
+  assert(p.chosen.has("content/sidebar.js")&&p.chosen.has("content/sidebar-redesign.js"));
+  assert(p.chosen.has("settings/feature-panels/sidebar.js"));
+  assert(m.web_accessible_resources.some(row=>(row.resources||[]).includes("content/sidebar-redesign.js")));
+  console.log("PASS: v0.3.2 sidebar helper and Creator Tools dependencies are selectable; SCT routing gate stays shared");
 
   test.choose(["report-link-collector"]);
   p=test.plan();m=test.manifest();

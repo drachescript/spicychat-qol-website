@@ -1,14 +1,14 @@
 {
   "schema": "sqol-lite-early-access/v1",
   "channel": "core-ooc-ea",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "source": {
     "repository": "drachescript/spicychat-qol-extension",
-    "commit": "9b2c27702c562d4311ece0d869233f0a14d692a1"
+    "commit": "2563d8d9c8adffbb695dba77e8a8238d543403ab"
   },
   "name": "SpicyChat QoL — Core + OOC (test)",
   "files": {
-    "content/core-settings-defaults.js": "a41c168a67b99d728a359dd396b19a9acc8a113c",
+    "content/core-settings-defaults.js": "53aaf762e4f9e369a0fbc900f3199318db12d68b",
     "custom/ooc-runtime-core.js": "5e3e626f3740262e2f6c8f574ee639dc8990e0dc",
     "content/ooc.js": "feb3979770de05a8e2519f5e0bfe72ade1f16a3b",
     "content/ooc-composer.js": "34edc8c75553080498c86062a0d2a0586fe09921",

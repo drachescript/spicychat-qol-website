@@ -55,7 +55,8 @@ const SAFE_BACKGROUND_OWNERS=Object.freeze({
 });
 const CONDITIONAL_BACKGROUND_OWNERS=Object.freeze({
   'background/features/background-community-themes.js':'archive-community-themes',
-  'background/features/background-blocking-presets.js':'archive-blocking-presets'
+  'background/features/background-blocking-presets.js':'archive-blocking-presets',
+  'background/features/background-sct-inspector.js':'creator-tools-integration'
 });
 let selected=new Set(),dirHandle=null,busy=false;
 let activeCategory='All',searchValue='',onlySelected=false;
@@ -269,7 +270,7 @@ async function load(){
        !Array.isArray(entry.helpers))throw Error('Invalid Custom package ownership index.');
     indexEntries.set(entry.id,entry);
   }
-  for(const [path,id] of Object.entries(SAFE_BACKGROUND_OWNERS)){
+  for(const [path,id] of Object.entries({...SAFE_BACKGROUND_OWNERS,...CONDITIONAL_BACKGROUND_OWNERS})){
     const entry=indexEntries.get(id);
     if(!entry||!entry.background.includes(path))throw Error('Invalid optional background owner: '+id);
   }
@@ -362,9 +363,18 @@ function pruneSafeBackground(source,active){
   // Full QoL Stage 17 loads initial services, reviewed independent optional
   // handlers, then the ordered event handlers. Fail closed on unknown layouts.
   const conditionalFiles=Object.keys(CONDITIONAL_BACKGROUND_OWNERS);
-  if(calls.length!==conditionalFiles.length+2)throw Error('Background worker import layout has changed.');
+  // The SCT gate is shared: runtime-message, alarm and storage routing call it even in minimal builds.
+  // Keep the gate, but omit the opt-in factory when Creator Tools is not selected.
+  const sharedGate='background/sct-inspector-gate.js';
+  if(calls.length!==conditionalFiles.length+3)throw Error('Background worker import layout has changed.');
   const paths=call=>[...call[1].matchAll(/(["'])([^"']+\.js)\1/g)].map(m=>m[2]);
-  const initial=paths(calls[0]), optional=calls.slice(1,-1).flatMap(paths), events=paths(calls.at(-1));
+  const middle=calls.slice(1,-1);
+  const gates=middle.filter(call=>paths(call).includes(sharedGate));
+  if(gates.length!==1||gates[0][0]!=='importScripts("'+sharedGate+'");'||
+     middle.indexOf(gates[0])!==middle.length-2||
+     paths(middle.at(-1)).join('')!=='background/features/background-sct-inspector.js')
+    throw Error('Shared SCT gate import order changed.');
+  const initial=paths(calls[0]), optional=middle.filter(call=>call!==gates[0]).flatMap(paths), events=paths(calls.at(-1));
   if(initial.length<20||new Set(initial).size!==initial.length||
      initial[0]!=='background/feature-build-profile.js'||
      !initial.includes('background.js'))
